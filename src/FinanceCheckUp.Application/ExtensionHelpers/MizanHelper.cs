@@ -1,5 +1,6 @@
 using FinanceCheckUp.Application.Models.ViewModel.Mizan;
 using System.Globalization;
+using FinanceCheckUp.Application.Models.ViewModel;
 
 namespace FinanceCheckUp.Application.ExtensionHelpers;
 
@@ -34,8 +35,7 @@ public static class MizanHelper
         return nlistitem;
 
     }
-
-
+ 
     public static double RemoveNonNumeric2(string str)
     {
         string[] nlist = str.Split(" ");
@@ -287,5 +287,86 @@ public static class MizanHelper
         return nmizamn;
     }
 
+    
+    public static List<TBLXMLSCheckpdfMizan> getListPdf(List<ReadPdfMizan> nchek)
+    {
+        List<TBLXMLSCheckpdfMizan> nli = new List<TBLXMLSCheckpdfMizan>();
+        TBLXMLSCheckpdfMizan nd = new TBLXMLSCheckpdfMizan();
+        int counter = 0;
+        int mncheck = 0;
+        foreach (var item in nchek)
+        {
+            counter = 0;
+            nd = new TBLXMLSCheckpdfMizan();
+            string[] llist = item.LineContent.Split(' ');
+            for (int i = 0; i < llist.Count(); i++)
+            {
+
+                if (i == 0 || i == 1 || i == 2)
+                {
+                    bool checkResult = int.TryParse(llist[i].Replace(",", string.Empty).Replace(".", string.Empty).Replace("-", string.Empty), out int age);
+                    if (checkResult)
+                    {
+                        nd.AccountMainID += " " + llist[i];
+                    }
+                    else
+                    {
+                        nd.AccountMainDescription += " " + llist[i];
+                    }
+                }
+                else
+                {
+
+
+                    var checkResult = RemoveNonNumeric2(llist[i]);
+                    if (checkResult != 0)
+                    {
+                        int cnhk = llist.Count() - i;
+                        if (counter != 0)
+                        {
+                            mncheck = llist.Count() - mncheck;
+                        }
+
+                        try
+                        {
+                            if (cnhk == 4)
+                            {
+                                nd.Amount4 = checkResult;
+                            }
+                            else if (cnhk == 3)
+                            {
+                                nd.Amount3 = checkResult;
+                            }
+                            else if (cnhk == 2)
+                            {
+                                nd.Amount2 = checkResult;
+                            }
+                            else
+                            {
+                                nd.Amount1 = checkResult;
+                            }
+                        }
+                        catch
+                        {
+
+
+                        }
+                        counter = 0;
+                    }
+                    else
+                    {
+                        mncheck = 0;
+                        counter = i;
+                        nd.AccountMainDescription += " " + llist[i];
+
+                    }
+
+                }
+
+            }
+            nli.Add(nd);
+        }
+        return nli;
+    }
 
 }
