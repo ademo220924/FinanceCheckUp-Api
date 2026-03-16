@@ -1,0 +1,45 @@
+﻿using DevExtreme.AspNet.Data;
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
+using FinanceCheckUp.Application.Models.Common;
+using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadMain;
+using FinanceCheckUp.Framework.Core.Models;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Query.UploadMainOnGetSalerMainChk
+{
+    public class MizanUploadMainOnGetSalerMainChkQueryHandler(
+        IHhvnUsersManager hhvnUsersManager,
+        ICompanyManager companyManager,
+        IMainDashManager mainDashManager)
+        : IRequestHandler<MizanUploadMainOnGetSalerMainChkQuery, GenericResult<MizanUploadMainOnGetSalerMainChkResponse>>
+    {
+        
+        public Task<GenericResult<MizanUploadMainOnGetSalerMainChkResponse>> Handle(MizanUploadMainOnGetSalerMainChkQuery request, CancellationToken cancellationToken)
+        {
+            var userId = Convert.ToInt64(request.UserId);
+            request.InitialModel.UserID = userId;
+
+            var mrequestDataViewer = new DataViewerMain();
+            if (request.Request.monthid < 1)
+            {
+                return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainChkResponse>.Success(new MizanUploadMainOnGetSalerMainChkResponse
+                {
+                    InitialModel = request.InitialModel,
+                    Response = new JsonResult(DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options))
+                }));
+
+            }
+
+            request.InitialModel.CurrentUser = hhvnUsersManager.GetRow_User(userId);
+            request.InitialModel.curcomID = companyManager.Getby_User(userId).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
+            mrequestDataViewer.SetDataViewer(mainDashManager.DataViewerMainMonth(request.InitialModel.CurrentUser.SelectedYear, request.InitialModel.curcomID, request.Request.monthid));
+ 
+            return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainChkResponse>.Success(new MizanUploadMainOnGetSalerMainChkResponse
+            {
+                InitialModel = request.InitialModel,
+                Response = new JsonResult(DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options))
+            }));
+        }
+    }
+}

@@ -1,0 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
+
+namespace FinanceCheckUp.Application.Models.Responses.Mizan;
+
+public class MoodUpdatesAktarmaResponse
+{
+    public JsonResult ResultText { get; set; }
+}

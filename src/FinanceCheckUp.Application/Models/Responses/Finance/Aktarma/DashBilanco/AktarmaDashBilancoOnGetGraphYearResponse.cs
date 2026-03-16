@@ -1,0 +1,9 @@
+﻿
+using FinanceCheckUp.Application.Models.Requests.Finance.Aktarma.DashBilanco;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FinanceCheckUp.Application.Models.Responses.Finance.Aktarma.DashBilanco;
+public class AktarmaDashBilancoOnGetGraphYearResponse
+{
+    public JsonResult Response { get; set; }
+}

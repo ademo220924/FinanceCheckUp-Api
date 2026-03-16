@@ -1,0 +1,24 @@
+﻿{
+  "profiles": {
+    "FinanceCheckUp.Api.Swagger": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:2025",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "qa"
+      }
+    },
+    "FinanceCheckUp.Api.Documentation": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "api-docs",
+      "applicationUrl": "http://localhost:2025",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "qa"
+      }
+    }
+  }
+}

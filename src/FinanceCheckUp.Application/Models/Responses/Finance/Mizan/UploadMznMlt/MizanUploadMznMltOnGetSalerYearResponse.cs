@@ -1,0 +1,9 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadMznMlt
+{
+    public class MizanUploadMznMltOnGetSalerYearResponse
+    {
+        public JsonResult Response { get; set; }
+    }
+}

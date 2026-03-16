@@ -1,0 +1,31 @@
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
+using FinanceCheckUp.Application.Models.Responses.Layouts;
+using FinanceCheckUp.Framework.Core.Models;
+using MediatR;
+
+namespace FinanceCheckUp.Application.Features.Layouts.Query.LayoutFinance;
+
+public class LayoutFinanceQueryHandler(IHhvnUsersManager hhvnUsersManager, IUserManager userManager)
+    : IRequestHandler<LayoutFinanceQuery, GenericResult<LayoutFinanceResponse>>
+{
+    public Task<GenericResult<LayoutFinanceResponse>> Handle(LayoutFinanceQuery request,
+        CancellationToken cancellationToken)
+    {
+        var layoutResponse = new LayoutFinanceResponse
+        {
+            IsConsole = false,
+            UserId = Convert.ToInt64(request.UserId)
+        };
+
+        layoutResponse.HhvnUsers = hhvnUsersManager.GetRow_User(layoutResponse.UserId);
+        layoutResponse.ChkKonsole = hhvnUsersManager.GetRow_UserKonsolide((int)layoutResponse.UserId);
+        layoutResponse.User = userManager.GetRow_User(layoutResponse.UserId);
+        layoutResponse.UserApp = "";
+        layoutResponse.UserRole = "Admin"; //ToDo: httpcontextten al
+        if (layoutResponse.ChkKonsole > 0)
+        {
+            layoutResponse.IsConsole = true;
+        }
+        return Task.FromResult(GenericResult<LayoutFinanceResponse>.Success(layoutResponse));
+    }
+}

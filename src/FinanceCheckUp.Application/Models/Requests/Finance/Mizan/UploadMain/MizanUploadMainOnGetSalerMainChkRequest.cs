@@ -1,0 +1,10 @@
+﻿using DevExtreme.AspNet.Mvc;
+
+namespace FinanceCheckUp.Application.Models.Requests.Finance.Mizan.UploadMain
+{
+    public class MizanUploadMainOnGetSalerMainChkRequest
+    {
+        public DataSourceLoadOptions options {  get; set; }
+        public int monthid { get; set; }
+    }
+}

@@ -1,0 +1,25 @@
+@FinanceCheckUp.Api_HostAddress = http://localhost:2024
+
+# group: program cs
+# @name healthcheck
+GET {{FinanceCheckUp.Api_HostAddress}}/healthcheck/
+Accept: application/json
+
+###
+
+# FinCheckUp
+
+# group: Mizan
+# @name mizan/upload
+POST {{FinanceCheckUp.Api_HostAddress}}/api/mizan/upload
+accept: */*
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="files"; filename="/C:/Users/erdem/OneDrive/Masaüstü/toyata plaza - çavdarlı oto.jpg"
+
+< /C:/Users/erdem/OneDrive/Masaüstü/makçev.jpg\/C:/Users/erdem/OneDrive/Masaüstü/svb group.jpg\/C:/Users/erdem/OneDrive/Masaüstü/toyata plaza - çavdarlı oto.jpg
+--WebAppBoundary
+
+
+

@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Features\BaseApp\Authentication\Query\Login\**" />
+      <EmbeddedResource Remove="Features\BaseApp\Authentication\Query\Login\**" />
+      <None Remove="Features\BaseApp\Authentication\Query\Login\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+        <PackageReference Include="CsvHelper" Version="33.0.1" />
+        <PackageReference Include="DevExtreme.AspNet.Core" Version="23.2.6" />
+        <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="23.2.6" />
+        <PackageReference Include="DevExpress.AspNetCore.Spreadsheet" Version="23.2.6" />
+        <PackageReference Include="DevExpress.DataAccess" Version="23.2.6" />
+        <PackageReference Include="DevExpress.Document.Processor" Version="23.2.6" />
+        <PackageReference Include="DevExpress.Office.Core" Version="23.2.6" />
+        <PackageReference Include="FluentValidation" Version="11.4.0" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
+        <PackageReference Include="iTextSharp.NetCore" Version="5.5.13.1" />
+        <PackageReference Include="MediatR" Version="11.1.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters.Abstractions" Version="8.0.0" />
+        <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+<!--      <ProjectReference Include="..\..\framework\Data\Databases\FinanceCheckUp.Framework.Data.Databases.MsSql\FinanceCheckUp.Framework.Data.Databases.MsSql.csproj" />-->
+      <ProjectReference Include="..\..\clients\FinanceCheckUp.Client.ConnectApi\FinanceCheckUp.Client.ConnectApi.csproj" />
+      <ProjectReference Include="..\..\clients\FinanceCheckUp.Client.QnbClient\FinanceCheckUp.Client.QnbClient.csproj" />
+      <ProjectReference Include="..\..\clients\FinanceCheckUp.Client.Wsdl\FinanceCheckUp.Client.Finansman.csproj" />
+      <ProjectReference Include="..\FinanceCheckUp.Infrastructure\FinanceCheckUp.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\BaseApp\Beyanname\Query\" />
+      <Folder Include="Features\BaseApp\Bultens\Query\" />
+      <Folder Include="Features\BaseApp\Company\Query\" />
+      <Folder Include="Features\BaseApp\DashCpmNew\Query\DashCpmNewOnGetChartLikid\" />
+      <Folder Include="Features\BaseApp\DashCpmNew\Query\DashCpmNewOnGetChartMali\" />
+      <Folder Include="Features\BaseApp\DashCpmNew\Query\DashCpmNewOnGetChartRasyob\" />
+      <Folder Include="Features\BaseApp\DashCpmNew\Query\DashCpmNewOnGetChartRasyoc\" />
+      <Folder Include="Features\BaseApp\DashCpmNew\Query\DashCpmNewOnGetChartRasyo\" />
+      <Folder Include="Features\BaseApp\DashCpmNew\Query\DashCpmNewOnGetGraphComp\" />
+      <Folder Include="Features\BaseApp\DashCpmNew\Query\DashCpmNewOnGetGraphYear\" />
+      <Folder Include="Features\BaseApp\DashCpmNew\Query\DashCpmNewOnGet\" />
+      <Folder Include="Features\BaseApp\File\Query\" />
+      <Folder Include="Features\BaseApp\FinansmanWsdl\Command\" />
+      <Folder Include="Features\BaseApp\General\TblWzone\Query\" />
+      <Folder Include="Features\BaseApp\General\TblZoneError\Query\" />
+      <Folder Include="Features\BaseApp\Notification\Query\" />
+      <Folder Include="Features\BaseApp\Reminder\AccountGroup\Command\" />
+      <Folder Include="Features\BaseApp\Reminder\AccountGroup\Query\" />
+      <Folder Include="Features\BaseApp\Reminder\RuleJob\Command\" />
+      <Folder Include="Features\BaseApp\Reminder\RuleJob\Query\" />
+      <Folder Include="Features\BaseApp\Reminder\Rule\Query\" />
+      <Folder Include="Models\Requests\Authentication\" />
+      <Folder Include="Models\Responses\Transactions\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Models\Common\FinansmanEntegrasyon.cs" />
+    </ItemGroup>
+
+</Project>

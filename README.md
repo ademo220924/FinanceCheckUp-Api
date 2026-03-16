@@ -1,1 +1,2 @@
-# FinanceCheckUp-Api
+# FinanceCheckUp
+Finance Dönüşüm Projesi
