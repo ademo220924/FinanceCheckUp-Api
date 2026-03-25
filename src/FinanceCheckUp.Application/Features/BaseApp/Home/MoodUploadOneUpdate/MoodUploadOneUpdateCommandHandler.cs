@@ -1,23 +1,33 @@
+using FinanceCheckUp.Application.ExtensionHelpers;
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
+using FinanceCheckUp.Application.Managers.StaticManagers;
+using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Home;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Home.MoodUploadOneUpdate;
 
-public class MoodUploadOneUpdateCommandHandler: IRequestHandler<MoodUploadOneUpdateCommand, GenericResult<MoodUploadOneUpdateResponse>>
+public class MoodUploadOneUpdateCommandHandler(
+    ICompanyManager companyManager,
+    IXmlCheckerManager xmlCheckerManager,
+    IERRLOGManager errlogManager)
+    : IRequestHandler<MoodUploadOneUpdateCommand, GenericResult<MoodUploadOneUpdateResponse>>
 {
-    public Task<GenericResult<MoodUploadOneUpdateResponse>> Handle(MoodUploadOneUpdateCommand request, CancellationToken cancellationToken)
+    public async Task<GenericResult<MoodUploadOneUpdateResponse>> Handle(MoodUploadOneUpdateCommand request, CancellationToken cancellationToken)
     {
-         try
+        var pageIndex = request.MoodUploadOneUpdateRequest.PageIndex;
+        try
         {
             var file = pageIndex.file;
             string filemonth = pageIndex.Caption.Split('_')[0];
             string fileyear = pageIndex.Caption.Split('_')[1];
             string orjinalname = file[0].FileName;
             string filePath = string.Empty;
-            string uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+            string uploads = Path.Combine(WebHelper.path, "wwwroot\\FileContent\\");
             List<string> nlistZipurl = new List<string>();
-            Companies comp = Companies.Get_Company(Convert.ToInt32(pageIndex.ide));
+            var comp = companyManager.Get_Company(Convert.ToInt32(pageIndex.ide));
 
             bool IsZip = false;
             if (file != null && file.Count > 0)
@@ -30,9 +40,9 @@ public class MoodUploadOneUpdateCommandHandler: IRequestHandler<MoodUploadOneUpd
             }
             else
             {
-                return Json("nok");
+                return GenericResult<MoodUploadOneUpdateResponse>.Success(
+                    new MoodUploadOneUpdateResponse { ResultText = new JsonResult("nok") });
             }
-
 
             string pathToXmlFile = string.Empty;
 
@@ -41,61 +51,62 @@ public class MoodUploadOneUpdateCommandHandler: IRequestHandler<MoodUploadOneUpd
                 foreach (var item in file)
                 {
                     filePath = Path.Combine(uploads, Guid.NewGuid().ToString() + ".zip");
-                    using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                    await using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        await item.CopyToAsync(fileStream).ConfigureAwait(false);
+                        await item.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
                     }
+
                     nlistZipurl.Add(filePath);
                 }
+
+                pathToXmlFile = uploads;
             }
             else
             {
                 foreach (var item in file)
                 {
                     filePath = Path.Combine(uploads, Guid.NewGuid().ToString() + ".xml");
-                    using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                    await using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        await item.CopyToAsync(fileStream).ConfigureAwait(false);
+                        await item.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
                     }
+
                     nlistZipurl.Add(filePath);
                 }
+
+                pathToXmlFile = filePath;
             }
 
-            pathToXmlFile = uploads;
+            string retval = xmlCheckerManager.SapEntegratorSetUpdate(IsZip, comp.Id, pathToXmlFile, filemonth, fileyear, nlistZipurl, orjinalname);
 
-
-            int UserID = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            string retval = XmlChecker.SapEntegratorSetUpdate(IsZip, comp.ID, pathToXmlFile, filemonth, fileyear, nlistZipurl, orjinalname);
-
-
-            return Json(retval);
+            return GenericResult<MoodUploadOneUpdateResponse>.Success(
+                new MoodUploadOneUpdateResponse { ResultText = new JsonResult(retval) });
         }
         catch (Exception ex)
         {
-
             try
             {
-                Companies comp = Companies.Get_Company(Convert.ToInt32(pageIndex.ide));
-                ERRLOG lg = new ERRLOG();
-                lg.CompanyID = comp.ID;
-                lg.CsvID = 7777;
-                lg.ERLOG = ex.ToString(); lg.Save_AppLogs();
-                var chk = ex;
-                return Json("nok");
+                var comp = companyManager.Get_Company(Convert.ToInt32(pageIndex.ide));
+                errlogManager.Save_AppLogs(new ERRLOG
+                {
+                    CompanyID = comp.Id,
+                    CsvID = 7777,
+                    ERLOG = ex.ToString()
+                });
+                return GenericResult<MoodUploadOneUpdateResponse>.Success(
+                    new MoodUploadOneUpdateResponse { ResultText = new JsonResult("nok") });
             }
             catch (Exception)
             {
-
-                ERRLOG lgt = new ERRLOG();
-                lgt.CompanyID = 0;
-                lgt.CsvID = 7777;
-                lgt.ERLOG = ex.ToString(); lgt.Save_AppLogs();
-                return Json("nok");
+                errlogManager.Save_AppLogs(new ERRLOG
+                {
+                    CompanyID = 0,
+                    CsvID = 7777,
+                    ERLOG = ex.ToString()
+                });
+                return GenericResult<MoodUploadOneUpdateResponse>.Success(
+                    new MoodUploadOneUpdateResponse { ResultText = new JsonResult("nok") });
             }
-
-
         }
-
     }
 }

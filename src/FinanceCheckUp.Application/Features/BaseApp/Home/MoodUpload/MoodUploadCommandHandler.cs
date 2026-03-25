@@ -1,21 +1,41 @@
+using System.Security.Claims;
+using FinanceCheckUp.Application.ExtensionHelpers;
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
+using FinanceCheckUp.Application.Managers.StaticManagers;
+using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Home;
+using FinanceCheckUp.Domain.Entities;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Home.MoodUpload;
 
-public class MoodUploadCommandHandler: IRequestHandler<MoodUploadCommand, GenericResult<MoodUploadResponse>>
+public class MoodUploadCommandHandler(
+    ICompanyManager companyManager,
+    ITBLXmlManager tblXmlManager,
+    IXmlCheckerManager xmlCheckerManager,
+    IDashRasyoManager dashRasyoManager,
+    IMainDashManager mainDashManager,
+    IDataManager dataManager,
+    IDashWCapitalViewMainManager dashWCapitalViewMainManager,
+    IERRLOGManager errlogManager,
+    IDashLikiditeViewMainManager dashLikiditeViewMainManager,
+    IDashGelirTablosuViewMainManager dashGelirTablosuViewMainManager): IRequestHandler<MoodUploadCommand, GenericResult<MoodUploadResponse>>
 {
-    public Task<GenericResult<MoodUploadResponse>> Handle(MoodUploadCommand request, CancellationToken cancellationToken)
+    public async Task<GenericResult<MoodUploadResponse>> Handle(MoodUploadCommand request, CancellationToken cancellationToken)
     {
+        var pageIndex = request.MoodUploadRequest.PageIndex;
         var file = pageIndex.file;
         string orjinalname = file[0].FileName;
         string filemonth = pageIndex.Caption.Split('_')[0];
         string fileyear = pageIndex.Caption.Split('_')[1];
         string filePath = string.Empty;
-        string uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+        
+         
+        string uploads = Path.Combine(WebHelper.path, "wwwroot\\FileContent\\");
         List<string> nlistZipurl = new List<string>();
-        Companies comp = Companies.Get_Company(Convert.ToInt32(pageIndex.ide));
+        var comp = companyManager.Get_Company(Convert.ToInt32(pageIndex.ide));
         bool IsZip = false;
         if (file != null && file.Count > 0)
         {
@@ -27,7 +47,7 @@ public class MoodUploadCommandHandler: IRequestHandler<MoodUploadCommand, Generi
         }
         else
         {
-            return Json("nok");
+            return GenericResult<MoodUploadResponse>.Success(new MoodUploadResponse() { ResultText = new JsonResult("nok") });
         }
 
         string pathToXmlFile = string.Empty;
@@ -37,9 +57,9 @@ public class MoodUploadCommandHandler: IRequestHandler<MoodUploadCommand, Generi
             foreach (var item in file)
             {
                 filePath = Path.Combine(uploads, Guid.NewGuid().ToString() + ".zip");
-                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                await using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    await item.CopyToAsync(fileStream).ConfigureAwait(false);
+                    await item.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
                 }
                 nlistZipurl.Add(filePath);
             }
@@ -63,20 +83,16 @@ public class MoodUploadCommandHandler: IRequestHandler<MoodUploadCommand, Generi
 
         }
 
-        int UserID = Int32.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-
-
         try
         {
             string retval = string.Empty;
-            if (TBLXml.GetComapnyIDByMonthCount(comp.ID, Convert.ToInt32(filemonth), Convert.ToInt32(fileyear)) > 0)
+            if (tblXmlManager.GetComapnyIDByMonthCount(comp.Id, Convert.ToInt32(filemonth), Convert.ToInt32(fileyear)) > 0)
             {
-                retval = XmlChecker.XmlCheck(IsZip, 1, comp.ID, pathToXmlFile, filemonth, fileyear, nlistZipurl, orjinalname);
+                retval = xmlCheckerManager.XmlCheck(IsZip, 1, comp.Id, pathToXmlFile, filemonth, fileyear, nlistZipurl, orjinalname,filemonth=="12");
             }
             else
             {
-                retval = XmlChecker.XmlCheck(IsZip, 0, comp.ID, pathToXmlFile, filemonth, fileyear, nlistZipurl, orjinalname);
+                retval = xmlCheckerManager.XmlCheck(IsZip, 0, comp.Id, pathToXmlFile, filemonth, fileyear, nlistZipurl, orjinalname,filemonth=="12");
 
             }
 
@@ -87,38 +103,43 @@ public class MoodUploadCommandHandler: IRequestHandler<MoodUploadCommand, Generi
 
 
 
-                List<DashBilancoView> nRequestList = DashBilancoViewMain.getList(fyear, comp.ID);
-                var tlist = Data.SetBilancoFromList(nRequestList, comp.ID, fyear);
-                Data.RESET_DashBilancoView(fyear, comp.ID);
-                Data.InsertBilnco(tlist);
-                List<DashBilancoView> nRequestListRvn = DashGelirTablosuViewMain.getList(fyear, comp.ID);
-                Data.RESET_REVENUEView(fyear, comp.ID);
-                var tlistRvn = Data.SetBilancoFromList(nRequestListRvn, comp.ID, fyear);
-                var WCapitalViez = DashWCapitalViewMain.getList(fyear, comp.ID);
-                var WCapitalVie = Data.SetBilancoFromList(WCapitalViez, comp.ID, fyear);
-                var nLiqudity = DashLikiditeViewMain.getList(fyear, comp.ID);
-                var WLiqudity = Data.SetBilancoFromList(nLiqudity, comp.ID, fyear);
-                Data.InsertLiquidity(WLiqudity);
-                Data.InsertWCapital(WCapitalVie);
-                Data.InsertRvn(tlistRvn);
-                DashRasyo.GetDashRasyoAnaliz(fyear, comp.ID);
-                DashRasyo.GetDashLikiditeRiskTrend(fyear, comp.ID);
-                DashRasyo.GetDashOzetMali(fyear, comp.ID, Convert.ToInt32(filemonth));
-                MainDash.Get_DatabyErrorV1(fyear, comp.ID, Convert.ToInt32(filemonth));
+                List<DashBilancoView> nRequestList = dashGelirTablosuViewMainManager.getList(fyear, comp.Id);
+                var tlist = dataManager.SetBilancoFromList(nRequestList, comp.Id, fyear);
+                dataManager.RESET_DashBilancoView(fyear, comp.Id);
+                dataManager.InsertBilnco(tlist);
+                List<DashBilancoView> nRequestListRvn = dashGelirTablosuViewMainManager.getList(fyear, comp.Id);
+                dataManager.RESET_REVENUEView(fyear, comp.Id);
+                var tlistRvn = dataManager.SetBilancoFromList(nRequestListRvn, comp.Id, fyear);
+                var WCapitalViez = dashWCapitalViewMainManager.getList(fyear, comp.Id);
+                var WCapitalVie = dataManager.SetBilancoFromList(WCapitalViez, comp.Id, fyear);
+                var nLiqudity = dashLikiditeViewMainManager.getList(fyear, comp.Id);
+                var WLiqudity = dataManager.SetBilancoFromList(nLiqudity, comp.Id, fyear);
+                dataManager.InsertLiquidity(WLiqudity);
+                dataManager.InsertWCapital(WCapitalVie);
+                dataManager.InsertRvn(tlistRvn);
+                dashRasyoManager.GetDashRasyoAnaliz(fyear, comp.Id);
+                dashRasyoManager.GetDashLikiditeRiskTrend(fyear, comp.Id);
+                dashRasyoManager.GetDashOzetMali(fyear, comp.Id, Convert.ToInt32(filemonth));
+                mainDashManager.Get_DatabyErrorV1(fyear, comp.Id, Convert.ToInt32(filemonth));
 
 
             }
+ 
+            return GenericResult<MoodUploadResponse>.Success(new MoodUploadResponse() { ResultText = new JsonResult(retval) });
 
-            return Json(retval);
         }
         catch (Exception ex)
         {
-            ERRLOG lg = new ERRLOG();
-            lg.CompanyID = comp.ID;
-            lg.CsvID = 7777;
-            lg.ERLOG = ex.ToString(); lg.Save_AppLogs();
+            errlogManager.Save_AppLogs(new ERRLOG
+            {
+                CompanyID = comp.Id,
+                CsvID = 7777,
+                ERLOG = ex.ToString()
+            });
+          
             var chk = ex;
-            return Json("nok");
+            return GenericResult<MoodUploadResponse>.Success(new MoodUploadResponse() { ResultText = new JsonResult("nok") });
+
 
         }
     }

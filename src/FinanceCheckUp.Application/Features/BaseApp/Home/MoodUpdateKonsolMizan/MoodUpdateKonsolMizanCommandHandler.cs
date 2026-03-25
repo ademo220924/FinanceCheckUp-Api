@@ -1,33 +1,28 @@
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Home;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Home.MoodUpdateKonsolMizan;
 
-public class MoodUpdateKonsolMizanCommandHandler: IRequestHandler<MoodUpdateKonsolMizanCommand, GenericResult<MoodUpdateKonsolMizanResponse>>
+public class MoodUpdateKonsolMizanCommandHandler(IReportSetMainSqlOperationManager reportSetMainSqlOperationManager)
+    : IRequestHandler<MoodUpdateKonsolMizanCommand, GenericResult<MoodUpdateKonsolMizanResponse>>
 {
     public Task<GenericResult<MoodUpdateKonsolMizanResponse>> Handle(MoodUpdateKonsolMizanCommand request, CancellationToken cancellationToken)
     {
-        if (!ModelState.IsValid)
-        {
-
-            return Json("nok");
-        }
-
+        var pageIndex = request.MoodUpdateKonsolMizanRequest.PageIndex;
         try
         {
-            ReportSetMain.Set_ReportSetKonM(pageIndex.year, pageIndex.companyid);
-            // int csvId = MainDash.GetTblxml(pageIndex.year, pageIndex.companyid, pageIndex.month);
-
+            reportSetMainSqlOperationManager.Set_ReportSetKonM(pageIndex.year, pageIndex.companyid);
         }
         catch (Exception ex)
         {
-
-            return Json("nok_" + ex.ToString());
+            return Task.FromResult(GenericResult<MoodUpdateKonsolMizanResponse>.Success(
+                new MoodUpdateKonsolMizanResponse { ResultText = new JsonResult("nok_" + ex.ToString()) }));
         }
 
-
-
-        return Json("ok");
+        return Task.FromResult(GenericResult<MoodUpdateKonsolMizanResponse>.Success(
+            new MoodUpdateKonsolMizanResponse { ResultText = new JsonResult("ok") }));
     }
 }

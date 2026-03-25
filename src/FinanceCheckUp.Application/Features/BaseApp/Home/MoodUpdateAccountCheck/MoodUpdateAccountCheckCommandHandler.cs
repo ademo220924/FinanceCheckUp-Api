@@ -1,64 +1,60 @@
+using System.Data;
+using FinanceCheckUp.Application.Contexts.Concretes.Databases;
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Home;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Home.MoodUpdateAccountCheck;
 
-public class MoodUpdateAccountCheckCommandHandler: IRequestHandler<MoodUpdateAccountCheckCommand, GenericResult<MoodUpdateAccountCheckResponse>>
+public class MoodUpdateAccountCheckCommandHandler(
+    FinanceCheckUpDbContext dbContext,
+    IMainDashManager mainDashManager,
+    IDashOzetMaliManager dashOzetMaliManager)
+    : IRequestHandler<MoodUpdateAccountCheckCommand, GenericResult<MoodUpdateAccountCheckResponse>>
 {
     public Task<GenericResult<MoodUpdateAccountCheckResponse>> Handle(MoodUpdateAccountCheckCommand request, CancellationToken cancellationToken)
     {
-        if (!ModelState.IsValid)
-        {
-
-            return Json("nok");
-        }
-
+        var pageIndex = request.MoodUpdateAccountCheckRequest.PageIndex;
         try
         {
-            // ReportSetMain.Set_ReportSet(pageIndex.year, pageIndex.companyid);
-            int csvId = MainDash.GetTblxml(pageIndex.year, pageIndex.companyid, pageIndex.month);
+            int csvId = mainDashManager.GetTblxml(pageIndex.year, pageIndex.companyid, pageIndex.month);
 
-            String dbConnStr = BaseModel.ConnectionString;
-            SqlConnection cnn = new SqlConnection(dbConnStr);
-
+            string? dbConnStr = dbContext.Database.GetConnectionString();
+            using SqlConnection cnn = new SqlConnection(dbConnStr);
             try
             {
-
-
-                //  MainStrPro1zA
-
                 SqlCommand sqlCmd1 = new SqlCommand("setFirst", cnn);
                 sqlCmd1.CommandType = CommandType.StoredProcedure;
                 sqlCmd1.Parameters.AddWithValue("@csvvID", csvId);
                 sqlCmd1.CommandTimeout = 0;
-                //sqlCmd1.Parameters.Add("@NewId", SqlDbType.Int).Direction = ParameterDirection.Output;
                 cnn.Open();
-                object obb = sqlCmd1.ExecuteScalar();
-                DashOzetMali.SetErrored(pageIndex.year, pageIndex.companyid, pageIndex.month);
-                MainDash.Get_DatabyErrorV1(pageIndex.year, pageIndex.companyid, pageIndex.month);
+                sqlCmd1.ExecuteScalar();
+                dashOzetMaliManager.SetErrored(pageIndex.year, pageIndex.companyid, pageIndex.month);
+                mainDashManager.Get_DatabyErrorV1(pageIndex.year, pageIndex.companyid, pageIndex.month);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
-                var chk = ex;
+                // preserved: inner errors were swallowed in original handler
             }
             finally
             {
-                cnn.Close();
+                if (cnn.State == ConnectionState.Open)
+                {
+                    cnn.Close();
+                }
             }
-
-
         }
         catch (Exception ex)
         {
-
-            return Json("nok_" + ex.ToString());
+            return Task.FromResult(GenericResult<MoodUpdateAccountCheckResponse>.Success(
+                new MoodUpdateAccountCheckResponse { ResultText = new JsonResult("nok_" + ex.ToString()) }));
         }
 
-
-
-        return Json("ok");
-
+        return Task.FromResult(GenericResult<MoodUpdateAccountCheckResponse>.Success(
+            new MoodUpdateAccountCheckResponse { ResultText = new JsonResult("ok") }));
     }
 }

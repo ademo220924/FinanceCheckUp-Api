@@ -1,90 +1,109 @@
+using System.Data;
+using FinanceCheckUp.Application.Common.Utilities;
+using FinanceCheckUp.Application.ExtensionHelpers;
+using fincheckup.Helper;
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
+using FinanceCheckUp.Application.Managers.StaticManagers;
+using FinanceCheckUp.Application.Models;
+using FinanceCheckUp.Application.Models.Common;
 using FinanceCheckUp.Application.Models.Responses.Home;
+using FinanceCheckUp.Domain.Entities;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Home.MoodUploadNwUpdateMizan;
 
-public class MoodUploadNwUpdateMizanCommandHandler: IRequestHandler<MoodUploadNwUpdateMizanCommand, GenericResult<MoodUploadNwUpdateMizanResponse>>
+public class MoodUploadNwUpdateMizanCommandHandler(
+    ITBLXmlManager tblXmlManager,
+    IDashBilancoSetMizanManager dashBilancoSetMizanManager,
+    IDataManager dataManager,
+    IDashBilancoMizanManager dashBilancoMizanManager,
+    IDashGelirTablosuMizanManager dashGelirTablosuMizanManager,
+    IDashLikiditeViewMainMizanManager dashLikiditeViewMainMizanManager,
+    IDashWCapitalViewMainMizanManager dashWCapitalViewMainMizanManager,
+    IDashRasyoMizanManager dashRasyoMizanManager,
+    IERRLOGManager errlogManager)
+    : IRequestHandler<MoodUploadNwUpdateMizanCommand, GenericResult<MoodUploadNwUpdateMizanResponse>>
 {
-    public Task<GenericResult<MoodUploadNwUpdateMizanResponse>> Handle(MoodUploadNwUpdateMizanCommand request, CancellationToken cancellationToken)
+    public async Task<GenericResult<MoodUploadNwUpdateMizanResponse>> Handle(MoodUploadNwUpdateMizanCommand request, CancellationToken cancellationToken)
     {
-         string filemonth = pageIndex.Caption.Split('_')[0];
+        var pageIndex = request.MoodUploadNwUpdateMizanRequest.PageIndex;
+        string filemonth = pageIndex.Caption.Split('_')[0];
         string fileyear = pageIndex.Caption.Split('_')[1];
-
-
-
         var file = pageIndex.file;
         string filePath = string.Empty;
-        string uploads = System.IO.Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+        string uploads = Path.Combine(WebHelper.path, "wwwroot\\FileContent\\");
         int monID = Convert.ToInt32(filemonth);
-        long CompID = Convert.ToInt64(pageIndex.ide);
+        long compId = Convert.ToInt64(pageIndex.ide);
         int nYear = Convert.ToInt32(fileyear);
+
         if (file != null && file.Count > 0)
         {
             foreach (var item in file)
             {
-                filePath = System.IO.Path.Combine(uploads, Guid.NewGuid().ToString() + System.IO.Path.GetExtension(item.FileName));
-                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                filePath = Path.Combine(uploads, Guid.NewGuid().ToString() + Path.GetExtension(item.FileName));
+                await using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    await item.CopyToAsync(fileStream).ConfigureAwait(false);
+                    await item.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
                 }
-
             }
-
         }
+
         try
         {
-            TBLXml ncs = new TBLXml();
-            ncs.CompanyID = CompID;
-            ncs.CreatedDate = DateTime.Now;
-            ncs.DocumentDate = new DateTime(nYear, monID, 21); ;
-            ncs.CsvName = filePath;
-            ncs.Year = nYear;
-            ncs.XmlDocName = file[0].FileName;
-            ncs.Save_TBLXml();
+            var ncs = new Tblxml
+            {
+                CompanyId = compId,
+                CreatedDate = DateTime.Now,
+                DocumentDate = new DateTime(nYear, monID, 21),
+                CsvName = filePath,
+                Year = nYear,
+                XmlDocName = file[0].FileName
+            };
+            tblXmlManager.Save_TBLXml(ncs);
 
-            TBLXml.RESETALL_byCompanyID(nYear, CompID, monID, ncs.ID);
+            tblXmlManager.RESETALL_byCompanyID(nYear, compId, monID, ncs.Id);
 
             DataTable dt = ExcelHelper.ExcelToDataTable(filePath);
             IEnumerable<XmlExcel> nlist = ExcelHelper.CheckColumn(dt);
-            nlist = nlist.Select(c => { c.AccountMainID = c.AccountMainID.Replace(",", ".").Replace("-", ".").Replace("_", "."); return c; }).ToList();
+            nlist = nlist.Select(c =>
+            {
+                c.AccountMainID = c.AccountMainID.Replace(",", ".").Replace("-", ".").Replace("_", ".");
+                return c;
+            }).ToList();
 
-            List<string> nnlist = DashBilancoSetMizan.GetAccountList();
-            //   var tlista = nlist.Where(x => (x.CreditAmountFloat == x.AmountBakiyeFloat) && x.CreditAmountFloat == 0).ToList();
-
+            List<string> nnlist = dashBilancoSetMizanManager.GetAccountList();
             nlist = nlist.Where(x => nnlist.Contains(x.AccountMainIDMain)).OrderBy(x => x.AccountMainID).ToList();
 
-            //nlist = nlist.Except(tlista);
             List<XmlExcel> cchklist = nlist.Where(x => x.TextCount == 3).ToList();
             cchklist = cchklist.GroupBy(i => i.AccountMainID)
-                               .Select(g => g.First())
-                               .ToList();
+                .Select(g => g.First())
+                .ToList();
 
             List<XmlExcel> cchklist1 = nlist.Where(x => x.TextCount >= 6).ToList();
 
-            var tlist = Data.SetBilancoFromListMizanExcelNew(cchklist, CompID, nYear);
+            var tlist = dataManager.SetBilancoFromListMizanExcelNew(cchklist, compId, nYear);
             foreach (var item in cchklist1)
             {
                 try
                 {
-                    if (item.AmountBakiye != (ConvertDec(item.DebitAmount) - Math.Abs(ConvertDec(item.CreditAmount))).ToString("n2"))
+                    if (item.AmountBakiye != (DigitExtensions.ConvertDec(item.DebitAmount) - Math.Abs(DigitExtensions.ConvertDec(item.CreditAmount))).ToString("n2"))
                     {
-                        item.AmountBakiye = (ConvertDec(item.DebitAmount) - Math.Abs(ConvertDec(item.CreditAmount))).ToString("n2");
+                        item.AmountBakiye = (DigitExtensions.ConvertDec(item.DebitAmount) - Math.Abs(DigitExtensions.ConvertDec(item.CreditAmount))).ToString("n2");
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-
-                    var chk = ex;
+                    // preserved
                 }
-
             }
 
-            DashBilancoSetMizan.Set_ReportSetResetMizanKayit(nYear, CompID);
+            dashBilancoSetMizanManager.Set_ReportSetResetMizanKayit(nYear, compId);
             if (cchklist1.Count > 0)
             {
-                var tlistsub = Data.SetBilancoFromListMizanExcelSub(cchklist1, CompID, nYear);
-                Data.InsertDataMizanSub(tlistsub);
+                var tlistsub = dataManager.SetBilancoFromListMizanExcelSub(cchklist1, compId, nYear);
+                dataManager.InsertDataMizanSub(tlistsub);
             }
 
             if (tlist.Count > 0)
@@ -92,50 +111,48 @@ public class MoodUploadNwUpdateMizanCommandHandler: IRequestHandler<MoodUploadNw
                 foreach (XmlExcel us in tlist)
                 {
                     us.MainMonth = monID;
-                    us.CsvId = ncs.ID;
+                    us.CsvId = ncs.Id;
                 }
-                Data.InsertDataMizanNew(tlist);
+
+                dataManager.InsertDataMizanNew(tlist);
             }
             else
             {
-                Data.SET_MIZANHEADER(nYear, CompID);
+                dataManager.SET_MIZANHEADER(nYear, compId);
             }
-            return Json("nok");
-#pragma warning disable CS0162 // Unreachable code detected
-            List<DashBilancoViewMizan> nRequestList1 = DashBilancoMizan.getList(nYear, CompID);
-#pragma warning restore CS0162 // Unreachable code detected
-            var tlist1 = Data.SetBilancoFromListMizan(nRequestList1, CompID, nYear);
-            Data.RESET_DashBilancoViewMizan(nYear, CompID);
-            Data.InsertBilncoMzn(tlist1);
-            List<DashBilancoViewMizan> nRequestListRvn1 = DashGelirTablosuMizan.getList(nYear, CompID);
-            var tlistRvn1 = Data.SetBilancoFromListMizan(nRequestListRvn1, CompID, nYear);
-            Data.RESET_REVENUEViewMzn(nYear, CompID);
-            Data.InsertRvnMzn(tlistRvn1);
-            var WLikiditeViez = DashLikiditeViewMainMizan.getList(nYear, CompID);
-            var WCapitalViez = DashWCapitalViewMainMizan.getList(nYear, CompID);
-            var WCapitalVie = Data.SetBilancoFromListMizan(WCapitalViez, CompID, nYear);
-            var WLikiditeVie = Data.SetBilancoFromListMizan(WLikiditeViez, CompID, nYear);
-            Data.InsertWCapitalMzn(WCapitalVie);
-            Data.InsertLiquidityMzn(WLikiditeVie);
-            DashBilancoSetMizan.Set_ReportSetMainSMM(nYear, CompID);
-            DashRasyoMizan.GetDashRasyoAnaliz(nYear, CompID);
-            DashRasyoMizan.GetDashLikiditeRiskTrend(nYear, CompID);
-            DashRasyoMizan.GetDashOzetMali(nYear, CompID);
 
+            List<DashBilancoViewMizan> nRequestList1 = dashBilancoMizanManager.getList(nYear, compId);
+            var tlist1 = dataManager.SetBilancoFromListMizan(nRequestList1, compId, nYear);
+            dataManager.RESET_DashBilancoViewMizan(nYear, compId);
+            dataManager.InsertBilncoMzn(tlist1);
+            List<DashBilancoViewMizan> nRequestListRvn1 = dashGelirTablosuMizanManager.getList(nYear, compId);
+            var tlistRvn1 = dataManager.SetBilancoFromListMizan(nRequestListRvn1, compId, nYear);
+            dataManager.RESET_REVENUEViewMzn(nYear, compId);
+            dataManager.InsertRvnMzn(tlistRvn1);
+            var wLikiditeViez = dashLikiditeViewMainMizanManager.getList(nYear, compId);
+            var wCapitalViez = dashWCapitalViewMainMizanManager.getList(nYear, compId);
+            var wCapitalVie = dataManager.SetBilancoFromListMizan(wCapitalViez, compId, nYear);
+            var wLikiditeVie = dataManager.SetBilancoFromListMizan(wLikiditeViez, compId, nYear);
+            dataManager.InsertWCapitalMzn(wCapitalVie);
+            dataManager.InsertLiquidityMzn(wLikiditeVie);
+            dashBilancoSetMizanManager.Set_ReportSetMainSMM(nYear, compId);
+            dashRasyoMizanManager.GetDashRasyoAnaliz(nYear, compId);
+            dashRasyoMizanManager.GetDashLikiditeRiskTrend(nYear, compId);
+            dashRasyoMizanManager.GetDashOzetMali(nYear, compId);
+
+            return GenericResult<MoodUploadNwUpdateMizanResponse>.Success(
+                new MoodUploadNwUpdateMizanResponse { ResultText = new JsonResult("ok") });
         }
         catch (Exception ex)
         {
-            ERRLOG lg = new ERRLOG();
-            lg.CompanyID = CompID;
-            lg.CsvID = nYear;
-            lg.ERLOG = ex.ToString(); lg.Save_AppLogs();
-            return Json(ex.ToString());
+            errlogManager.Save_AppLogs(new ERRLOG
+            {
+                CompanyID = compId,
+                CsvID = nYear,
+                ERLOG = ex.ToString()
+            });
+            return GenericResult<MoodUploadNwUpdateMizanResponse>.Success(
+                new MoodUploadNwUpdateMizanResponse { ResultText = new JsonResult(ex.ToString()) });
         }
-
-#pragma warning disable CS0162 // Unreachable code detected
-        return Json("ok");
-#pragma warning restore CS0162 // Unreachable code detected
-
-
     }
 }

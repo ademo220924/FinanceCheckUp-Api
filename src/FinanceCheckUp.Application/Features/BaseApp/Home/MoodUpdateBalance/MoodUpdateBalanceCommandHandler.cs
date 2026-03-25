@@ -1,33 +1,28 @@
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Home;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Home.MoodUpdateBalance;
 
-public class MoodUpdateBalanceCommandHandler: IRequestHandler<MoodUpdateBalanceCommand, GenericResult<MoodUpdateBalanceResponse>>
+public class MoodUpdateBalanceCommandHandler(IReportSetMainSqlOperationManager reportSetMainSqlOperationManager)
+    : IRequestHandler<MoodUpdateBalanceCommand, GenericResult<MoodUpdateBalanceResponse>>
 {
     public Task<GenericResult<MoodUpdateBalanceResponse>> Handle(MoodUpdateBalanceCommand request, CancellationToken cancellationToken)
     {
-        if (!ModelState.IsValid)
-        {
-
-            return Json("nok");
-        }
-
+        var pageIndex = request.MoodUpdateBalanceRequest.PageIndex;
         try
         {
-            ReportSetMain.Set_ReportSet(pageIndex.year, pageIndex.companyid);
-            // int csvId = MainDash.GetTblxml(pageIndex.year, pageIndex.companyid, pageIndex.month);
-
+            reportSetMainSqlOperationManager.Set_ReportSet(pageIndex.year, pageIndex.companyid);
         }
         catch (Exception ex)
         {
-
-            return Json("nok_" + ex.ToString());
+            return Task.FromResult(GenericResult<MoodUpdateBalanceResponse>.Success(
+                new MoodUpdateBalanceResponse { ResultText = new JsonResult("nok_" + ex.ToString()) }));
         }
 
-
-
-        return Json("ok");
+        return Task.FromResult(GenericResult<MoodUpdateBalanceResponse>.Success(
+            new MoodUpdateBalanceResponse { ResultText = new JsonResult("ok") }));
     }
 }

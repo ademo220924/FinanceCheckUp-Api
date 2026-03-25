@@ -1,32 +1,29 @@
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Home;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Home.MoodUpdateReport;
 
-public class MoodUpdateReportCommandHandler: IRequestHandler<MoodUpdateReportCommand, GenericResult<MoodUpdateReportResponse>>
+public class MoodUpdateReportCommandHandler(IMainDashManager mainDashManager, IErrorCheckMainManager errorCheckMainManager)
+    : IRequestHandler<MoodUpdateReportCommand, GenericResult<MoodUpdateReportResponse>>
 {
     public Task<GenericResult<MoodUpdateReportResponse>> Handle(MoodUpdateReportCommand request, CancellationToken cancellationToken)
     {
-        if (!ModelState.IsValid)
-        {
-
-            return Json("nok");
-        }
-
+        var pageIndex = request.MoodUpdateReportRequest.PageIndex;
         try
         {
-            int csvId = MainDash.GetTblxml(pageIndex.year, pageIndex.companyid, pageIndex.month);
-            ErrorCheckMain.Set_ReportSet(csvId);
+            int csvId = mainDashManager.GetTblxml(pageIndex.year, pageIndex.companyid, pageIndex.month);
+            errorCheckMainManager.Set_ReportSet(csvId);
         }
         catch (Exception ex)
         {
-
-            return Json("nok_" + ex.ToString());
+            return Task.FromResult(GenericResult<MoodUpdateReportResponse>.Success(
+                new MoodUpdateReportResponse { ResultText = new JsonResult("nok_" + ex.ToString()) }));
         }
 
-
-
-        return Json("ok");
+        return Task.FromResult(GenericResult<MoodUpdateReportResponse>.Success(
+            new MoodUpdateReportResponse { ResultText = new JsonResult("ok") }));
     }
 }

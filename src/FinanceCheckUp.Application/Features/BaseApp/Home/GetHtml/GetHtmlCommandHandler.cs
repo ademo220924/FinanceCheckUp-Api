@@ -1,18 +1,23 @@
+using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Home;
+using FinanceCheckUp.Domain.Entities;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Home.GetHtml;
 
-public class GetHtmlCommandHandler: IRequestHandler<GetHtmlCommand, GenericResult<GetHtmlResponse>>
+public class GetHtmlCommandHandler(IBultenManager bultenManager): IRequestHandler<GetHtmlCommand, GenericResult<GetHtmlResponse>>
 {
     public Task<GenericResult<GetHtmlResponse>> Handle(GetHtmlCommand request, CancellationToken cancellationToken)
     {
-        Bulten blt = new Bulten();//.Get_bulten(Convert.ToInt32(pageIndex));
-        if (blt == null)
+
+        var blt = bultenManager.Get_bulten(request.GetHtmlRequest.PageIndex);
+        if (blt is not { Id: not 0 })
         {
-            blt = new Bulten();//.Get_bulten(1);
+            blt = new Bulten();
         }
-        return Json(blt);
+        return Task.FromResult(GenericResult<GetHtmlResponse>.Success(new GetHtmlResponse() { ResultText = new JsonResult("ok"), Bulten = blt}));
+
     }
 }
