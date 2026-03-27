@@ -4,13 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceCheckUp.Application.Contexts.Concretes.Databases;
 
-public class FinanceCheckUpDbContext : DbContext
+public class FinanceCheckUpDbContext(DbContextOptions<FinanceCheckUpDbContext> options) : DbContext(options)
 {
-    public FinanceCheckUpDbContext(DbContextOptions<FinanceCheckUpDbContext> options) : base(options)
-    {
-
-    }
-
     public virtual DbSet<Appointment> Appointments { get; set; }
 
     public virtual DbSet<Bulten> Bultens { get; set; }
@@ -475,8 +470,11 @@ public class FinanceCheckUpDbContext : DbContext
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=213.238.179.61;database=EDEFTERDB;user id=LgUserPrT7;password=Nef2021*;Connection Timeout=500; Pooling=true; Max Pool Size=200;TrustServerCertificate=True");
+    {
+        
+        optionsBuilder.UseSqlServer(
+            "server=178.251.238.131;database=EDEFTERDB;user id=sa;password=QaWsEdRfTg321*;Connection Timeout=500; Pooling=true; Max Pool Size=200;TrustServerCertificate=True");
+    }
 
     //protected override void OnModelCreating(ModelBuilder modelBuilder)
     //{

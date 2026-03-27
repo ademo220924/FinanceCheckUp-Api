@@ -19,10 +19,13 @@ public class MizanUpBalanceNewOnGetSalerDateQueryHandler(
         request.InitialModel.CurrentUser = hhvnUsersManager.GetRow_User(request.InitialModel.UserID);
         request.InitialModel.curcomID = companyManager.Getby_User(request.InitialModel.UserID).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
         var currentUploadM = setMainSqlOperationManager.Get_StatbyCompany(request.InitialModel.curcomID);
+        
+        var loadedData = DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options);
+
         return Task.FromResult(GenericResult<MizanUpBalanceNewOnGetSalerDateResponse>.Success(new MizanUpBalanceNewOnGetSalerDateResponse
         {
             InitialModel = request.InitialModel,
-            Response= new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options))
+            Response= loadedData
         })); 
     }
 }

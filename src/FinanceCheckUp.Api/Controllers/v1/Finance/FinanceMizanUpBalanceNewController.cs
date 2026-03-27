@@ -42,10 +42,9 @@ public class FinanceMizanUpBalanceNewController(IMediator mediator) : Controller
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetSalerDateAsync([FromBody] MizanUpBalanceNewOnGetSalerDateRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSalerDateAsync([FromBody] MizanUpBalanceNewOnGetSalerDateQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpBalanceNewOnGetSalerDateQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+       var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 
