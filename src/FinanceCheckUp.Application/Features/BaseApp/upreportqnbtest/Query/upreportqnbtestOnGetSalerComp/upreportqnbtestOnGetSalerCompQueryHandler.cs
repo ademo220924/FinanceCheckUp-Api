@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.upreportqnbtest;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.upreportqnbtest.Query.upreportqnbtestOnGetSalerComp;
 public class UpreportqnbtestOnGetSalerCompQueryHandler(ICompanyManager companyManager) : IRequestHandler<upreportqnbtestOnGetSalerCompQuery, GenericResult<upreportqnbtestOnGetSalerCompResponse>>
 {
@@ -13,6 +11,6 @@ public class UpreportqnbtestOnGetSalerCompQueryHandler(ICompanyManager companyMa
     {
         var UserID = Convert.ToInt32(request.UserId);
         var mreqListCompany = companyManager.Getby_User(UserID);
-        return GenericResult<upreportqnbtestOnGetSalerCompResponse>.Success(new upreportqnbtestOnGetSalerCompResponse { Result = new JsonResult(DataSourceLoader.Load(mreqListCompany, request.Request.Options)) });
+                return GenericResult<upreportqnbtestOnGetSalerCompResponse>.Success(new upreportqnbtestOnGetSalerCompResponse { Result = DataSourceLoader.Load(mreqListCompany, request.Request.Options) });
     }
 }

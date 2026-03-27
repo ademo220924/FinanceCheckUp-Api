@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UpBalance;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpBalance.Query.UpBalanceOnGetSalerDate
 {
     public class MizanUpBalanceOnGetSalerDateQueryHandler(
@@ -22,9 +20,9 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpBalance.Qu
 
             var currentUploadM = reportSetMainSqlOperationManager.Get_StatbyCompanyExcel( request.InitialModel.curcomID);
 
-            return Task.FromResult(GenericResult<MizanUpBalanceOnGetSalerDateResponse>.Success(new MizanUpBalanceOnGetSalerDateResponse
+                        return Task.FromResult(GenericResult<MizanUpBalanceOnGetSalerDateResponse>.Success(new MizanUpBalanceOnGetSalerDateResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(currentUploadM.OrderByDescending(x => x.MainYear).ToList(), request.Request.options)),
+                Response = DataSourceLoader.Load(currentUploadM.OrderByDescending(x => x.MainYear).ToList(), request.Request.options),
                 InitialModel = request.InitialModel
             }));
         }

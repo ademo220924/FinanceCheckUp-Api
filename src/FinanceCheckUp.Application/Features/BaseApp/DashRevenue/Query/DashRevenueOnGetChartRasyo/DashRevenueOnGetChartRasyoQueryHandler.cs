@@ -5,9 +5,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.DashRevenue;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-
 namespace FinanceCheckUp.Application.Features.BaseApp.DashRevenue.Query.DashRevenueOnGetChartRasyo;
 public class DashRevenueOnGetChartRasyoQueryHandler(
     ICompanyManager companyManager,
@@ -30,6 +27,6 @@ public class DashRevenueOnGetChartRasyoQueryHandler(
 
 
 
-        return GenericResult<DashRevenueOnGetChartRasyoResponse>.Success(new DashRevenueOnGetChartRasyoResponse { Response = new JsonResult(DataSourceLoader.Load(request.Request.InitialModel.ncart.nresult, request.Request.Options)) });
+                return GenericResult<DashRevenueOnGetChartRasyoResponse>.Success(new DashRevenueOnGetChartRasyoResponse { Response = DataSourceLoader.Load(request.Request.InitialModel.ncart.nresult, request.Request.Options) });
     }
 }

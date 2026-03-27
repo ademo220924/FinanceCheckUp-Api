@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.DashRasyo;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.DashRasyo
 {
     public class FinanceDashRasyoOnGetChartLikidResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public FinanceDashRasyoRequestInitialModel InitialModel { get; set; }
     }
 }

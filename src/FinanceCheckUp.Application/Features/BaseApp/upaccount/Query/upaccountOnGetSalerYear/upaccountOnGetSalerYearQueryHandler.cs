@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.upaccount;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.upaccount.Query.upaccountOnGetSalerYear;
 public class upaccountOnGetSalerYearQueryHandler : IRequestHandler<upaccountOnGetSalerYearQuery, GenericResult<upaccountOnGetSalerYearResponse>>
 {
@@ -13,6 +11,6 @@ public class upaccountOnGetSalerYearQueryHandler : IRequestHandler<upaccountOnGe
     {
         var UserID = Convert.ToInt32(request.UserId);
         var YearSetm = YearResult.getValue().OrderByDescending(x => x.MYear);
-        return GenericResult<upaccountOnGetSalerYearResponse>.Success(new upaccountOnGetSalerYearResponse { Result = new JsonResult(DataSourceLoader.Load(YearSetm, request.Request.Options)) });
+                return GenericResult<upaccountOnGetSalerYearResponse>.Success(new upaccountOnGetSalerYearResponse { Result = DataSourceLoader.Load(YearSetm, request.Request.Options) });
     }
 }

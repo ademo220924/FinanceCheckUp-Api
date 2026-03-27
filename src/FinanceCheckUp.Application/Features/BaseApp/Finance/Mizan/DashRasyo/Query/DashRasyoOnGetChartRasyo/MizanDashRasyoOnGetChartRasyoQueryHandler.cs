@@ -5,8 +5,6 @@ using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.DashRasyo;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.DashRasyo;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.DashRasyo.Query.DashRasyoOnGetChartRasyo;
 public class MizanDashRasyoOnGetChartRasyoQueryHandler(IRasyoAnalizMainMizanManager rasyoAnalizMainMizanManager,IHhvnUsersManager hhvnUsersManager,  ICompanyManager companyManager) : IRequestHandler<MizanDashRasyoOnGetChartRasyoQuery, GenericResult<MizanDashRasyoOnGetChartRasyoResponse>>
 {
@@ -24,10 +22,10 @@ public class MizanDashRasyoOnGetChartRasyoQueryHandler(IRasyoAnalizMainMizanMana
         responseModel.RasyoAnalizView = new DashYearlyResultMizan();
         responseModel.RasyoAnaliz = rasyoAnalizMainMizanManager.RasyoAnalizTOTALFinal(responseModel.CurrentUser.SelectedYear, responseModel.CompID);
 
-        return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartRasyoResponse>.Success(
+                return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartRasyoResponse>.Success(
             new MizanDashRasyoOnGetChartRasyoResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(responseModel.RasyoAnaliz.Where(x => x.TypeID == 1), request.Request.options))
+                Response = DataSourceLoader.Load(responseModel.RasyoAnaliz.Where(x => x.TypeID == 1), request.Request.options)
             }));
 
    

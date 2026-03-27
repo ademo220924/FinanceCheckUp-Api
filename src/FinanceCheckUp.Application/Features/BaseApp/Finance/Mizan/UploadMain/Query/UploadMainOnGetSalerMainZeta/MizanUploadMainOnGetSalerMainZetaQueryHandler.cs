@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models.Common;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadMain;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Query.UploadMainOnGetSalerMainZeta
 {
     public class MizanUploadMainOnGetSalerMainZetaQueryHandler(
@@ -22,10 +20,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Q
             var mrequestDataViewer = new DataViewerMain();
             if (request.Request.monthid < 1)
             { 
-                return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainZetaResponse>.Success(new MizanUploadMainOnGetSalerMainZetaResponse
+                                return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainZetaResponse>.Success(new MizanUploadMainOnGetSalerMainZetaResponse
                 {
                     InitialModel = request.InitialModel,
-                    Response= new JsonResult(DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options))
+                    Response= DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options)
                 }));
             }
 
@@ -37,10 +35,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Q
                 request.InitialModel.curcomID, 
                 request.Request.monthid));
 
-            return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainZetaResponse>.Success(new MizanUploadMainOnGetSalerMainZetaResponse
+                        return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainZetaResponse>.Success(new MizanUploadMainOnGetSalerMainZetaResponse
             {
                 InitialModel = request.InitialModel,
-                Response= new JsonResult(DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options))
+                Response= DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options)
             }));
              
         }

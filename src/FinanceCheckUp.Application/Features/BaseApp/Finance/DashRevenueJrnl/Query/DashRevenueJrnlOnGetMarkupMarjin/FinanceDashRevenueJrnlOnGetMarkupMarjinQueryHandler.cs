@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.DashRevenueJrnl;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.DashRevenueJrnl.Query.DashRevenueJrnlOnGetMarkupMarjin;
 public class FinanceDashRevenueJrnlOnGetMarkupMarjinQueryHandler(IDashGelirTablosuManager dashGelirTablosuManager) : IRequestHandler<FinanceDashRevenueJrnlOnGetMarkupMarjinQuery, GenericResult<FinanceDashRevenueJrnlOnGetMarkupMarjinResponse>>
 {
@@ -16,16 +14,15 @@ public class FinanceDashRevenueJrnlOnGetMarkupMarjinQueryHandler(IDashGelirTablo
         {
             return Task.FromResult(GenericResult<FinanceDashRevenueJrnlOnGetMarkupMarjinResponse>.Success(new FinanceDashRevenueJrnlOnGetMarkupMarjinResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(chklist, request.Request.options))
+                Response = DataSourceLoader.Load(chklist, request.Request.options)
             }));
 
         }
 
         request.InitialModel.nRequestList = dashGelirTablosuManager.Get_MAINRevenueMznAktMultiJRNL(request.InitialModel.CompID);
-
         return Task.FromResult(GenericResult<FinanceDashRevenueJrnlOnGetMarkupMarjinResponse>.Success(new FinanceDashRevenueJrnlOnGetMarkupMarjinResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.nRequestList.Where(x => x.IsHidden == 0), request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.nRequestList.Where(x => x.IsHidden == 0), request.Request.options)
         }));
 
     }

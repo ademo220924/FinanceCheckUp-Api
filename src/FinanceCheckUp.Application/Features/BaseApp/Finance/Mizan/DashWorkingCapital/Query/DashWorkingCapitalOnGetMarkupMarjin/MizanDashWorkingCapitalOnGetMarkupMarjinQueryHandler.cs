@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.DashWorkingCapital;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.DashWorkingCapital.Query.DashWorkingCapitalOnGetMarkupMarjin;
 public class MizanDashWorkingCapitalOnGetMarkupMarjinQueryHandler(IDashWCapitalMizanManager dashWCapitalMizanManager) : IRequestHandler<MizanDashWorkingCapitalOnGetMarkupMarjinQuery, GenericResult<MizanDashWorkingCapitalOnGetMarkupMarjinResponse>>
 {
@@ -13,10 +11,10 @@ public class MizanDashWorkingCapitalOnGetMarkupMarjinQueryHandler(IDashWCapitalM
         request.InitialModel.nRequestList = dashWCapitalMizanManager.Get_getDataWcapFINALMain(request.Request.compid);
          
         
-        return Task.FromResult(GenericResult<MizanDashWorkingCapitalOnGetMarkupMarjinResponse>.Success(
+                return Task.FromResult(GenericResult<MizanDashWorkingCapitalOnGetMarkupMarjinResponse>.Success(
             new MizanDashWorkingCapitalOnGetMarkupMarjinResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.nRequestList, request.Request.options)),
+                Response = DataSourceLoader.Load(request.InitialModel.nRequestList, request.Request.options),
                 InitialModel = request.InitialModel
             }));
     }

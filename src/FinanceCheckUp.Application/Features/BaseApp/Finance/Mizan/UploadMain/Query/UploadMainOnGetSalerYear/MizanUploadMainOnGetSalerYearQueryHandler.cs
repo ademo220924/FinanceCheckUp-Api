@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadMain;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Query.UploadMainOnGetSalerYear
 {
     public class MizanUploadMainOnGetSalerYearQueryHandler
@@ -15,10 +13,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Q
         {
             var yearSetMonth = YearResult.getValue().OrderByDescending(x => x.MYear);
             
-            return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerYearResponse>.Success(
+                        return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerYearResponse>.Success(
                 new MizanUploadMainOnGetSalerYearResponse
                 {
-                    Response = new JsonResult(DataSourceLoader.Load(yearSetMonth, request.Request.options))
+                    Response = DataSourceLoader.Load(yearSetMonth, request.Request.options)
                 }));
         }
     }

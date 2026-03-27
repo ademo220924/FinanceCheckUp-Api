@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.ReportMainTest;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.ReportMainTest
 {
     public class FinanceReportMainTestOnGetSalerDateResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public FinanceReportMainTestRequestInitialModel InitialModel { get; set; }
     }
 }

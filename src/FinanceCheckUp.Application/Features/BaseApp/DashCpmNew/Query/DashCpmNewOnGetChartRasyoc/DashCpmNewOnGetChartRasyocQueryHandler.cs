@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.DashCpmNew;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.DashCpmNew.Query.DashCpmNewOnGetChartRasyoc;
 public class DashCpmNewOnGetChartRasyocQueryHandler(
      IHhvnUsersManager hhvnUsersManager,
@@ -24,6 +22,6 @@ public class DashCpmNewOnGetChartRasyocQueryHandler(
         request.Request.InitialModel.RasyoAnalizCRM = rasyoAnalizMainManager.CRMAnalizTOTAL101(request.Request.InitialModel.CurrentUser.SelectedYear, request.Request.InitialModel.CompID);
         request.Request.InitialModel.RasyoAnalizViewCrm.SetResult(request.Request.InitialModel.RasyoAnalizCRM, request.Request.InitialModel.CurrentUser.SelectedYear);
 
-        return GenericResult<DashCpmNewOnGetChartRasyocResponse>.Success(new DashCpmNewOnGetChartRasyocResponse { Response = new JsonResult(DataSourceLoader.Load(request.Request.InitialModel.RasyoAnalizViewCrm.nresult.OrderByDescending(z => z.Value), request.Request.Options)) });
+                return GenericResult<DashCpmNewOnGetChartRasyocResponse>.Success(new DashCpmNewOnGetChartRasyocResponse { Response = DataSourceLoader.Load(request.Request.InitialModel.RasyoAnalizViewCrm.nresult.OrderByDescending(z => z.Value), request.Request.Options) });
     }
 }

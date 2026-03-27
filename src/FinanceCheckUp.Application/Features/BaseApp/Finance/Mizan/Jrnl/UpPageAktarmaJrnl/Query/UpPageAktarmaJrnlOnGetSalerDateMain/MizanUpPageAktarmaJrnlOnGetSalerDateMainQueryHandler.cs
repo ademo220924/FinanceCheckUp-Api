@@ -7,8 +7,6 @@ using MediatR;
 using System.Security.Claims;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Jrnl.UpPageAktarmaJrnl.Query.UpPageAktarmaJrnlOnGetSalerDateMain;
 public class MizanUpPageAktarmaJrnlOnGetSalerDateMainQueryHandler(ITblxmJournalFileManager tblxmJournalFileManager,IHhvnUsersManager hhvnUsersManager, ICompanyManager companiesManager, IUserTypeManager userTypeManager, ICompanyManager companyManager, ITBLXmlManager tBLXmlManager) : IRequestHandler<MizanUpPageAktarmaJrnlOnGetSalerDateMainQuery, GenericResult<MizanUpPageAktarmaJrnlOnGetSalerDateMainResponse>>
 {
@@ -32,11 +30,11 @@ public class MizanUpPageAktarmaJrnlOnGetSalerDateMainQueryHandler(ITblxmJournalF
         DataSourceLoadOptions options = new DataSourceLoadOptions();
  
         
-        return Task.FromResult(GenericResult<MizanUpPageAktarmaJrnlOnGetSalerDateMainResponse>.Success(
+                return Task.FromResult(GenericResult<MizanUpPageAktarmaJrnlOnGetSalerDateMainResponse>.Success(
             new MizanUpPageAktarmaJrnlOnGetSalerDateMainResponse
             {
                 InitialModel = request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(currentUploadM1, options))
+                Response = DataSourceLoader.Load(currentUploadM1, options)
             }));
     }
 }

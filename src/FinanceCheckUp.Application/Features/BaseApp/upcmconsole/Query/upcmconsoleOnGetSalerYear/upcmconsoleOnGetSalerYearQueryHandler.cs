@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.upcmconsole;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.upcmconsole.Query.upcmconsoleOnGetSalerYear;
 public class upcmconsoleOnGetSalerYearQueryHandler : IRequestHandler<upcmconsoleOnGetSalerYearQuery, GenericResult<upcmconsoleOnGetSalerYearResponse>>
 {
@@ -13,6 +11,6 @@ public class upcmconsoleOnGetSalerYearQueryHandler : IRequestHandler<upcmconsole
     {
         var UserID = Convert.ToInt32(request.UserId);
         var YearSetm = YearResult.getValue().OrderByDescending(x => x.MYear);
-        return GenericResult<upcmconsoleOnGetSalerYearResponse>.Success(new upcmconsoleOnGetSalerYearResponse { Result = new JsonResult(DataSourceLoader.Load(YearSetm, request.Request.Options)) });
+                return GenericResult<upcmconsoleOnGetSalerYearResponse>.Success(new upcmconsoleOnGetSalerYearResponse { Result = DataSourceLoader.Load(YearSetm, request.Request.Options) });
     }
 }

@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.CashFlow;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.CashFlow.Query.GetMarkupMarjin
 {
     public class GetMarkupMarjinQueryHandle(IDashGelirTablosuManager dashGelirTablosuManager) : IRequestHandler<GetMarkupMarjinQuery, GenericResult<GetMarkupMarjinResponseModel>>
@@ -15,10 +13,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.CashFlow.Query.GetMarkupMa
             var chk = dashGelirTablosuManager.Get_MAINRESULTMultiCashFlow(request.RequestModel.Compid);
             if (chk.Count < 1)
             {
-                List<DashBilancoViewMulti> chklist = new List<DashBilancoViewMulti>();
-                return GenericResult<GetMarkupMarjinResponseModel>.Success(new GetMarkupMarjinResponseModel { Result = new JsonResult(DataSourceLoader.Load(chklist, request.RequestModel.DataSourceLoadOptions)) });
+                List<DashBilancoViewMulti> chklist = new List<DashBilancoViewMulti>(); 
+                return GenericResult<GetMarkupMarjinResponseModel>.Success(new GetMarkupMarjinResponseModel { Result = DataSourceLoader.Load(chklist, request.RequestModel.DataSourceLoadOptions) });
             }
-            return GenericResult<GetMarkupMarjinResponseModel>.Success(new GetMarkupMarjinResponseModel { Result = new JsonResult(DataSourceLoader.Load(chk, request.RequestModel.DataSourceLoadOptions)) });
+            return GenericResult<GetMarkupMarjinResponseModel>.Success(new GetMarkupMarjinResponseModel { Result =  DataSourceLoader.Load(chk, request.RequestModel.DataSourceLoadOptions) });
         }
     }
 }

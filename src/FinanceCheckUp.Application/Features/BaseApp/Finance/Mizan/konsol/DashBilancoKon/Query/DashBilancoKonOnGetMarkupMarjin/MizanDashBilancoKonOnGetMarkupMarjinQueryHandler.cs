@@ -1,7 +1,6 @@
 ﻿using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using DevExtreme.AspNet.Data;
 using FinanceCheckUp.Application.Models;
 using Microsoft.Extensions.Options;
@@ -25,11 +24,11 @@ public class MizanDashBilancoKonOnGetMarkupMarjinQueryHandler(IDashGelirTablosuM
         var chklist = new List<DashBilancoViewMulti>();
         if (request.Request.compid < 1)
         {
-             return Task.FromResult(GenericResult<MizanDashBilancoKonOnGetMarkupMarjinResponse>.Success(
+                          return Task.FromResult(GenericResult<MizanDashBilancoKonOnGetMarkupMarjinResponse>.Success(
                 new MizanDashBilancoKonOnGetMarkupMarjinResponse
                 {
                     InitialModel = responseModel,
-                    Response =  new JsonResult(DataSourceLoader.Load(chklist, request.Request.options))
+                    Response =  DataSourceLoader.Load(chklist, request.Request.options)
                 }));
         }
 
@@ -37,11 +36,11 @@ public class MizanDashBilancoKonOnGetMarkupMarjinQueryHandler(IDashGelirTablosuM
 
         responseModel.nRequestList = gelirTablosuManager.Get_MAINBilancoMznAktMultiKon(request.Request.compid);
 
-        return Task.FromResult(GenericResult<MizanDashBilancoKonOnGetMarkupMarjinResponse>.Success(
+                return Task.FromResult(GenericResult<MizanDashBilancoKonOnGetMarkupMarjinResponse>.Success(
             new MizanDashBilancoKonOnGetMarkupMarjinResponse
             {
                 InitialModel = responseModel,
-                Response = new JsonResult(DataSourceLoader.Load(responseModel.nRequestList.Where(x => x.IsHidden == 0), request.Request.options))
+                Response = DataSourceLoader.Load(responseModel.nRequestList.Where(x => x.IsHidden == 0), request.Request.options)
             }));
             
       

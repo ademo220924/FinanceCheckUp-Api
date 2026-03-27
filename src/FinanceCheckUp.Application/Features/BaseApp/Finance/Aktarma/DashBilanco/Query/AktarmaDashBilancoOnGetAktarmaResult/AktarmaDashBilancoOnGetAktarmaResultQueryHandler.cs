@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Aktarma.DashBilanco;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Aktarma.DashBilanco.Query.AktarmaDashBilancoOnGetAktarmaResult;
 public class AktarmaDashBilancoOnGetAktarmaResultQueryHandler(ICompanyManager companiesManager) 
     : IRequestHandler<AktarmaDashBilancoOnGetAktarmaResultQuery, GenericResult<AktarmaDashBilancoOnGetAktarmaResultResponse>>
@@ -15,10 +13,10 @@ public class AktarmaDashBilancoOnGetAktarmaResultQueryHandler(ICompanyManager co
 
        request.InitialModel.DashMizanResultAktarma = dashMizanResultAktarma;
        
-        return Task.FromResult(GenericResult<AktarmaDashBilancoOnGetAktarmaResultResponse>.Success(
+                return Task.FromResult(GenericResult<AktarmaDashBilancoOnGetAktarmaResultResponse>.Success(
             new AktarmaDashBilancoOnGetAktarmaResultResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(dashMizanResultAktarma.ToList(), request.Request.options)),
+                Response = DataSourceLoader.Load(dashMizanResultAktarma.ToList(), request.Request.options),
                 InitialModel = request.InitialModel
             }));
     }

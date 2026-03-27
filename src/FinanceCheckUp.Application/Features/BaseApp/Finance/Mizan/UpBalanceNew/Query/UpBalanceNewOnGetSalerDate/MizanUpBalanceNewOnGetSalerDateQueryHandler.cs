@@ -1,9 +1,8 @@
-﻿using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Data;
 using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UpBalanceNew;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpBalanceNew.Query.UpBalanceNewOnGetSalerDate;
 public class MizanUpBalanceNewOnGetSalerDateQueryHandler(
@@ -19,13 +18,11 @@ public class MizanUpBalanceNewOnGetSalerDateQueryHandler(
         request.InitialModel.CurrentUser = hhvnUsersManager.GetRow_User(request.InitialModel.UserID);
         request.InitialModel.curcomID = companyManager.Getby_User(request.InitialModel.UserID).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
         var currentUploadM = setMainSqlOperationManager.Get_StatbyCompany(request.InitialModel.curcomID);
-        
-        var loadedData = DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options);
 
         return Task.FromResult(GenericResult<MizanUpBalanceNewOnGetSalerDateResponse>.Success(new MizanUpBalanceNewOnGetSalerDateResponse
         {
             InitialModel = request.InitialModel,
-            Response= loadedData
+            Response= DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options)
         })); 
     }
 }

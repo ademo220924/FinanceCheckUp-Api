@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.upreportqnbtest;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.upreportqnbtest.Query.upreportqnbtestOnGetSalerYear;
 public class UpreportqnbtestOnGetSalerYearQueryHandler : IRequestHandler<upreportqnbtestOnGetSalerYearQuery, GenericResult<upreportqnbtestOnGetSalerYearResponse>>
 {
@@ -13,6 +11,6 @@ public class UpreportqnbtestOnGetSalerYearQueryHandler : IRequestHandler<uprepor
     {
         var UserID = Convert.ToInt32(request.UserId);
         var YearSetm = YearResult.getValue().OrderByDescending(x => x.MYear);
-        return GenericResult<upreportqnbtestOnGetSalerYearResponse>.Success(new upreportqnbtestOnGetSalerYearResponse { Result = new JsonResult(DataSourceLoader.Load(YearSetm, request.Request.Options)) });
+                return GenericResult<upreportqnbtestOnGetSalerYearResponse>.Success(new upreportqnbtestOnGetSalerYearResponse { Result = DataSourceLoader.Load(YearSetm, request.Request.Options) });
     }
 }

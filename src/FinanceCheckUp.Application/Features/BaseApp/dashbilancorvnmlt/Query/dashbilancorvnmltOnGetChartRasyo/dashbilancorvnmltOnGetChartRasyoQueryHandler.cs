@@ -4,9 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.dashbilancorvnmlt;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-
 namespace FinanceCheckUp.Application.Features.BaseApp.dashbilancorvnmlt.Query.dashbilancorvnmltOnGetChartRasyo;
 public class dashbilancorvnmltOnGetChartRasyoQueryHandler(ICompanyManager companyManager, IHhvnUsersManager hhvnUsersManager, IDashGelirTablosuManager dashGelirTablosuManager) : IRequestHandler<dashbilancorvnmltOnGetChartRasyoQuery, GenericResult<dashbilancorvnmltOnGetChartRasyoResponse>>
 {
@@ -20,6 +17,6 @@ public class dashbilancorvnmltOnGetChartRasyoQueryHandler(ICompanyManager compan
         request.InitialModel.ncart = new DashYearlyBilancoChart();
         request.InitialModel.ncart.SetResult(request.InitialModel.nRequestList, request.InitialModel.CurrentUser.SelectedYear);
 
-        return GenericResult<dashbilancorvnmltOnGetChartRasyoResponse>.Success(new dashbilancorvnmltOnGetChartRasyoResponse { Result = new JsonResult(DataSourceLoader.Load(request.InitialModel.ncart.nresult, request.Request.DataSourceLoadOptions)) });
+                return GenericResult<dashbilancorvnmltOnGetChartRasyoResponse>.Success(new dashbilancorvnmltOnGetChartRasyoResponse { Result = DataSourceLoader.Load(request.InitialModel.ncart.nresult, request.Request.DataSourceLoadOptions) });
     }
 }

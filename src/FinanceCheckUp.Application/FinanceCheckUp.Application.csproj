@@ -44,6 +44,7 @@
       <ProjectReference Include="..\..\clients\FinanceCheckUp.Client.ConnectApi\FinanceCheckUp.Client.ConnectApi.csproj" />
       <ProjectReference Include="..\..\clients\FinanceCheckUp.Client.QnbClient\FinanceCheckUp.Client.QnbClient.csproj" />
       <ProjectReference Include="..\..\clients\FinanceCheckUp.Client.Wsdl\FinanceCheckUp.Client.Finansman.csproj" />
+      <ProjectReference Include="..\..\framework\FinanceCheckUp.Framework.Core\FinanceCheckUp.Framework.Core.csproj" />
       <ProjectReference Include="..\FinanceCheckUp.Infrastructure\FinanceCheckUp.Infrastructure.csproj" />
     </ItemGroup>
 

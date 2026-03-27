@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.Menu.UserEdit;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Menu.UserEdit.Query.UserEditOnGetSalerCompany;
 
 
@@ -26,10 +24,10 @@ public class MizanUserEditOnGetSalerCompanyQueryHandler(IHhvnUsersManager hhvnUs
         {
             request.InitialModel.mreqListCompany = companyManager.Getby_User( request.InitialModel.UserID);
         } 
-        return Task.FromResult(GenericResult<MizanUserEditOnGetSalerCompanyResponse>.Success(new MizanUserEditOnGetSalerCompanyResponse
+                return Task.FromResult(GenericResult<MizanUserEditOnGetSalerCompanyResponse>.Success(new MizanUserEditOnGetSalerCompanyResponse
         {
             InitialModel = request.InitialModel,
-            Response= new JsonResult(DataSourceLoader.Load(request.InitialModel.mreqListCompany, request.Request.options))
+            Response= DataSourceLoader.Load(request.InitialModel.mreqListCompany, request.Request.options)
         }));
     }
 }

@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.UpCrmConsole;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.UpCrmConsole
 {
     public class FinanceUpCrmConsoleOnGetSalerDateResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public FinanceUpCrmConsoleRequestInitialModel InitialModel { get; set; }
     }
 }

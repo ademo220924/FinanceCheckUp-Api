@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.DashCrm;
 public class DashCrmOnGetCasinoResponse
 {
-    public JsonResult Response { get; set; }
+    public LoadResult Response { get; set; }
 
 }

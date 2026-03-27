@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 
 namespace FinanceCheckUp.Application.Models.Responses.dashbilancorvnmzn;
 public class dashbilancorvnmznOnGetSalerMainResponse
 {
-    public JsonResult Result { get; set; }
+    public LoadResult Result { get; set; }
 }

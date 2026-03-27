@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.Aktarma.DashBilanco;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Aktarma.DashBilanco.Query.AktarmaDashBilancoOnGetMarkupMarjin;
 public class AktarmaDashBilancoOnGetMarkupMarjinQueryHandler(IDashGelirTablosuManager dashGelirTablosuManager) 
     : IRequestHandler<AktarmaDashBilancoOnGetMarkupMarjinQuery, GenericResult<AktarmaDashBilancoOnGetMarkupMarjinResponse>>
@@ -19,7 +17,7 @@ public class AktarmaDashBilancoOnGetMarkupMarjinQueryHandler(IDashGelirTablosuMa
             return Task.FromResult(GenericResult<AktarmaDashBilancoOnGetMarkupMarjinResponse>.Success(
                 new AktarmaDashBilancoOnGetMarkupMarjinResponse
                 {
-                    Response = new JsonResult(DataSourceLoader.Load(dashBilancoViewMultis, request.Request.options)),
+                    Response = DataSourceLoader.Load(dashBilancoViewMultis, request.Request.options),
                     InitialModel = request.InitialModel
                 }));
         }
@@ -28,11 +26,11 @@ public class AktarmaDashBilancoOnGetMarkupMarjinQueryHandler(IDashGelirTablosuMa
         var nRequestList = dashGelirTablosuManager.Get_MAINBilancoMznAktMulti(request.Request.compid);
 
         request.InitialModel.nRequestList = nRequestList;
-        
+         
         return Task.FromResult(GenericResult<AktarmaDashBilancoOnGetMarkupMarjinResponse>.Success(
             new AktarmaDashBilancoOnGetMarkupMarjinResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(nRequestList.Where(x => x.IsHidden == 0), request.Request.options)),
+                Response = DataSourceLoader.Load(nRequestList.Where(x => x.IsHidden == 0), request.Request.options),
                 InitialModel = request.InitialModel
             }));
     }

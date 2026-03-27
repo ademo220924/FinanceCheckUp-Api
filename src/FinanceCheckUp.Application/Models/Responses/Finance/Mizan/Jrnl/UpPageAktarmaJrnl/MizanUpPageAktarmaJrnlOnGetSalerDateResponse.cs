@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.Jrnl.UpPageAktarmaJrnl;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.Jrnl.UpPageAktarmaJrnl
 {
     public class MizanUpPageAktarmaJrnlOnGetSalerDateResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public MizanUpPageAktarmaJrnlRequestInitialModel InitialModel { get; set; }
     }
 }

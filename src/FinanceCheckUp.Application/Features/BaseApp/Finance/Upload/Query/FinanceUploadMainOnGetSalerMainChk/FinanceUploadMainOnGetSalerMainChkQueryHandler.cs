@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models.Common;
 using FinanceCheckUp.Application.Models.Responses.Finance.Upload;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;                      
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Upload.Query.FinanceUploadMainOnGetSalerMainChk;
 public class FinanceUploadMainOnGetSalerMainChkQueryHandler(
     IMainDashManager mainDashManager, 
@@ -18,10 +16,10 @@ public class FinanceUploadMainOnGetSalerMainChkQueryHandler(
         var mrequestDataViewer = new DataViewerMain();
         if (request.Request.monthid < 1)
         {
-            return Task.FromResult(GenericResult<FinanceUploadMainOnGetSalerMainChkResponse>.Success(new FinanceUploadMainOnGetSalerMainChkResponse
+                        return Task.FromResult(GenericResult<FinanceUploadMainOnGetSalerMainChkResponse>.Success(new FinanceUploadMainOnGetSalerMainChkResponse
             {
                 InitialModel = request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options))
+                Response = DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options)
             }));
         }
 
@@ -32,10 +30,10 @@ public class FinanceUploadMainOnGetSalerMainChkQueryHandler(
         mrequestDataViewer.SetDataViewer(mainDashManager.DataViewerMainMonth(request.InitialModel.CurrentUser.SelectedYear, request.InitialModel.curcomID, request.Request.monthid));
         
         
-        return Task.FromResult(GenericResult<FinanceUploadMainOnGetSalerMainChkResponse>.Success(new FinanceUploadMainOnGetSalerMainChkResponse
+                return Task.FromResult(GenericResult<FinanceUploadMainOnGetSalerMainChkResponse>.Success(new FinanceUploadMainOnGetSalerMainChkResponse
         {
             InitialModel = request.InitialModel,
-            Response = new JsonResult(DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options))
+            Response = DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options)
         }));
         
     }

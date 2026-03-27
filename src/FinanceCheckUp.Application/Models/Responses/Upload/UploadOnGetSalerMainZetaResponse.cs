@@ -1,10 +1,10 @@
 using FinanceCheckUp.Application.Models.Requests.Upload;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 
 namespace FinanceCheckUp.Application.Models.Responses.Upload;
 public class UploadOnGetSalerMainZetaResponse
 {
-    public JsonResult Result { get; set; }
+    public LoadResult Result { get; set; }
     public UploadRequest InitialModel { get; internal set; }
 }

@@ -3,9 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.DashBilanco;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-
 namespace FinanceCheckUp.Application.Features.BaseApp.DashBilanco.Query.DashBilancoOnGetSalerMain;
 public class DashBilancoOnGetSalerMainQueryHandler(IDataManager dataManager) : IRequestHandler<DashBilancoOnGetSalerMainQuery, GenericResult<DashBilancoOnGetSalerMainResponse>>
 {
@@ -14,6 +11,6 @@ public class DashBilancoOnGetSalerMainQueryHandler(IDataManager dataManager) : I
     {
         var dt1 = "105";
         var winModelTlist = dataManager.Get_AllbyCsvID(dt1);
-        return GenericResult<DashBilancoOnGetSalerMainResponse>.Success(new DashBilancoOnGetSalerMainResponse { Result = new JsonResult(DataSourceLoader.Load(winModelTlist, request.RequestModel.DataSourceLoadOptions)) });
+                return GenericResult<DashBilancoOnGetSalerMainResponse>.Success(new DashBilancoOnGetSalerMainResponse { Result = DataSourceLoader.Load(winModelTlist, request.RequestModel.DataSourceLoadOptions) });
     }
 }

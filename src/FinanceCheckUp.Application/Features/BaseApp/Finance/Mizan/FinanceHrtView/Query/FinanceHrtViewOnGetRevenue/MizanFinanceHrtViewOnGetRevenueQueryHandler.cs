@@ -3,7 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.FinanceHrtView;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using FinanceCheckUp.Application.Models;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.FinanceHrtView.Query.FinanceHrtViewOnGetRevenue;
@@ -18,19 +17,19 @@ public class MizanFinanceHrtViewOnGetRevenueQueryHandler(IReportDashManager repo
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         { 
-            return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetRevenueResponse>.Success(
+                        return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetRevenueResponse>.Success(
                 new MizanFinanceHrtViewOnGetRevenueResponse
                 {
-                    Response = new JsonResult(DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options))
+                    Response = DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)
                 })); 
         }
 
         var retval = reportDashManger.Get_Data_RevenueMizan(request.Request.compid).Where(x => x.Amount > 5).OrderBy(x => x.Year);
          
-        return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetRevenueResponse>.Success(
+                return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetRevenueResponse>.Success(
             new MizanFinanceHrtViewOnGetRevenueResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options))
+                Response = DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)
             })); 
     }
 }

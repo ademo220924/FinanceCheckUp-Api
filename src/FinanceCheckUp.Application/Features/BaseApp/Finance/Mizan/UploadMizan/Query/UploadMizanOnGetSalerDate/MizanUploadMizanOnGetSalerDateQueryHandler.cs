@@ -5,7 +5,6 @@ using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadMizan;
 using FinanceCheckUp.Domain.Entities;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMizan.Query.UploadMizanOnGetSalerDate
@@ -34,11 +33,11 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMizan.
             }).OrderBy(x => x.MainMonth).ToList();
 
 
-            return Task.FromResult(GenericResult<MizanUploadMizanOnGetSalerDateResponse>.Success(
+                        return Task.FromResult(GenericResult<MizanUploadMizanOnGetSalerDateResponse>.Success(
                 new MizanUploadMizanOnGetSalerDateResponse
                 {
                     InitialModel = request.InitialModel,
-                    Response = new JsonResult(DataSourceLoader.Load(currentUploadM, request.Request.options))
+                    Response = DataSourceLoader.Load(currentUploadM, request.Request.options)
                 }));
         }
     }

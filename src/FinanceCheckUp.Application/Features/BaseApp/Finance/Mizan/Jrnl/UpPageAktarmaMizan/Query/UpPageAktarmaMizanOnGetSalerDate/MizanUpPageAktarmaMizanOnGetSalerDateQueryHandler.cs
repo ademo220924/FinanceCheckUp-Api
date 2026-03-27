@@ -6,8 +6,6 @@ using FinanceCheckUp.Framework.Core.Models;
 using System.Security.Claims;
 using MediatR;
 using DevExtreme.AspNet.Data;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Jrnl.UpPageAktarmaMizan.Query.UpPageAktarmaMizanOnGetSalerDate;
 public class MizanUpPageAktarmaMizanOnGetSalerDateQueryHandler(
     IReportSetMainSqlOperationManager reportSetMainSqlOperationManager,IHhvnUsersManager hhvnUsersManager, ICompanyManager companiesManager, IUserTypeManager userTypeManager, ICompanyManager companyManager, ITBLXmlManager tBLXmlManager) : IRequestHandler<MizanUpPageAktarmaMizanOnGetSalerDateQuery, GenericResult<MizanUpPageAktarmaMizanOnGetSalerDateResponse>>
@@ -24,11 +22,11 @@ public class MizanUpPageAktarmaMizanOnGetSalerDateQueryHandler(
         
         var currentUploadM = reportSetMainSqlOperationManager.Get_StatbyCompanyAktarma(request.InitialModel.curcomID);
         
-        return Task.FromResult(GenericResult<MizanUpPageAktarmaMizanOnGetSalerDateResponse>.Success(
+                return Task.FromResult(GenericResult<MizanUpPageAktarmaMizanOnGetSalerDateResponse>.Success(
             new MizanUpPageAktarmaMizanOnGetSalerDateResponse
             { 
                 InitialModel =request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options))
+                Response = DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options)
             }));
     }
 }

@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 
 namespace FinanceCheckUp.Application.Models.Responses.upaccount;
 public class upaccountOnGetSalerCompResponse
 {
-    public JsonResult Result { get; set; }
+    public LoadResult Result { get; set; }
 }

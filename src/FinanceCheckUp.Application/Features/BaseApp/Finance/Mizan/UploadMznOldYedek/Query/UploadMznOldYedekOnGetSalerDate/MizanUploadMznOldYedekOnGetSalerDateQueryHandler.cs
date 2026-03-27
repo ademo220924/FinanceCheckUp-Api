@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadMznOldYedek;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMznOldYedek.Query.UploadMznOldYedekOnGetSalerDate
 {
     public class MizanUploadMznOldYedekOnGetSalerDateQueryHandler(
@@ -20,10 +18,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMznOld
             request.InitialModel.curcomID = companyManager.Getby_User(request.InitialModel.UserID).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
             var currentUploadM = setMainSqlOperationManager.Get_StatbyCompanyExcel(request.InitialModel.curcomID);
 
-            return Task.FromResult(GenericResult<MizanUploadMznOldYedekOnGetSalerDateResponse>.Success(new MizanUploadMznOldYedekOnGetSalerDateResponse
+                        return Task.FromResult(GenericResult<MizanUploadMznOldYedekOnGetSalerDateResponse>.Success(new MizanUploadMznOldYedekOnGetSalerDateResponse
             {
                 InitialModel = request.InitialModel,
-                Response= new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options))
+                Response= DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options)
             }));
         }
     }

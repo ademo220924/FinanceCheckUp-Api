@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.Aktarma.DashRevenue;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.Aktarma.DashRevenue
 {
     public class MizanAktarmaDashRevenueOnGetMarkupMarjinResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public MizanAktarmaDashRevenueRequestInitialModel InitialModel { get; set; }
     }
 }

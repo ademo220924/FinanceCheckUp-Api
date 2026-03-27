@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.DashRasyo;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.DashRasyo
 {
     public class MizanDashRasyoOnGetChartLikidResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public MizanDashRasyoRequestInitialModel InitialModel { get; set; }
     }
 }

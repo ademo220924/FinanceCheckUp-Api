@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models.Common;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadMain;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Query.UploadMainOnGetSalerMainChk
 {
     public class MizanUploadMainOnGetSalerMainChkQueryHandler(
@@ -23,10 +21,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Q
             var mrequestDataViewer = new DataViewerMain();
             if (request.Request.monthid < 1)
             {
-                return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainChkResponse>.Success(new MizanUploadMainOnGetSalerMainChkResponse
+                                return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainChkResponse>.Success(new MizanUploadMainOnGetSalerMainChkResponse
                 {
                     InitialModel = request.InitialModel,
-                    Response = new JsonResult(DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options))
+                    Response = DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options)
                 }));
 
             }
@@ -35,10 +33,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadMain.Q
             request.InitialModel.curcomID = companyManager.Getby_User(userId).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
             mrequestDataViewer.SetDataViewer(mainDashManager.DataViewerMainMonth(request.InitialModel.CurrentUser.SelectedYear, request.InitialModel.curcomID, request.Request.monthid));
  
-            return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainChkResponse>.Success(new MizanUploadMainOnGetSalerMainChkResponse
+                        return Task.FromResult(GenericResult<MizanUploadMainOnGetSalerMainChkResponse>.Success(new MizanUploadMainOnGetSalerMainChkResponse
             {
                 InitialModel = request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options))
+                Response = DataSourceLoader.Load(mrequestDataViewer.EntryData, request.Request.options)
             }));
         }
     }

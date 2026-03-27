@@ -1,9 +1,8 @@
-
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.DashCrmDetaild;
 public class DashCrmDetaildOnGetChartRasyoResponse
 {
-    public JsonResult Response { get; set; }
+    public LoadResult Response { get; set; }
 
 }

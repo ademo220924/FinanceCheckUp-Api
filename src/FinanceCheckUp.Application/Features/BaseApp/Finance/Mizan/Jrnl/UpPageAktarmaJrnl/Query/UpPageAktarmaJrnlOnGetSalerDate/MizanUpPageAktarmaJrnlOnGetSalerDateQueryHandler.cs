@@ -5,7 +5,6 @@ using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.Jrnl.UpPageAktar
 using FinanceCheckUp.Domain.Entities;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Jrnl.UpPageAktarmaJrnl.Query.UpPageAktarmaJrnlOnGetSalerDate;
@@ -29,11 +28,11 @@ public class MizanUpPageAktarmaJrnlOnGetSalerDateQueryHandler(
 
         var currentUploadM = reportSetMainSqlOperationManager.Get_StatbyCompanyAktarmaMizan(request.InitialModel.curcomID);
 
-        return Task.FromResult(GenericResult<MizanUpPageAktarmaJrnlOnGetSalerDateResponse>.Success(
+                return Task.FromResult(GenericResult<MizanUpPageAktarmaJrnlOnGetSalerDateResponse>.Success(
             new MizanUpPageAktarmaJrnlOnGetSalerDateResponse
             {
                 InitialModel = request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options))
+                Response = DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options)
             }));
     }
 }

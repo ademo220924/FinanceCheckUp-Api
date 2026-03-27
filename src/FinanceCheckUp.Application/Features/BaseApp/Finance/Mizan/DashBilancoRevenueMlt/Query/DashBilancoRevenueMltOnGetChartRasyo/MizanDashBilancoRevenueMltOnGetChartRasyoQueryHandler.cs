@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
 using DevExtreme.AspNet.Data;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.DashBilancoRevenueMlt.Query.DashBilancoRevenueMltOnGetChartRasyo;
 
 public class MizanDashBilancoRevenueMltOnGetChartRasyoQueryHandler(IDashGelirTablosuManager dashGelirTablosuManager,IHhvnUsersManager hhvnUsersManager, ICompanyManager companiesManager, IUserTypeManager userTypeManager, ICompanyManager companyManager, ITBLXmlManager tBLXmlManager) 
@@ -25,11 +23,11 @@ public class MizanDashBilancoRevenueMltOnGetChartRasyoQueryHandler(IDashGelirTab
         var ncart = new DashYearlyBilancoChart();
         ncart.SetResult(request.InitialModel.nRequestList, request.InitialModel.CurrentUser.SelectedYear);
        
-        return Task.FromResult(GenericResult<MizanDashBilancoRevenueMltOnGetChartRasyoResponse>.Success(
+                return Task.FromResult(GenericResult<MizanDashBilancoRevenueMltOnGetChartRasyoResponse>.Success(
             new MizanDashBilancoRevenueMltOnGetChartRasyoResponse
             {
                 InitialModel = request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(ncart.nresult, request.Request.options))
+                Response = DataSourceLoader.Load(ncart.nresult, request.Request.options)
             }));
     }
 }

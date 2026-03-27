@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.DashCrm;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.DashCrm.Query.FinanceDashCrmOnGetChartMali;
 public class FinanceDashCrmOnGetChartMaliQueryHandler(IHhvnUsersManager hhvnUsersManager, 
     ICompanyManager companiesManager, 
@@ -20,9 +18,9 @@ public class FinanceDashCrmOnGetChartMaliQueryHandler(IHhvnUsersManager hhvnUser
         request.InitialModel.OzetMali = dashOzetMaliManager.OzetMaliFinal(request.InitialModel.CurrentUser.SelectedYear, request.InitialModel.CompID);
         request.InitialModel.OzetMaliView.SetResult(request.InitialModel.OzetMali, request.InitialModel.CurrentUser.SelectedYear);
 
-        return Task.FromResult(GenericResult<FinanceDashCrmOnGetChartMaliResponse>.Success(new FinanceDashCrmOnGetChartMaliResponse
+                return Task.FromResult(GenericResult<FinanceDashCrmOnGetChartMaliResponse>.Success(new FinanceDashCrmOnGetChartMaliResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.OzetMaliView.nresult, request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.OzetMaliView.nresult, request.Request.options)
         }));
 
     }

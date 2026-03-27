@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.UploadMzan;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadMzan
 {
     public class MizanUploadMzanOnGetSalerMainZetaResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public MizanUploadMzanRequestInitialModel InitialModel { get; set; }
     }
 }

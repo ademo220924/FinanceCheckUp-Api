@@ -1,7 +1,6 @@
 ﻿using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.Menu.CompanyKonsol;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using DevExtreme.AspNet.Data;
 using FinanceCheckUp.Application.Managers.SqlQueryManager;
 
@@ -12,9 +11,9 @@ public class MizanCompanyKonsolOnGetSalerCityQueryHandler(ICitiesManager citiesM
     public Task<GenericResult<MizanCompanyKonsolOnGetSalerCityResponse>> Handle(MizanCompanyKonsolOnGetSalerCityQuery request, CancellationToken cancellationToken)
     {
        var mreqListCitiy = citiesManager.Get_Cities();
-       return Task.FromResult(GenericResult<MizanCompanyKonsolOnGetSalerCityResponse>.Success(new MizanCompanyKonsolOnGetSalerCityResponse
+              return Task.FromResult(GenericResult<MizanCompanyKonsolOnGetSalerCityResponse>.Success(new MizanCompanyKonsolOnGetSalerCityResponse
        {
-           Response = new JsonResult(DataSourceLoader.Load(mreqListCitiy, request.Request.options))
+           Response = DataSourceLoader.Load(mreqListCitiy, request.Request.options)
        }));
     }
 }

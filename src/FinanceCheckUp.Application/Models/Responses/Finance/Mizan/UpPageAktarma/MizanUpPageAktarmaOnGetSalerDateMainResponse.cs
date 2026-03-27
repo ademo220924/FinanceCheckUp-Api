@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.UpPageAktarma;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UpPageAktarma
 {
     public class MizanUpPageAktarmaOnGetSalerDateMainResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public MizanUpPageAktarmaRequestInitialModel InitialModel { get; set; }
     }
 }

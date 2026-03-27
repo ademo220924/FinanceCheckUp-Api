@@ -14,6 +14,6 @@ public class DashCrmDetailaOnGetSalerMainQueryHandler(IDataManager dataManager) 
     {
         var dt1 = "105";
         var winModelTlist = dataManager.Get_AllbyCsvID(dt1);
-        return GenericResult<DashCrmDetailaOnGetSalerMainResponse>.Success(new DashCrmDetailaOnGetSalerMainResponse { Response = new JsonResult(DataSourceLoader.Load(winModelTlist, request.Request.Options)) });
+                return GenericResult<DashCrmDetailaOnGetSalerMainResponse>.Success(new DashCrmDetailaOnGetSalerMainResponse { Response = DataSourceLoader.Load(winModelTlist, request.Request.Options) });
     }
 }

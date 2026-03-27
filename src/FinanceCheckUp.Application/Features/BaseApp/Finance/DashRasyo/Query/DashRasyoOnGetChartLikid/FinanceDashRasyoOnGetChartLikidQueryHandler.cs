@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.DashRasyo;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.DashRasyo.Query.DashRasyoOnGetChartLikid;
 public class FinanceDashRasyoOnGetChartLikidQueryHandler(IHhvnUsersManager hhvnUsersManager, 
     ICompanyManager companiesManager, 
@@ -20,9 +18,9 @@ public class FinanceDashRasyoOnGetChartLikidQueryHandler(IHhvnUsersManager hhvnU
         request.InitialModel.LikiditeRiskTrend = dashLikiditeRiskTrendManager.LikiditeRiskTrend21Final(request.InitialModel.CurrentUser.SelectedYear, request.InitialModel.CompID);
         request.InitialModel.LikiditeRiskTrendView.SetResult(request.InitialModel.LikiditeRiskTrend, request.InitialModel.CurrentUser.SelectedYear);
 
-        return Task.FromResult(GenericResult<FinanceDashRasyoOnGetChartLikidResponse>.Success(new FinanceDashRasyoOnGetChartLikidResponse
+                return Task.FromResult(GenericResult<FinanceDashRasyoOnGetChartLikidResponse>.Success(new FinanceDashRasyoOnGetChartLikidResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.LikiditeRiskTrendView.nresult, request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.LikiditeRiskTrendView.nresult, request.Request.options)
         }));
 
     }

@@ -3,9 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.ChangePassword;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-
 namespace FinanceCheckUp.Application.Features.BaseApp.ChangePassword.Query.ChangePasswordOnGetSalerCompany;
 public class ChangePasswordOnGetSalerCompanyQueryHandler(IHhvnUsersManager hhvnUsersManager, ICompanyManager companyManager) : IRequestHandler<ChangePasswordOnGetSalerCompanyQuery, GenericResult<ChangePasswordOnGetSalerCompanyResponse>>
 {
@@ -27,6 +24,6 @@ public class ChangePasswordOnGetSalerCompanyQueryHandler(IHhvnUsersManager hhvnU
                 break;
         }
 
-        return GenericResult<ChangePasswordOnGetSalerCompanyResponse>.Success(new ChangePasswordOnGetSalerCompanyResponse { Result = new JsonResult(DataSourceLoader.Load(request.RequestModel.InitialModel.mreqListCompany, options: request.RequestModel.DataSourceLoadOptions)) });
+                return GenericResult<ChangePasswordOnGetSalerCompanyResponse>.Success(new ChangePasswordOnGetSalerCompanyResponse { Result = DataSourceLoader.Load(request.RequestModel.InitialModel.mreqListCompany, options: request.RequestModel.DataSourceLoadOptions) });
     }
 }

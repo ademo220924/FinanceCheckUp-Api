@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.FinanceHrtView;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.FinanceHrtView.Query.FinanceFinanceHrtViewOnGetGrossProfit;
 public class FinanceFinanceHrtViewOnGetGrossProfitQueryHandler(
     IHhvnUsersManager hhvnUsersManager, 
@@ -19,16 +17,16 @@ public class FinanceFinanceHrtViewOnGetGrossProfitQueryHandler(
         {
             var retval = reportDashManager.Get_Data_GrossProfit(request.Request.myear, request.InitialModel.CompID);
 
-            return Task.FromResult(GenericResult<FinanceFinanceHrtViewOnGetGrossProfitResponse>.Success(new FinanceFinanceHrtViewOnGetGrossProfitResponse
+                        return Task.FromResult(GenericResult<FinanceFinanceHrtViewOnGetGrossProfitResponse>.Success(new FinanceFinanceHrtViewOnGetGrossProfitResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(retval, request.Request.options))
+                Response = DataSourceLoader.Load(retval, request.Request.options)
             }));
 
         }
 
-        return Task.FromResult(GenericResult<FinanceFinanceHrtViewOnGetGrossProfitResponse>.Success(new FinanceFinanceHrtViewOnGetGrossProfitResponse
+                return Task.FromResult(GenericResult<FinanceFinanceHrtViewOnGetGrossProfitResponse>.Success(new FinanceFinanceHrtViewOnGetGrossProfitResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options))
+            Response = DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)
         }));
 
     }

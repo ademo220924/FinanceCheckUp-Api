@@ -1,9 +1,8 @@
-
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.DashCrmDetailc;
 public class DashCrmDetailcOnGetSalerMainResponse
 {
-    public JsonResult Response { get; set; }
+    public LoadResult Response { get; set; }
 
 }

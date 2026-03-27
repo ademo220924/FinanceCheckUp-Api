@@ -3,7 +3,6 @@ using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.Konsol.DashReven
 using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.Konsol.DashRevenueKon;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using DevExtreme.AspNet.Data;
 using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.konsol.DashRevenueKon.Query.DashRevenueKonOnGetMarkupMarjin;
@@ -24,21 +23,21 @@ public class MizanDashRevenueKonOnGetMarkupMarjinQueryHandler(IDashGelirTablosuM
         var chklist = new List<DashBilancoViewMulti>();
         if (request.Request.compid< 1)
         {
-            return Task.FromResult(GenericResult<MizanDashRevenueKonOnGetMarkupMarjinResponse>.Success(
+                        return Task.FromResult(GenericResult<MizanDashRevenueKonOnGetMarkupMarjinResponse>.Success(
                 new MizanDashRevenueKonOnGetMarkupMarjinResponse
                 {
                     InitialModel = responseModel,
-                    Response =  new JsonResult(DataSourceLoader.Load(chklist, request.Request.options))
+                    Response =  DataSourceLoader.Load(chklist, request.Request.options)
                 }));
              
         }
         
         responseModel.nRequestList = dashGelirTablosuManager.Get_MAINRevenueMznAktMultiKon(request.Request.compid);
-        return Task.FromResult(GenericResult<MizanDashRevenueKonOnGetMarkupMarjinResponse>.Success(
+                return Task.FromResult(GenericResult<MizanDashRevenueKonOnGetMarkupMarjinResponse>.Success(
             new MizanDashRevenueKonOnGetMarkupMarjinResponse
             {
                 InitialModel = responseModel,
-                Response = new JsonResult(DataSourceLoader.Load(responseModel.nRequestList.Where(x => x.IsHidden == 0), request.Request.options))
+                Response = DataSourceLoader.Load(responseModel.nRequestList.Where(x => x.IsHidden == 0), request.Request.options)
             })); 
     }
 }

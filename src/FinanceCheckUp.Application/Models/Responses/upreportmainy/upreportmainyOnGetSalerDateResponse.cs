@@ -1,10 +1,10 @@
 using FinanceCheckUp.Application.Models.Requests.upreportmainy;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 
 namespace FinanceCheckUp.Application.Models.Responses.upreportmainy;
 public class upreportmainyOnGetSalerDateResponse
 {
-    public JsonResult Result { get; set; }
+    public LoadResult Result { get; set; }
     public upreportmainyRequest InitialModel { get; set; }
 }

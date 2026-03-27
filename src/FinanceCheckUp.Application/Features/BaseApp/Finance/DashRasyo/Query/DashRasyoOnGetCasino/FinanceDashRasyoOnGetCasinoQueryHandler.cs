@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.DashRasyo;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.DashRasyo.Query.DashRasyoOnGetCasino;
 public class FinanceDashRasyoOnGetCasinoQueryHandler(IDashBoardManager dashBoardManager) : IRequestHandler<FinanceDashRasyoOnGetCasinoQuery, GenericResult<FinanceDashRasyoOnGetCasinoResponse>>
 {
@@ -13,9 +11,9 @@ public class FinanceDashRasyoOnGetCasinoQueryHandler(IDashBoardManager dashBoard
         var userId = Convert.ToInt64(request.UserId);
         request.InitialModel.dash = dashBoardManager.Get_ErroorList();
 
-        return Task.FromResult(GenericResult<FinanceDashRasyoOnGetCasinoResponse>.Success(new FinanceDashRasyoOnGetCasinoResponse
+                return Task.FromResult(GenericResult<FinanceDashRasyoOnGetCasinoResponse>.Success(new FinanceDashRasyoOnGetCasinoResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.dash, request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.dash, request.Request.options)
         }));
 
     }

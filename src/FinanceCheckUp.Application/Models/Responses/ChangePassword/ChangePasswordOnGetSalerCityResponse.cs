@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 
 namespace FinanceCheckUp.Application.Models.Responses.ChangePassword;
 public class ChangePasswordOnGetSalerCityResponse
 {
-    public JsonResult Result { get; set; }
+    public LoadResult Result { get; set; }
 }

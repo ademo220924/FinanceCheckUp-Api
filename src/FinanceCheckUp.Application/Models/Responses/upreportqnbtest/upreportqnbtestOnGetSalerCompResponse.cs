@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 
 namespace FinanceCheckUp.Application.Models.Responses.upreportqnbtest;
 public class upreportqnbtestOnGetSalerCompResponse
 {
-    public JsonResult Result { get; set; }
+    public LoadResult Result { get; set; }
 }

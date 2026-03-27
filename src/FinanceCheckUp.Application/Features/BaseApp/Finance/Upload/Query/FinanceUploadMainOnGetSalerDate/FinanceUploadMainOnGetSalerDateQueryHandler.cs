@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Upload;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Upload.Query.FinanceUploadMainOnGetSalerDate;
 public class FinanceUploadMainOnGetSalerDateQueryHandler(
     IMainDashManager mainDashManager,
@@ -31,10 +29,10 @@ public class FinanceUploadMainOnGetSalerDateQueryHandler(
         currentUploadM.Where(x => chkErrormonthID.Contains(x.MainMonth)).Select(c => { c.ErrorCount = -1; return c; }).OrderBy(x => x.MainMonth).ToList();
          
         
-         return Task.FromResult(GenericResult<FinanceUploadMainOnGetSalerDateResponse>.Success(new FinanceUploadMainOnGetSalerDateResponse
+                  return Task.FromResult(GenericResult<FinanceUploadMainOnGetSalerDateResponse>.Success(new FinanceUploadMainOnGetSalerDateResponse
                 {
                     InitialModel = request.InitialModel,
-                    Response = new JsonResult(DataSourceLoader.Load(currentUploadM, request.Request.options))
+                    Response = DataSourceLoader.Load(currentUploadM, request.Request.options)
                 }));
     }
 }

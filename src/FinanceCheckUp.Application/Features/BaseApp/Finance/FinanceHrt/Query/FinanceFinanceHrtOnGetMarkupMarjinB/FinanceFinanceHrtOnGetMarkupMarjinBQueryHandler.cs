@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.FinanceHrt;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.FinanceHrt.Query.FinanceFinanceHrtOnGetMarkupMarjinB;
 public class FinanceFinanceHrtOnGetMarkupMarjinBQueryHandler(IDashGelirTablosuManager dashGelirTablosuManager) : IRequestHandler<FinanceFinanceHrtOnGetMarkupMarjinBQuery, GenericResult<FinanceFinanceHrtOnGetMarkupMarjinBResponse>>
 {
@@ -15,9 +13,9 @@ public class FinanceFinanceHrtOnGetMarkupMarjinBQueryHandler(IDashGelirTablosuMa
         List<DashBilancoViewMulti> chklist = new List<DashBilancoViewMulti>();
         var chk = dashGelirTablosuManager.Get_MAINRESULTMultiMainPIVOTB(request.InitialModel.CompID).Where(x => x.IsHidden == 0).OrderBy(x => x.CounterZone);
 
-        return Task.FromResult(GenericResult<FinanceFinanceHrtOnGetMarkupMarjinBResponse>.Success(new FinanceFinanceHrtOnGetMarkupMarjinBResponse
+                return Task.FromResult(GenericResult<FinanceFinanceHrtOnGetMarkupMarjinBResponse>.Success(new FinanceFinanceHrtOnGetMarkupMarjinBResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(chk, request.Request.options))
+            Response = DataSourceLoader.Load(chk, request.Request.options)
         }));
 
     }

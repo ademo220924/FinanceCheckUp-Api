@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.UpCrmConsole;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UpCrmConsole;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpCrmConsole.Query.UpCrmConsoleOnGetSalerDate
 {
     public class MizanUpCrmConsoleOnGetSalerDateQueryHandler(
@@ -27,10 +25,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpCrmConsole
 
             var currentUploadM = setMainSqlOperationManager.Get_StatbyCompanyConsoleM(responseModel.curcomID);
 
-            return Task.FromResult(GenericResult<MizanUpCrmConsoleOnGetSalerDateResponse>.Success(new MizanUpCrmConsoleOnGetSalerDateResponse
+                        return Task.FromResult(GenericResult<MizanUpCrmConsoleOnGetSalerDateResponse>.Success(new MizanUpCrmConsoleOnGetSalerDateResponse
             {
                 InitialModel = request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options))
+                Response = DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options)
             }));
         }
     }

@@ -1,6 +1,5 @@
-﻿using DevExtreme.AspNet.Data.ResponseModel;
+using DevExtreme.AspNet.Data.ResponseModel;
 using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.UpBalanceNew;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UpBalanceNew
 {

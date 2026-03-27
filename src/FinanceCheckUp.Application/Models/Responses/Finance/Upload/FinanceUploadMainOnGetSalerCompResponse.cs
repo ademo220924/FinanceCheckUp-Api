@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.Upload;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Upload
 {
     public class FinanceUploadMainOnGetSalerCompResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public FinanceUploadMainRequestInitialModel InitialModel { get; set; }
     }
 }

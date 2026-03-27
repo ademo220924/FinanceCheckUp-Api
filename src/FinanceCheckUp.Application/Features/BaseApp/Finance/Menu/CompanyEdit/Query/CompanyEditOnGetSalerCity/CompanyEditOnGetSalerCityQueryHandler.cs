@@ -2,7 +2,6 @@
 using FinanceCheckUp.Application.Models.Responses.Finance.Menu.CompanyEdit;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using DevExtreme.AspNet.Data;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Menu.CompanyEdit.Query.CompanyEditOnGetSalerCity;
@@ -10,10 +9,10 @@ public class CompanyEditOnGetSalerCityQueryHandler(ICitiesManager citiesManager)
 {
     public Task<GenericResult<CompanyEditOnGetSalerCityResponse>> Handle(CompanyEditOnGetSalerCityQuery request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(GenericResult<CompanyEditOnGetSalerCityResponse>.Success(
+                return Task.FromResult(GenericResult<CompanyEditOnGetSalerCityResponse>.Success(
             new CompanyEditOnGetSalerCityResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(citiesManager.Get_Cities(), request.Request.options))
+                Response = DataSourceLoader.Load(citiesManager.Get_Cities(), request.Request.options)
             }));
     }
 }

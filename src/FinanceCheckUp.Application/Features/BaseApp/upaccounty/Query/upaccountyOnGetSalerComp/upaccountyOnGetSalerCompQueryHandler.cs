@@ -3,10 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.upaccounty;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-
-
 namespace FinanceCheckUp.Application.Features.BaseApp.upaccounty.Query.upaccountyOnGetSalerComp;
 public class upaccountyOnGetSalerCompQueryHandler(ICompanyManager companyManager) : IRequestHandler<upaccountyOnGetSalerCompQuery, GenericResult<upaccountyOnGetSalerCompResponse>>
 {
@@ -15,6 +11,6 @@ public class upaccountyOnGetSalerCompQueryHandler(ICompanyManager companyManager
     {
         var UserID = Convert.ToInt32(request.UserId);
         var mreqListCompany = companyManager.Getby_User(UserID);
-        return GenericResult<upaccountyOnGetSalerCompResponse>.Success(new upaccountyOnGetSalerCompResponse { Result = new JsonResult(DataSourceLoader.Load(mreqListCompany, request.Request.Options)) });
+                return GenericResult<upaccountyOnGetSalerCompResponse>.Success(new upaccountyOnGetSalerCompResponse { Result = DataSourceLoader.Load(mreqListCompany, request.Request.Options) });
     }
 }

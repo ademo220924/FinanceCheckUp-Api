@@ -5,7 +5,6 @@ using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.DashRevenue;
 using FinanceCheckUp.Domain.Entities;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.DashRevenue;
 
@@ -23,10 +22,10 @@ public class MizanDashRevenueOnGetChartRasyoQueryHandler(IDashGelirTablosuManage
         request.InitialModel.nRequestList = dashGelirTablosuManager.Get_MAINRESULTMultiMain(request.InitialModel.CompID).Where(x => x.IsHidden == 0).ToList();
         request.InitialModel.ncart = new DashYearlyBilancoChart();
         
-        return Task.FromResult(GenericResult<MizanDashRevenueOnGetChartRasyoResponse>.Success(
+                return Task.FromResult(GenericResult<MizanDashRevenueOnGetChartRasyoResponse>.Success(
             new MizanDashRevenueOnGetChartRasyoResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.nRequestList, request.Request.options)),
+                Response = DataSourceLoader.Load(request.InitialModel.nRequestList, request.Request.options),
                 InitialModel = request.InitialModel
             }));
     }

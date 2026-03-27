@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.ReportMain;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.ReportMain.Query.ReportMainOnGetEbitMarjin;
 public class MizanReportMainOnGetEbitMarjinQueryHandler(
     IReportDashMizanManager reportDashMizanManager,
@@ -19,17 +17,17 @@ public class MizanReportMainOnGetEbitMarjinQueryHandler(
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         { 
-            return Task.FromResult(GenericResult<MizanReportMainOnGetEbitMarjinResponse>.Success(new MizanReportMainOnGetEbitMarjinResponse
+                        return Task.FromResult(GenericResult<MizanReportMainOnGetEbitMarjinResponse>.Success(new MizanReportMainOnGetEbitMarjinResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(new List<YearlyReportDashMizan>(), request.Request.options))
+                Response = DataSourceLoader.Load(new List<YearlyReportDashMizan>(), request.Request.options)
             }));
         }
 
         var retval = reportDashMizanManager.Get_Data_EbitMarjin(request.Request.compid).OrderBy(x => x.Year);
          
-        return Task.FromResult(GenericResult<MizanReportMainOnGetEbitMarjinResponse>.Success(new MizanReportMainOnGetEbitMarjinResponse
+                return Task.FromResult(GenericResult<MizanReportMainOnGetEbitMarjinResponse>.Success(new MizanReportMainOnGetEbitMarjinResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(retval, request.Request.options))
+            Response = DataSourceLoader.Load(retval, request.Request.options)
         }));
     }
 }

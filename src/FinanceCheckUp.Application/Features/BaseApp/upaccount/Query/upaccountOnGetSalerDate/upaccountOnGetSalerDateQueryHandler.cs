@@ -4,9 +4,6 @@ using FinanceCheckUp.Application.Models.Requests.upaccount;
 using FinanceCheckUp.Application.Models.Responses.upaccount;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-
 namespace FinanceCheckUp.Application.Features.BaseApp.upaccount.Query.upaccountOnGetSalerDate;
 public class upaccountOnGetSalerDateQueryHandler(IHhvnUsersManager hhvnUsersManager, IMainDashManager mainDashManager, ICompanyManager companyManager, IUploadMainManager uploadMainManager) : IRequestHandler<upaccountOnGetSalerDateQuery, GenericResult<upaccountOnGetSalerDateResponse>>
 {
@@ -23,7 +20,7 @@ public class upaccountOnGetSalerDateQueryHandler(IHhvnUsersManager hhvnUsersMana
         var currentUploadM = uploadMainManager.Get_Data(responseModel.CurrentUser.SelectedYear, responseModel.curcomID);
 
         currentUploadM.Where(x => chkErrormonthID.Contains(x.MainMonth)).Select(c => { c.ErrorCount = -1; return c; }).OrderBy(x => x.MainMonth).ToList();
-        return GenericResult<upaccountOnGetSalerDateResponse>.Success(new upaccountOnGetSalerDateResponse { InitialModel = responseModel, Result = new JsonResult(DataSourceLoader.Load(currentUploadM, request.Request.Options)) });
+                return GenericResult<upaccountOnGetSalerDateResponse>.Success(new upaccountOnGetSalerDateResponse { InitialModel = responseModel, Result = DataSourceLoader.Load(currentUploadM, request.Request.Options) });
 
     }
 }

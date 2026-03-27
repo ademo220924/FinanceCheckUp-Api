@@ -3,18 +3,16 @@ using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.FinanceHrtFiba;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
 using DevExtreme.AspNet.Data;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.FinanceHrtFiba.Query.FinanceHrtFibaOnGetMarkupMarjin;
 public class MizanFinanceHrtFibaOnGetMarkupMarjinQueryHandler(IDashGelirTablosuManager dashGelirTablosuManager) : IRequestHandler<MizanFinanceHrtFibaOnGetMarkupMarjinQuery, GenericResult<MizanFinanceHrtFibaOnGetMarkupMarjinResponse>>
 {
     public Task<GenericResult<MizanFinanceHrtFibaOnGetMarkupMarjinResponse>> Handle(MizanFinanceHrtFibaOnGetMarkupMarjinQuery request, CancellationToken cancellationToken)
     {
         var chk = dashGelirTablosuManager.Get_MAINRESULTMultiMainPIVOT(request.Request.compid).Where(x => x.IsHidden == 0);
-        return Task.FromResult(GenericResult<MizanFinanceHrtFibaOnGetMarkupMarjinResponse>.Success(
+                return Task.FromResult(GenericResult<MizanFinanceHrtFibaOnGetMarkupMarjinResponse>.Success(
             new MizanFinanceHrtFibaOnGetMarkupMarjinResponse
             {
-                Response =  new JsonResult(DataSourceLoader.Load(chk, request.Request.options))
+                Response =  DataSourceLoader.Load(chk, request.Request.options)
             }));
     }
 }

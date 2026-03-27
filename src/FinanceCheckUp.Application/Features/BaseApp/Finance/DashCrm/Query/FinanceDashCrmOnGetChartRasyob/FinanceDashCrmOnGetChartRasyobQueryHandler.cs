@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.DashCrm;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.DashCrm.Query.FinanceDashCrmOnGetChartRasyob;
 public class FinanceDashCrmOnGetChartRasyobQueryHandler(IHhvnUsersManager hhvnUsersManager, 
     ICompanyManager companiesManager, 
@@ -20,9 +18,9 @@ public class FinanceDashCrmOnGetChartRasyobQueryHandler(IHhvnUsersManager hhvnUs
         request.InitialModel.RasyoAnalizCRM = rasyoAnalizMainManager.CRMAnalizTOTAL120(request.InitialModel.CurrentUser.SelectedYear, request.InitialModel.CompID);
         request.InitialModel.RasyoAnalizViewCrm.SetResult(request.InitialModel.RasyoAnalizCRM, request.InitialModel.CurrentUser.SelectedYear);
 
-        return Task.FromResult(GenericResult<FinanceDashCrmOnGetChartRasyobResponse>.Success(new FinanceDashCrmOnGetChartRasyobResponse
+                return Task.FromResult(GenericResult<FinanceDashCrmOnGetChartRasyobResponse>.Success(new FinanceDashCrmOnGetChartRasyobResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.RasyoAnalizViewCrm.nresult.OrderByDescending(z => z.Value), request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.RasyoAnalizViewCrm.nresult.OrderByDescending(z => z.Value), request.Request.options)
         }));
 
     }

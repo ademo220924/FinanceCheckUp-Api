@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.ReportMain;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.ReportMain.Query.FinanceReportMainOnGetWorkingCapital;
 public class FinanceReportMainOnGetWorkingCapitalQueryHandler(
     IReportDashManager reportDashManager,
@@ -19,10 +17,10 @@ public class FinanceReportMainOnGetWorkingCapitalQueryHandler(
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         {
-             return Task.FromResult(GenericResult<FinanceReportMainOnGetWorkingCapitalResponse>.Success(new FinanceReportMainOnGetWorkingCapitalResponse
+                          return Task.FromResult(GenericResult<FinanceReportMainOnGetWorkingCapitalResponse>.Success(new FinanceReportMainOnGetWorkingCapitalResponse
             {
                 InitialModel = request.InitialModel,
-                Response= new JsonResult(DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options))
+                Response= DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)
             }));
         } 
 
@@ -31,10 +29,10 @@ public class FinanceReportMainOnGetWorkingCapitalQueryHandler(
         request.InitialModel.dashWorkingCapital = DashYearlyResultChart.SetResultMain(chk, request.Request.myear);
 
   
-        return Task.FromResult(GenericResult<FinanceReportMainOnGetWorkingCapitalResponse>.Success(new FinanceReportMainOnGetWorkingCapitalResponse
+                return Task.FromResult(GenericResult<FinanceReportMainOnGetWorkingCapitalResponse>.Success(new FinanceReportMainOnGetWorkingCapitalResponse
         {
             InitialModel = request.InitialModel,
-            Response= new JsonResult(DataSourceLoader.Load(request.InitialModel.dashWorkingCapital, request.Request.options))
+            Response= DataSourceLoader.Load(request.InitialModel.dashWorkingCapital, request.Request.options)
         }));
     }
 }

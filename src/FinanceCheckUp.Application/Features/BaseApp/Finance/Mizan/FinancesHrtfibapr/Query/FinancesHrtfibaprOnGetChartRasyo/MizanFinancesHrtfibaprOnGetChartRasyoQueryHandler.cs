@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.FinancesHrtfibapr;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.FinancesHrtfibapr.Query.FinancesHrtfibaprOnGetChartRasyo;
 public class MizanFinancesHrtfibaprOnGetChartRasyoQueryHandler(IDashGelirTablosuManager dashGelirTablosuManager,IHhvnUsersManager hhvnUsersManager,  ICompanyManager companyManager) : IRequestHandler<MizanFinancesHrtfibaprOnGetChartRasyoQuery, GenericResult<MizanFinancesHrtfibaprOnGetChartRasyoResponse>>
 {
@@ -21,12 +19,12 @@ public class MizanFinancesHrtfibaprOnGetChartRasyoQueryHandler(IDashGelirTablosu
         request.InitialModel.nRequestList = dashGelirTablosuManager.Get_MAINRESULTMultiMainPIVOT(request.InitialModel.CompID).Where(x => x.IsHidden == 0).ToList();
 
 
-        return Task.FromResult(GenericResult<MizanFinancesHrtfibaprOnGetChartRasyoResponse>.Success(
+                return Task.FromResult(GenericResult<MizanFinancesHrtfibaprOnGetChartRasyoResponse>.Success(
             new MizanFinancesHrtfibaprOnGetChartRasyoResponse
             {
                 InitialModel = request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.nRequestList,
-                    request.Request.options))
+                Response = DataSourceLoader.Load(request.InitialModel.nRequestList,
+                    request.Request.options)
             }));
     }
 }

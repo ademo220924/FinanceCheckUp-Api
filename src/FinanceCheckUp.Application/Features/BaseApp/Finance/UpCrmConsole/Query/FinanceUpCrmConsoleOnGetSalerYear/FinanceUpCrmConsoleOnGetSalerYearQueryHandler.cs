@@ -5,8 +5,6 @@ using FinanceCheckUp.Application.Models.Requests.Finance.UpCrmConsole;
 using FinanceCheckUp.Application.Models.Responses.Finance.UpCrmConsole;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.UpCrmConsole.Query.FinanceUpCrmConsoleOnGetSalerYear;
 public class FinanceUpCrmConsoleOnGetSalerYearQueryHandler 
     : IRequestHandler<FinanceUpCrmConsoleOnGetSalerYearQuery, GenericResult<FinanceUpCrmConsoleOnGetSalerYearResponse>>
@@ -14,9 +12,9 @@ public class FinanceUpCrmConsoleOnGetSalerYearQueryHandler
     public Task<GenericResult<FinanceUpCrmConsoleOnGetSalerYearResponse>> Handle(FinanceUpCrmConsoleOnGetSalerYearQuery request, CancellationToken cancellationToken)
     {
         var yearSetMonth = YearResult.getValue().OrderByDescending(x => x.MYear);
-        return Task.FromResult(GenericResult<FinanceUpCrmConsoleOnGetSalerYearResponse>.Success(new FinanceUpCrmConsoleOnGetSalerYearResponse
+                return Task.FromResult(GenericResult<FinanceUpCrmConsoleOnGetSalerYearResponse>.Success(new FinanceUpCrmConsoleOnGetSalerYearResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(yearSetMonth, request.Request.options))
+            Response = DataSourceLoader.Load(yearSetMonth, request.Request.options)
         }));
     }
 }

@@ -7,7 +7,6 @@ using FinanceCheckUp.Application.Models.ViewModel;
 using FinanceCheckUp.Domain.Entities;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpPageAktarma.Query.UpPageAktarmaOnGetSalerDateMain
@@ -32,10 +31,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpPageAktarm
             var options = new DataSourceLoadOptions();
  
             
-            return Task.FromResult(GenericResult<MizanUpPageAktarmaOnGetSalerDateMainResponse>.Success(new MizanUpPageAktarmaOnGetSalerDateMainResponse
+                        return Task.FromResult(GenericResult<MizanUpPageAktarmaOnGetSalerDateMainResponse>.Success(new MizanUpPageAktarmaOnGetSalerDateMainResponse
             {
                 InitialModel = request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(currentUploadM, options))
+                Response = DataSourceLoader.Load(currentUploadM, options)
             }));
         }
     }

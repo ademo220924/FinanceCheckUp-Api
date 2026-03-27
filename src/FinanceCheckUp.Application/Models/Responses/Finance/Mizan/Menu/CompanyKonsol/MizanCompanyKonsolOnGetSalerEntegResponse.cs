@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.Menu.CompanyKonsol;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.Menu.CompanyKonsol
 {
     public class MizanCompanyKonsolOnGetSalerEntegResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public MizanCompanyKonsolRequestInitialModel InitialModel { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using FinanceCheckUp.Application.Models.Responses.Finance.ReportMainTest;
 using FinanceCheckUp.Domain.Entities;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.ReportMainTest.Query.FinanceReportMainTestOnGetSalerDate;
@@ -22,10 +21,10 @@ public class FinanceReportMainTestOnGetSalerDateQueryHandler(
         request.InitialModel.curcomID = companyManager.Getby_User(userId).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
         var currentUploadM = reportSetMainSqlOperationManager.Get_StatbyCompanyMain(request.InitialModel.curcomID);
  
-        return Task.FromResult(GenericResult<FinanceReportMainTestOnGetSalerDateResponse>.Success(new FinanceReportMainTestOnGetSalerDateResponse
+                return Task.FromResult(GenericResult<FinanceReportMainTestOnGetSalerDateResponse>.Success(new FinanceReportMainTestOnGetSalerDateResponse
         {
             InitialModel = request.InitialModel,
-            Response = new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options))
+            Response = DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options)
         }));
     }
 }

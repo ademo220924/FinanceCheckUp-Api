@@ -1,9 +1,8 @@
-
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.DashCrmDetailb;
 public class DashCrmDetailbOnGetPrioResponse
 {
-    public JsonResult Response { get; set; }
+    public LoadResult Response { get; set; }
 
 }

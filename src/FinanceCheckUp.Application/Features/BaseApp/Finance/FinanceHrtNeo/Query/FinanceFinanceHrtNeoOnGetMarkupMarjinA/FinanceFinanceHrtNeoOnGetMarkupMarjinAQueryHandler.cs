@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.FinanceHrtNeo;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.FinanceHrtNeo.Query.FinanceFinanceHrtNeoOnGetMarkupMarjinA;
 public class FinanceFinanceHrtNeoOnGetMarkupMarjinAQueryHandler(IDashGelirTablosuManager dashGelirTablosuManager) : IRequestHandler<FinanceFinanceHrtNeoOnGetMarkupMarjinAQuery, GenericResult<FinanceFinanceHrtNeoOnGetMarkupMarjinAResponse>>
 {
@@ -15,9 +13,9 @@ public class FinanceFinanceHrtNeoOnGetMarkupMarjinAQueryHandler(IDashGelirTablos
         List<DashBilancoViewMulti> chklist = new List<DashBilancoViewMulti>();
         var chk = dashGelirTablosuManager.Get_MAINRESULTMultiMainPIVOTANeo(request.InitialModel.CompID).Where(x => x.TypeID == 111).OrderBy(x => x.AccountMainID);
 
-        return Task.FromResult(GenericResult<FinanceFinanceHrtNeoOnGetMarkupMarjinAResponse>.Success(new FinanceFinanceHrtNeoOnGetMarkupMarjinAResponse
+                return Task.FromResult(GenericResult<FinanceFinanceHrtNeoOnGetMarkupMarjinAResponse>.Success(new FinanceFinanceHrtNeoOnGetMarkupMarjinAResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(chk, request.Request.options))
+            Response = DataSourceLoader.Load(chk, request.Request.options)
         }));
 
     }

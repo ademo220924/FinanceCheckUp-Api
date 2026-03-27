@@ -1,10 +1,10 @@
 using FinanceCheckUp.Application.Models.Requests.upaccount;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 
 namespace FinanceCheckUp.Application.Models.Responses.upaccount;
 public class upaccountOnGetSalerMainChkResponse
 {
-    public JsonResult Result { get; set; }
+    public LoadResult Result { get; set; }
     public upaccountRequest InitialModel { get; set; }
 }

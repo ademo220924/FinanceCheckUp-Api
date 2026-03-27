@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.UpPageAktarmaMzn;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.UpPageAktarmaMzn.Query.FinanceUpPageAktarmaMznOnGetSalerComp;
 public class FinanceUpPageAktarmaMznOnGetSalerCompQueryHandler(ICompanyManager companyManager) 
     : IRequestHandler<FinanceUpPageAktarmaMznOnGetSalerCompQuery, GenericResult<FinanceUpPageAktarmaMznOnGetSalerCompResponse>>
@@ -15,10 +13,10 @@ public class FinanceUpPageAktarmaMznOnGetSalerCompQueryHandler(ICompanyManager c
         request.InitialModel.UserID = userId;
         request.InitialModel.mreqListCompany = companyManager.Getby_User(request.InitialModel.UserID);
         
-         return Task.FromResult(GenericResult<FinanceUpPageAktarmaMznOnGetSalerCompResponse>.Success(new FinanceUpPageAktarmaMznOnGetSalerCompResponse
+                  return Task.FromResult(GenericResult<FinanceUpPageAktarmaMznOnGetSalerCompResponse>.Success(new FinanceUpPageAktarmaMznOnGetSalerCompResponse
                 {
                     InitialModel = request.InitialModel,
-                    Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.mreqListCompany, request.Request.options))
+                    Response = DataSourceLoader.Load(request.InitialModel.mreqListCompany, request.Request.options)
                 }));
     }
 }

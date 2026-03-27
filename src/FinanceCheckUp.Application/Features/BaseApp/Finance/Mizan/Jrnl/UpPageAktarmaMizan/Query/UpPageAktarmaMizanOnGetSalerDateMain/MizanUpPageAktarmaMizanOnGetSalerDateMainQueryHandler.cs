@@ -4,8 +4,6 @@ using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Jrnl.UpPageAktarmaMizan.Query.UpPageAktarmaMizanOnGetSalerDateMain;
 public class MizanUpPageAktarmaMizanOnGetSalerDateMainQueryHandler(IHhvnUsersManager hhvnUsersManager,
     IReportSetMainSqlOperationManager reportSetMainSqlOperationManager,
@@ -26,11 +24,11 @@ public class MizanUpPageAktarmaMizanOnGetSalerDateMainQueryHandler(IHhvnUsersMan
 
       
         
-        return Task.FromResult(GenericResult<MizanUpPageAktarmaMizanOnGetSalerDateMainResponse>.Success(
+                return Task.FromResult(GenericResult<MizanUpPageAktarmaMizanOnGetSalerDateMainResponse>.Success(
             new MizanUpPageAktarmaMizanOnGetSalerDateMainResponse
             { 
                 InitialModel =request.InitialModel,
-                Response = new JsonResult(DataSourceLoader.Load(currentUploadM, options))
+                Response = DataSourceLoader.Load(currentUploadM, options)
             }));
     }
 }

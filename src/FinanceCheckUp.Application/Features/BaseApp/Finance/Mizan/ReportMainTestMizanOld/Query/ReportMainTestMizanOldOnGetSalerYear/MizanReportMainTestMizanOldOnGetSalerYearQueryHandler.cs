@@ -5,8 +5,6 @@ using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.ReportMainTestMiz
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.ReportMainTestMizanOld;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.ReportMainTestMizanOld.Query.ReportMainTestMizanOldOnGetSalerYear;
 public class MizanReportMainTestMizanOldOnGetSalerYearQueryHandler : IRequestHandler<MizanReportMainTestMizanOldOnGetSalerYearQuery, GenericResult<MizanReportMainTestMizanOldOnGetSalerYearResponse>>
 {
@@ -15,9 +13,9 @@ public class MizanReportMainTestMizanOldOnGetSalerYearQueryHandler : IRequestHan
     {
         var yearMonth = YearResult.getValue().OrderByDescending(x => x.MYear);
         
-        return Task.FromResult(GenericResult<MizanReportMainTestMizanOldOnGetSalerYearResponse>.Success(new MizanReportMainTestMizanOldOnGetSalerYearResponse
+                return Task.FromResult(GenericResult<MizanReportMainTestMizanOldOnGetSalerYearResponse>.Success(new MizanReportMainTestMizanOldOnGetSalerYearResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(yearMonth, request.Request.options))
+            Response = DataSourceLoader.Load(yearMonth, request.Request.options)
         }));
 
     }

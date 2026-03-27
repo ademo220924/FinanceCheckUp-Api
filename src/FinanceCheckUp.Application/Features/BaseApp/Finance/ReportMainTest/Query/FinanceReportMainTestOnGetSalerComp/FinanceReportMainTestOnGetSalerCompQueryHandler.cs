@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.ReportMainTest;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.ReportMainTest.Query.FinanceReportMainTestOnGetSalerComp;
 public class FinanceReportMainTestOnGetSalerCompQueryHandler(ICompanyManager companyManager) : IRequestHandler<FinanceReportMainTestOnGetSalerCompQuery, GenericResult<FinanceReportMainTestOnGetSalerCompResponse>>
 {
@@ -13,9 +11,9 @@ public class FinanceReportMainTestOnGetSalerCompQueryHandler(ICompanyManager com
         var userId = Convert.ToInt64(request.UserId);
         var mreqListCompany = companyManager.Getby_User(userId);
         
-        return Task.FromResult(GenericResult<FinanceReportMainTestOnGetSalerCompResponse>.Success(new FinanceReportMainTestOnGetSalerCompResponse
+                return Task.FromResult(GenericResult<FinanceReportMainTestOnGetSalerCompResponse>.Success(new FinanceReportMainTestOnGetSalerCompResponse
         {
-            Response =new JsonResult(DataSourceLoader.Load(mreqListCompany, request.Request.options))
+            Response =DataSourceLoader.Load(mreqListCompany, request.Request.options)
         }));
 
     }

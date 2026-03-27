@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.FinanceHrt;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.FinanceHrt.Query.FinanceFinanceHrtOnGetChartRasyo;
 public class FinanceFinanceHrtOnGetChartRasyoQueryHandler(
     IHhvnUsersManager hhvnUsersManager, 
@@ -21,9 +19,9 @@ public class FinanceFinanceHrtOnGetChartRasyoQueryHandler(
         request.InitialModel.ncart = new DashYearlyBilancoChart();
 
 
-        return Task.FromResult(GenericResult<FinanceFinanceHrtOnGetChartRasyoResponse>.Success(new FinanceFinanceHrtOnGetChartRasyoResponse
+                return Task.FromResult(GenericResult<FinanceFinanceHrtOnGetChartRasyoResponse>.Success(new FinanceFinanceHrtOnGetChartRasyoResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.nRequestList, request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.nRequestList, request.Request.options)
         }));
 
     }

@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models.Requests.upreportqnb;
 using FinanceCheckUp.Application.Models.Responses.upreportqnb;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.upreportqnb.Query.upreportqnbOnGetSalerDate;
 public class upreportqnbOnGetSalerDateQueryHandler(IHhvnUsersManager hhvnUsersManager, ICompanyManager companyManager, IReportSetMainSqlOperationManager reportSetMainSqlOperationManager) : IRequestHandler<upreportqnbOnGetSalerDateQuery, GenericResult<upreportqnbOnGetSalerDateResponse>>
 {
@@ -21,6 +19,6 @@ public class upreportqnbOnGetSalerDateQueryHandler(IHhvnUsersManager hhvnUsersMa
         };
 
         var currentUploadM = reportSetMainSqlOperationManager.Get_StatbyCompanyMainQNB(responseModel.curcomID);
-        return GenericResult<upreportqnbOnGetSalerDateResponse>.Success(new upreportqnbOnGetSalerDateResponse { InitialModel = responseModel, Result = new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.Options)) });
+                return GenericResult<upreportqnbOnGetSalerDateResponse>.Success(new upreportqnbOnGetSalerDateResponse { InitialModel = responseModel, Result = DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.Options) });
     }
 }

@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.UpPageAktarma;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.UpPageAktarma.Query.FinanceUpPageAktarmaOnGetSalerDateMain;
 public class FinanceUpPageAktarmaOnGetSalerDateMainQueryHandler(
     IReportSetMainSqlOperationManager reportSetMainSqlOperationManager,
@@ -26,10 +24,10 @@ public class FinanceUpPageAktarmaOnGetSalerDateMainQueryHandler(
         var options = new DataSourceLoadOptions();
  
         
-         return Task.FromResult(GenericResult<FinanceUpPageAktarmaOnGetSalerDateMainResponse>.Success(new FinanceUpPageAktarmaOnGetSalerDateMainResponse
+                  return Task.FromResult(GenericResult<FinanceUpPageAktarmaOnGetSalerDateMainResponse>.Success(new FinanceUpPageAktarmaOnGetSalerDateMainResponse
                 {
                     InitialModel = request.InitialModel,
-                    Response = new JsonResult(DataSourceLoader.Load(currentUploadM, options))
+                    Response = DataSourceLoader.Load(currentUploadM, options)
                 }));
     }
 }

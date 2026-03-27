@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.FinanceHrtView;
-using Microsoft.AspNetCore.Mvc;
+using DevExtreme.AspNet.Data.ResponseModel;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.FinanceHrtView
 {
     public class FinanceFinanceHrtViewOnGetMarkupMarjinResponse
     {
-        public JsonResult Response { get; set; }
+        public LoadResult Response { get; set; }
         public FinanceFinanceHrtViewRequestInitialModel InitialModel { get; set; }
     }
 }

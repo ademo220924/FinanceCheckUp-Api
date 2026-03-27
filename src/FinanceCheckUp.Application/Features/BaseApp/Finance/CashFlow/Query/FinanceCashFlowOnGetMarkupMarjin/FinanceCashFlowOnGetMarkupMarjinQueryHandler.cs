@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models.Responses.Finance.CashFlow;
 using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.CashFlow.Query.FinanceCashFlowOnGetMarkupMarjin;
 public class FinanceCashFlowOnGetMarkupMarjinQueryHandler(IDashGelirTablosuManager dashGelirTablosu,
     IHhvnUsersManager hhvnUsersManager, ICompanyManager companiesManager, 
@@ -22,14 +20,14 @@ public class FinanceCashFlowOnGetMarkupMarjinQueryHandler(IDashGelirTablosuManag
         {
             return Task.FromResult(GenericResult<FinanceCashFlowOnGetMarkupMarjinResponse>.Success(new FinanceCashFlowOnGetMarkupMarjinResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(chk, request.Request.options)),
+                Response = DataSourceLoader.Load(chk, request.Request.options),
                 InitialModel = request.InitialModel
             }));
         }
 
         return Task.FromResult(GenericResult<FinanceCashFlowOnGetMarkupMarjinResponse>.Success(new FinanceCashFlowOnGetMarkupMarjinResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(chk, request.Request.options)),
+            Response = DataSourceLoader.Load(chk, request.Request.options),
             InitialModel = request.InitialModel
         }));
 

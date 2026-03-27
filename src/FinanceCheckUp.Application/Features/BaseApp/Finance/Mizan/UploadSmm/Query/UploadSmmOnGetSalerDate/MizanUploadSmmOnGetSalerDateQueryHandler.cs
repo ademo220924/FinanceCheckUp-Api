@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UploadSmm;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadSmm.Query.UploadSmmOnGetSalerDate
 {
     public class MizanUploadSmmOnGetSalerDateQueryHandler(
@@ -21,10 +19,10 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UploadSmm.Qu
             
             var currentUploadM = setMainSqlOperationManager.Get_StatbyCompanyExcel(request.InitialModel.curcomID);
 
-            return Task.FromResult(GenericResult<MizanUploadSmmOnGetSalerDateResponse>.Success(new MizanUploadSmmOnGetSalerDateResponse
+                        return Task.FromResult(GenericResult<MizanUploadSmmOnGetSalerDateResponse>.Success(new MizanUploadSmmOnGetSalerDateResponse
             {
                 InitialModel = request.InitialModel,
-                Response= new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options))
+                Response= DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.options)
             }));
         }
     }

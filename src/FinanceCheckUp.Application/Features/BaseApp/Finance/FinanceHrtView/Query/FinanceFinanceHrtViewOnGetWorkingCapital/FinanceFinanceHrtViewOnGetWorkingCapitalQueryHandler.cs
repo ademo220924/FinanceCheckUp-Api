@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.FinanceHrtView;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.FinanceHrtView.Query.FinanceFinanceHrtViewOnGetWorkingCapital;
 public class FinanceFinanceHrtViewOnGetWorkingCapitalQueryHandler(IHhvnUsersManager hhvnUsersManager, IReportDashManager reportDashManager) : IRequestHandler<FinanceFinanceHrtViewOnGetWorkingCapitalQuery, GenericResult<FinanceFinanceHrtViewOnGetWorkingCapitalResponse>>
 {
@@ -15,9 +13,9 @@ public class FinanceFinanceHrtViewOnGetWorkingCapitalQueryHandler(IHhvnUsersMana
 
         if (!hhvnUsersManager.CheckUser(request.InitialModel.CompID, (int)userId))
         {
-            return Task.FromResult(GenericResult<FinanceFinanceHrtViewOnGetWorkingCapitalResponse>.Success(new FinanceFinanceHrtViewOnGetWorkingCapitalResponse
+                        return Task.FromResult(GenericResult<FinanceFinanceHrtViewOnGetWorkingCapitalResponse>.Success(new FinanceFinanceHrtViewOnGetWorkingCapitalResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options))
+                Response = DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)
             }));
         }
 
@@ -25,9 +23,9 @@ public class FinanceFinanceHrtViewOnGetWorkingCapitalQueryHandler(IHhvnUsersMana
         int lastmont = reportDashManager.Get_LastMonthYear(request.Request.myear, request.InitialModel.CompID);
         request.InitialModel.dashWorkingCapital = DashYearlyResultChart.SetResultMain(chk, request.Request.myear);
 
-        return Task.FromResult(GenericResult<FinanceFinanceHrtViewOnGetWorkingCapitalResponse>.Success(new FinanceFinanceHrtViewOnGetWorkingCapitalResponse
+                return Task.FromResult(GenericResult<FinanceFinanceHrtViewOnGetWorkingCapitalResponse>.Success(new FinanceFinanceHrtViewOnGetWorkingCapitalResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.dashWorkingCapital, request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.dashWorkingCapital, request.Request.options)
         }));
 
     }

@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.ReportMain;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.ReportMain.Query.FinanceReportMainOnGetMarkupMarjin;
 public class FinanceReportMainOnGetMarkupMarjinQueryHandler(
     IReportDashManager reportDashManager,
@@ -18,16 +16,16 @@ public class FinanceReportMainOnGetMarkupMarjinQueryHandler(
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         { 
-            return Task.FromResult(GenericResult<FinanceReportMainOnGetMarkupMarjinResponse>.Success(new FinanceReportMainOnGetMarkupMarjinResponse
+                        return Task.FromResult(GenericResult<FinanceReportMainOnGetMarkupMarjinResponse>.Success(new FinanceReportMainOnGetMarkupMarjinResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options))
+                Response = DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)
             }));
         }
 
         var mrequestResult_1 = reportDashManager.Get_Data_GrossProfitGraphic(request.Request.myear, request.Request.compid);
-        return Task.FromResult(GenericResult<FinanceReportMainOnGetMarkupMarjinResponse>.Success(new FinanceReportMainOnGetMarkupMarjinResponse
+                return Task.FromResult(GenericResult<FinanceReportMainOnGetMarkupMarjinResponse>.Success(new FinanceReportMainOnGetMarkupMarjinResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(mrequestResult_1, request.Request.options))
+            Response = DataSourceLoader.Load(mrequestResult_1, request.Request.options)
         }));
     }
 }

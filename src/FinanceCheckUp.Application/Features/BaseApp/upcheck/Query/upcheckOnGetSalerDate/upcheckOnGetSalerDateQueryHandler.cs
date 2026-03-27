@@ -4,9 +4,6 @@ using FinanceCheckUp.Application.Models.Requests.upcheck;
 using FinanceCheckUp.Application.Models.Responses.upcheck;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-
 namespace FinanceCheckUp.Application.Features.BaseApp.upcheck.Query.upcheckOnGetSalerDate;
 public class upcheckOnGetSalerDateQueryHandler(IHhvnUsersManager hhvnUsersManager, ICompanyManager companyManager, IReportSetMainSqlOperationManager reportSetMainSqlOperationManager, IMainDashManager mainDashManager, IUploadMainManager uploadMainManager) : IRequestHandler<upcheckOnGetSalerDateQuery, GenericResult<upcheckOnGetSalerDateResponse>>
 {
@@ -26,6 +23,6 @@ public class upcheckOnGetSalerDateQueryHandler(IHhvnUsersManager hhvnUsersManage
         currentUploadM.Where(x => chkErrormonthID.Contains(x.MainMonth)).Select(c => { c.ErrorCount = -1; return c; }).OrderBy(x => x.MainMonth).ToList();
 
 
-        return GenericResult<upcheckOnGetSalerDateResponse>.Success(new upcheckOnGetSalerDateResponse { InitialModel = responseModel, Result = new JsonResult(DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.Options)) });
+                return GenericResult<upcheckOnGetSalerDateResponse>.Success(new upcheckOnGetSalerDateResponse { InitialModel = responseModel, Result = DataSourceLoader.Load(currentUploadM.OrderBy(x => x.MainMonth).ToList(), request.Request.Options) });
     }
 }

@@ -3,8 +3,6 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.Responses.Finance.UpPageAktarma;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.UpPageAktarma.Query.FinanceUpPageAktarmaOnGetSalerComp;
 public class FinanceUpPageAktarmaOnGetSalerCompQueryHandler(ICompanyManager companyManager) 
     : IRequestHandler<FinanceUpPageAktarmaOnGetSalerCompQuery, GenericResult<FinanceUpPageAktarmaOnGetSalerCompResponse>>
@@ -15,10 +13,10 @@ public class FinanceUpPageAktarmaOnGetSalerCompQueryHandler(ICompanyManager comp
         request.InitialModel.UserID = userId;
         request.InitialModel.mreqListCompany = companyManager.Getby_User(request.InitialModel.UserID);
          
-        return Task.FromResult(GenericResult<FinanceUpPageAktarmaOnGetSalerCompResponse>.Success(new FinanceUpPageAktarmaOnGetSalerCompResponse
+                return Task.FromResult(GenericResult<FinanceUpPageAktarmaOnGetSalerCompResponse>.Success(new FinanceUpPageAktarmaOnGetSalerCompResponse
         {
             InitialModel = request.InitialModel,
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.mreqListCompany, request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.mreqListCompany, request.Request.options)
         }));
     }
 }

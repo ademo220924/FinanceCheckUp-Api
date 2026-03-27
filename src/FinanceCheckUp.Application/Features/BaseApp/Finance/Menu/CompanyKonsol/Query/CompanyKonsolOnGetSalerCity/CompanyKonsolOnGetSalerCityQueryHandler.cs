@@ -1,7 +1,6 @@
 ﻿using FinanceCheckUp.Application.Models.Responses.Finance.Menu.CompanyKonsol;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using DevExtreme.AspNet.Data;
 using FinanceCheckUp.Application.Managers.SqlQueryManager;
 
@@ -13,10 +12,10 @@ public class CompanyKonsolOnGetSalerCityQueryHandler(ICitiesManager citiesManage
         CancellationToken cancellationToken)
     {
         var mreqListCitiy = citiesManager.Get_Cities();
-        return Task.FromResult(GenericResult<CompanyKonsolOnGetSalerCityResponse>.Success(
+                return Task.FromResult(GenericResult<CompanyKonsolOnGetSalerCityResponse>.Success(
             new CompanyKonsolOnGetSalerCityResponse
             {
-                Response = new JsonResult(DataSourceLoader.Load(mreqListCitiy, request.Request.options))
+                Response = DataSourceLoader.Load(mreqListCitiy, request.Request.options)
             }));
     }
 }

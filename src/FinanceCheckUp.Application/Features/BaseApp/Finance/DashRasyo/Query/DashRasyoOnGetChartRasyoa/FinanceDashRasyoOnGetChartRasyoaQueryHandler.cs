@@ -4,8 +4,6 @@ using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.DashRasyo;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.DashRasyo.Query.DashRasyoOnGetChartRasyoa;
 public class FinanceDashRasyoOnGetChartRasyoaQueryHandler(
     IHhvnUsersManager hhvnUsersManager, 
@@ -21,9 +19,9 @@ public class FinanceDashRasyoOnGetChartRasyoaQueryHandler(
         request.InitialModel.RasyoAnaliz = rasyoAnalizMainManager.RasyoAnalizTOTALFinal(request.InitialModel.CurrentUser.SelectedYear, request.InitialModel.CompID);
         request.InitialModel.RasyoAnalizView.SetResult(request.InitialModel.RasyoAnaliz, request.InitialModel.CurrentUser.SelectedYear);
 
-        return Task.FromResult(GenericResult<FinanceDashRasyoOnGetChartRasyoaResponse>.Success(new FinanceDashRasyoOnGetChartRasyoaResponse
+                return Task.FromResult(GenericResult<FinanceDashRasyoOnGetChartRasyoaResponse>.Success(new FinanceDashRasyoOnGetChartRasyoaResponse
         {
-            Response = new JsonResult(DataSourceLoader.Load(request.InitialModel.RasyoAnalizView.nresult.Where(x => x.TypeID == 2), request.Request.options))
+            Response = DataSourceLoader.Load(request.InitialModel.RasyoAnalizView.nresult.Where(x => x.TypeID == 2), request.Request.options)
         }));
 
     }
