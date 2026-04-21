@@ -111,7 +111,7 @@ var app = builder.Build();
 app.UseCustomSwagger(builder.Configuration)
     .AddReDocumet(builder.Configuration)
     .UseRouting()
-    //.UseMiddleware<ExceptionHandlingMiddleware>()
+    .UseMiddleware<ExceptionHandlingMiddleware>()
     .UseMiddleware<RequestResponseLoggingMiddleware>()
     .UseMiddleware<TokenHeaderMiddleware>()
     .UseCors(x => x

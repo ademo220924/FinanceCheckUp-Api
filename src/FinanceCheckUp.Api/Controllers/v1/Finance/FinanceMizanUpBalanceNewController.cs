@@ -67,9 +67,9 @@ public class FinanceMizanUpBalanceNewController(IMediator mediator) : Controller
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetSalerCompAsync([FromBody] MizanUpBalanceNewOnGetSalerCompRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSalerCompAsync([FromBody] MizanUpBalanceNewOnGetSalerCompQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpBalanceNewOnGetSalerCompQuery { Request = request };
+        var command = new MizanUpBalanceNewOnGetSalerCompQuery { Request = request.Request };
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }
@@ -80,9 +80,9 @@ public class FinanceMizanUpBalanceNewController(IMediator mediator) : Controller
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetCheckRepPdfAsync([FromBody] MizanUpBalanceNewOnGetCheckRepPdfRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetCheckRepPdfAsync([FromBody] MizanUpBalanceNewOnGetCheckRepPdfQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpBalanceNewOnGetCheckRepPdfQuery { Request = request };
+        var command = new MizanUpBalanceNewOnGetCheckRepPdfQuery { Request = request.Request };
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }

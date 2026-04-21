@@ -22,7 +22,7 @@ namespace FinanceCheckUp.Api.Controllers.v1;
 
 
 [ApiVersion("1.0")]
-[Route("api/mizan")]
+[Route("api/Mizan")]
 [ApiController]
 public class MizanController(IMediator mediator) : ControllerBase
 {
@@ -59,20 +59,16 @@ public class MizanController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    [Route("moodUploadMznCkeckPDFUpdate")]
+    [Route("MoodUploadMznCkeck")]
     [Consumes("multipart/form-data")]
     [RequestSizeLimit(AppConst.DocumentMaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = AppConst.MultipartBodyLengthLimit)]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> MoodUploadMznCkeckFileUpdateAsync(
-        List<IFormFile> files,
-        [FromQuery] int id,
-        [FromQuery] string ide,
-        [FromQuery] string ideXml,
-        [FromQuery] string caption,
+    public async Task<IActionResult> MoodUploadMznCkeck(
+        [FromForm] List<IFormFile> files,
+        [FromForm] int id,
+        [FromForm] string ide,
+        [FromForm] string ideXml,
+        [FromForm] string caption,
         CancellationToken cancellationToken)
     {
         if (files is null)
@@ -84,7 +80,8 @@ public class MizanController(IMediator mediator) : ControllerBase
             id = id,
             ide = ide,
             idexml = ideXml,
-            Caption = caption
+            Caption = caption,
+            file = files
         });
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);

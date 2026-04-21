@@ -18,11 +18,16 @@ namespace FinanceCheckUp.Application.Managers.StaticManagers;
 public interface IComReportManager : IGenericDapperRepository
 {
     public ReportFinancialOverview Getreport(int nyear, Company comp);
+
+    /// <summary>
+    /// API (Refit) için rapor datası; DevExpress rapor üretiminden önceki <see cref="ComReport"/> modeli.
+    /// </summary>
+    public ComReport BuildComReportModel(int nyear, Company comp);
 }
 
 public class ComReportManager( FinanceCheckUpDbContext _dbContext,IMainDashManager mainDashManager): GenericDapperRepositoryBase(_dbContext), IComReportManager
 {
-    public ReportFinancialOverview Getreport(int nyear, Company comp)
+    public ComReport BuildComReportModel(int nyear, Company comp)
     {
         var comReport = new ComReport();
         
@@ -179,6 +184,12 @@ public class ComReportManager( FinanceCheckUpDbContext _dbContext,IMainDashManag
         comReport.ncheckchart10 = mainDashManager.DataReportMainChartMain(comReport.ncheck10);
         comReport.ncheckchart11 = mainDashManager.DataReportMainChartMain(comReport.ncheck11);
         comReport.ncheckchart12 = mainDashManager.DataReportMainChartMain(comReport.ncheck12);
+        return comReport;
+    }
+
+    public ReportFinancialOverview Getreport(int nyear, Company comp)
+    {
+        var comReport = BuildComReportModel(nyear, comp);
         ReportFinancialOverview report = new ReportFinancialOverview();
         ObjectDataSource objectDataSource = new ObjectDataSource();
         objectDataSource.Name = "DataViewer";

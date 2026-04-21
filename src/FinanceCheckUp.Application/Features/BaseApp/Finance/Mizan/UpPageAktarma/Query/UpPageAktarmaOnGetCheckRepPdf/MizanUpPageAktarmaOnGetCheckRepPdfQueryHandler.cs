@@ -21,7 +21,6 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpPageAktarm
                 string FileDocz = "";
 
                 var userId = Convert.ToInt64(request.UserId);
-                request.InitialModel.UserID = userId;
                 
                  var curCompany = companyManager.Get_CompanyRow(request.Request.companyID);
                 List<CompanyReport> nlist = companyReportManager.Get_CompanyReportList(request.Request.companyID);
@@ -33,7 +32,6 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpPageAktarm
                     return Task.FromResult(GenericResult<MizanUpPageAktarmaOnGetCheckRepPdfResponse>.Success(
                         new MizanUpPageAktarmaOnGetCheckRepPdfResponse
                         {
-                            InitialModel = request.InitialModel,
                             Response = new JsonResult(FileDocz)
                         }));
                 }
@@ -55,7 +53,6 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpPageAktarm
                 return Task.FromResult(GenericResult<MizanUpPageAktarmaOnGetCheckRepPdfResponse>.Success(
                     new MizanUpPageAktarmaOnGetCheckRepPdfResponse
                     {
-                        InitialModel = request.InitialModel,
                         Response = new JsonResult(FileDocz)
                     }));
 

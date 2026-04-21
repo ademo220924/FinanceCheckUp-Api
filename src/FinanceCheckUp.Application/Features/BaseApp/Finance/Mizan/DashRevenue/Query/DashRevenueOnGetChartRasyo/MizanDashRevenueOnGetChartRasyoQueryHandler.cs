@@ -21,13 +21,14 @@ public class MizanDashRevenueOnGetChartRasyoQueryHandler(IDashGelirTablosuManage
         request.InitialModel.CompID = companyManager.Getby_User(request.InitialModel.UserID).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
         request.InitialModel.nRequestList = dashGelirTablosuManager.Get_MAINRESULTMultiMain(request.InitialModel.CompID).Where(x => x.IsHidden == 0).ToList();
         request.InitialModel.ncart = new DashYearlyBilancoChart();
-        
-                return Task.FromResult(GenericResult<MizanDashRevenueOnGetChartRasyoResponse>.Success(
-            new MizanDashRevenueOnGetChartRasyoResponse
-            {
-                Response = DataSourceLoader.Load(request.InitialModel.nRequestList, request.Request.options),
-                InitialModel = request.InitialModel
-            }));
+
+        var data = new MizanDashRevenueOnGetChartRasyoResponse
+        {
+            Response = DataSourceLoader.Load(request.InitialModel.nRequestList, request.Request.options),
+            InitialModel = request.InitialModel
+        };
+        return Task.FromResult(GenericResult<MizanDashRevenueOnGetChartRasyoResponse>.Success(
+            data));
     }
 }
 

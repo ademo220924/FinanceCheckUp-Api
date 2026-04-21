@@ -10,11 +10,11 @@ public class MizanDashRevenueOnGetMarkupMarjinQueryHandler(IDashGelirTablosuMana
     public Task<GenericResult<MizanDashRevenueOnGetMarkupMarjinResponse>> Handle(MizanDashRevenueOnGetMarkupMarjinQuery request, CancellationToken cancellationToken)
     {
         var chk = dashGelirTablosuManager.Get_MAINRESULTMultiRVNMain(request.Request.compid).Where(x => x.IsHidden == 0);
-        
-                return Task.FromResult(GenericResult<MizanDashRevenueOnGetMarkupMarjinResponse>.Success(
-            new MizanDashRevenueOnGetMarkupMarjinResponse
-            {
-                Response =  DataSourceLoader.Load(chk, request.Request.options)
-            }));
+
+        var data = new MizanDashRevenueOnGetMarkupMarjinResponse
+        {
+            Response = DataSourceLoader.Load(chk, request.Request.options)
+        };
+        return Task.FromResult(GenericResult<MizanDashRevenueOnGetMarkupMarjinResponse>.Success(data));
     }
 }

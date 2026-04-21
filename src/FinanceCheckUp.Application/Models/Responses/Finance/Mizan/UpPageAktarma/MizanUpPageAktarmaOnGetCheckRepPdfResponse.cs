@@ -6,6 +6,5 @@ namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UpPageAktarm
     public class MizanUpPageAktarmaOnGetCheckRepPdfResponse
     {
         public JsonResult Response { get; set; }
-        public MizanUpPageAktarmaRequestInitialModel InitialModel { get; set; }
     }
 }

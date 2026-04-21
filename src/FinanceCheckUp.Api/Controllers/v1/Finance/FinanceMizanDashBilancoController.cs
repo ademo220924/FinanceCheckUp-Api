@@ -40,9 +40,9 @@ public class FinanceMizanDashBilancoController(IMediator mediator) : ControllerB
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetChartRasyoAsync([FromBody] MizanDashBilancoOnGetChartRasyoRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetChartRasyoAsync([FromBody] MizanDashBilancoOnGetChartRasyoQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanDashBilancoOnGetChartRasyoQuery { Request = request };
+        var command = new MizanDashBilancoOnGetChartRasyoQuery { Request = request.Request, InitialModel =  request.InitialModel };
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }

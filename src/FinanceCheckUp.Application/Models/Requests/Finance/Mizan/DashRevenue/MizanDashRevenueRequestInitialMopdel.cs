@@ -4,13 +4,13 @@ namespace FinanceCheckUp.Application.Models.Requests.Finance.Mizan.DashRevenue
 {
     public class MizanDashRevenueRequestInitialMopdel
     {
-        public IEnumerable<YearResult> myearResult;
-        public long UserID;
-        public long CompID;
-        public int CompCount;
-        public int YearCount;
-        public HhvnUsers CurrentUser;
-        public DashYearlyBilancoChart ncart;
+        public IEnumerable<YearResult> myearResult{ get; set; }
+        public long UserID{ get; set; }
+        public long CompID{ get; set; }
+        public int CompCount{ get; set; }
+        public int YearCount{ get; set; }
+        public HhvnUsers CurrentUser{ get; set; }
+        public DashYearlyBilancoChart ncart{ get; set; }
         public string CompNameNorm { get; set; }
         public List<DashBilancoViewMulti> nRequestList;
 

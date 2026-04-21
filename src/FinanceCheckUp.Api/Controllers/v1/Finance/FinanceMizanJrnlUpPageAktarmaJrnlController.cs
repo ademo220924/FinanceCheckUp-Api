@@ -43,10 +43,9 @@ public class FinanceMizanJrnlUpPageAktarmaJrnlController(IMediator mediator) : C
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetSalerDateMainAsync([FromBody] MizanUpPageAktarmaJrnlOnGetSalerDateMainRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSalerDateMainAsync([FromBody] MizanUpPageAktarmaJrnlOnGetSalerDateMainQuery query, CancellationToken cancellationToken)
     {
-        var command = new MizanUpPageAktarmaJrnlOnGetSalerDateMainQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 
@@ -69,10 +68,9 @@ public class FinanceMizanJrnlUpPageAktarmaJrnlController(IMediator mediator) : C
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetSalerDateAsync([FromBody] MizanUpPageAktarmaJrnlOnGetSalerDateRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSalerDateAsync([FromBody] MizanUpPageAktarmaJrnlOnGetSalerDateQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpPageAktarmaJrnlOnGetSalerDateQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 
@@ -95,10 +93,9 @@ public class FinanceMizanJrnlUpPageAktarmaJrnlController(IMediator mediator) : C
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetSalerCompAsync([FromBody] MizanUpPageAktarmaJrnlOnGetSalerCompRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSalerCompAsync([FromBody] MizanUpPageAktarmaJrnlOnGetSalerCompQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpPageAktarmaJrnlOnGetSalerCompQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 
@@ -108,10 +105,9 @@ public class FinanceMizanJrnlUpPageAktarmaJrnlController(IMediator mediator) : C
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetGraphCodeAsync([FromBody] MizanUpPageAktarmaJrnlOnGetGraphCodeRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetGraphCodeAsync([FromBody] MizanUpPageAktarmaJrnlOnGetGraphCodeQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpPageAktarmaJrnlOnGetGraphCodeQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 
@@ -121,10 +117,9 @@ public class FinanceMizanJrnlUpPageAktarmaJrnlController(IMediator mediator) : C
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetGraphCodeDelAsync([FromBody] MizanUpPageAktarmaJrnlOnGetGraphCodeDelRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetGraphCodeDelAsync([FromBody] MizanUpPageAktarmaJrnlOnGetGraphCodeDelQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpPageAktarmaJrnlOnGetGraphCodeDelQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 

@@ -11,6 +11,5 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpPageAktarm
     {
         [JsonIgnore] public  string UserId { get; set; }
         public MizanUpPageAktarmaOnGetCheckRepPdfRequest Request { get; set; }
-        public MizanUpPageAktarmaRequestInitialModel InitialModel { get; set; }
     }
 }

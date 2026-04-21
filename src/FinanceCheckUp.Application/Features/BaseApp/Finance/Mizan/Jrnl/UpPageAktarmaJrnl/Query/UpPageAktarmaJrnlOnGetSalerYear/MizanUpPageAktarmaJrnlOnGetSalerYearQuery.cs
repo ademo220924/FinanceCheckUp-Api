@@ -10,5 +10,4 @@ public class MizanUpPageAktarmaJrnlOnGetSalerYearQuery : IUserIdAssignable , IRe
 {
     [JsonIgnore] public  string UserId { get; set; }
     public MizanUpPageAktarmaJrnlOnGetSalerYearRequest Request { get; set; }
-    public MizanUpPageAktarmaJrnlRequestInitialModel InitialModel { get; set; }
 }

@@ -3,6 +3,7 @@ using DevExpress.XtraReports.UI;
 using FinanceCheckUp.Application.Contexts.Concretes.Databases;
 using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Common;
+using FinanceCheckUp.Application.Models.Responses.Finance.Reports;
 using FinanceCheckUp.Application.Models.ViewModel;
 using FinanceCheckUp.Application.Models.ViewModel.Reports;
 using FinanceCheckUp.Domain.Entities;
@@ -24,6 +25,14 @@ namespace FinanceCheckUp.Application.Managers.SqlQueryManager
         public BalanceReport getMizanRaporu(int _year, Company CCompanies);
         public BalanceReport getMizanRaporuMizan(int _year, Company CCompanies);
         public BalanceReportAktarma getMizanRaporuMizanAkt(int _year, Company CCompanies);
+
+        List<DataViewer> BuildKontrolDenetimNcheckList(List<DataViewer> ncheck);
+
+        CompanyReportHelperMizanRaporuResponse BuildMizanRaporuApiPayload(int year, Company company);
+
+        CompanyReportHelperMizanRaporuMizanResponse BuildMizanRaporuMizanApiPayload(int year, Company company);
+
+        CompanyReportHelperMizanRaporuMizanAktResponse BuildMizanRaporuMizanAktApiPayload(int year, Company company);
     }
 
 
@@ -230,6 +239,71 @@ IReportMizanCheckManager reportMizanCheckManager) : GenericDapperRepositoryBase(
             report.PrintingSystem.Document.Name = "Balance_raporlar";
             return report;
         }
-   
+
+        public List<DataViewer> BuildKontrolDenetimNcheckList(List<DataViewer> ncheck)
+        {
+            if (ncheck == null || ncheck.Count == 0)
+            {
+                return ncheck ?? new List<DataViewer>();
+            }
+
+            return ncheck.Distinct().OrderBy(c => c.EntryNumber).ThenBy(n => n.Description).ToList();
+        }
+
+        public CompanyReportHelperMizanRaporuResponse BuildMizanRaporuApiPayload(int year, Company company)
+        {
+            string header = company.CompanyName + " " + year.ToString() + " Yılı Kümülatif Mizan Raporu";
+            List<ReportSet> bilanco = reportSetMainSqlOperationManager.Get_ReportSetBilanco(year, company.Id);
+            List<DashMizanResult> mizanResult = mizanResultManager.Get_MizanResult(year, company.Id);
+            List<DashDonukView> donukChk = mizanResultManager.Get_DonuChk(year, company.Id);
+            List<DashMizanResult> ticariAlici = mizanResultManager.Get_TicariAlıcı(year, company.Id);
+            List<DashMizanResult> ticariBorclu = mizanResultManager.Get_TicariBorclu(year, company.Id);
+            ReportMizan mainreporttext = reportMizanCheckManager.GetComapanyCumulative(year, company.Id);
+
+            return new CompanyReportHelperMizanRaporuResponse
+            {
+                Header = header,
+                MainReportText = mainreporttext,
+                Bilanco = bilanco,
+                MizanResult = mizanResult,
+                DonukChk = donukChk,
+                TicariAlici = ticariAlici,
+                TicariBorclu = ticariBorclu
+            };
+        }
+
+        public CompanyReportHelperMizanRaporuMizanResponse BuildMizanRaporuMizanApiPayload(int year, Company company)
+        {
+            string header = company.CompanyName + " " + year.ToString() + " Yılı Kümülatif Mizan Raporu";
+            List<ReportSet> bilanco = reportSetMainSqlOperationManager.Get_ReportSetBilanco(year, company.Id);
+            List<DashMizanResult> mizanResult = mizanResultManager.Get_MizanResult(year, company.Id);
+            List<DashDonukView> donukChk = mizanResultManager.Get_DonuChk(year, company.Id);
+            List<DashMizanResult> ticariAlici = mizanResultManager.Get_TicariAlıcıMizan(year, company.Id);
+            List<DashMizanResult> ticariBorclu = mizanResultManager.Get_TicariBorcluMizan(year, company.Id);
+            ReportMizan mainreporttext = reportMizanCheckManager.GetComapanyCumulativeMizan(year, company.Id);
+
+            return new CompanyReportHelperMizanRaporuMizanResponse
+            {
+                Header = header,
+                MainReportText = mainreporttext,
+                Bilanco = bilanco,
+                MizanResult = mizanResult,
+                DonukChk = donukChk,
+                TicariAlici = ticariAlici,
+                TicariBorclu = ticariBorclu
+            };
+        }
+
+        public CompanyReportHelperMizanRaporuMizanAktResponse BuildMizanRaporuMizanAktApiPayload(int year, Company company)
+        {
+            string header = company.CompanyName + " " + year.ToString() + " Yılı Aktarma Karşılaştırmalı Mizan Raporu";
+            List<ReportSet> bilanco = reportSetMainSqlOperationManager.Get_ReportSetBilancoAkt(year, company.Id);
+
+            return new CompanyReportHelperMizanRaporuMizanAktResponse
+            {
+                Header = header,
+                BilancoAktarma = bilanco
+            };
+        }
     }
 }

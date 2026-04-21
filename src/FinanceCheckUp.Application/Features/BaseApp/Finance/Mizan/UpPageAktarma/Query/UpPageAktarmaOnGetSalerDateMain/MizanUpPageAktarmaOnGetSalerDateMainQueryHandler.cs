@@ -21,19 +21,19 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpPageAktarm
         public Task<GenericResult<MizanUpPageAktarmaOnGetSalerDateMainResponse>> Handle(MizanUpPageAktarmaOnGetSalerDateMainQuery request, CancellationToken cancellationToken)
         {
             var userId = Convert.ToInt64(request.UserId);
-            request.InitialModel.UserID = userId;
-            request.InitialModel.CurrentUser = hhvnUsersManager.GetRow_User(request.InitialModel.UserID);
+            request.Request.InitialModel.UserID = userId;
+            request.Request.InitialModel.CurrentUser = hhvnUsersManager.GetRow_User(request.Request.InitialModel.UserID);
 
-            request.InitialModel.curcomID = companyManager.Getby_User(request.InitialModel.UserID).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
+            request.Request.InitialModel.curcomID = companyManager.Getby_User(request.Request.InitialModel.UserID).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
 
-            var currentUploadM1 = setMainSqlOperationManager.Get_CompanyAktarmaResult(request.Request.nyear, request.InitialModel.curcomID);
+            var currentUploadM1 = setMainSqlOperationManager.Get_CompanyAktarmaResult(request.Request.nyear, request.Request.InitialModel.curcomID);
             var currentUploadM = dashAktarmaSqlOperationManager.AddSMMM(currentUploadM1);
             var options = new DataSourceLoadOptions();
  
             
                         return Task.FromResult(GenericResult<MizanUpPageAktarmaOnGetSalerDateMainResponse>.Success(new MizanUpPageAktarmaOnGetSalerDateMainResponse
             {
-                InitialModel = request.InitialModel,
+                InitialModel = request.Request.InitialModel,
                 Response = DataSourceLoader.Load(currentUploadM, options)
             }));
         }

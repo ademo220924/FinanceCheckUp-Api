@@ -43,10 +43,9 @@ public class FinanceMizanUpPageAktarmaController(IMediator mediator) : Controlle
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetSalerDateMainAsync([FromBody] MizanUpPageAktarmaOnGetSalerDateMainRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSalerDateMainAsync([FromBody] MizanUpPageAktarmaOnGetSalerDateMainQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpPageAktarmaOnGetSalerDateMainQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 
@@ -56,9 +55,9 @@ public class FinanceMizanUpPageAktarmaController(IMediator mediator) : Controlle
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetSalerDateAsync([FromBody] MizanUpPageAktarmaOnGetSalerDateRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetSalerDateAsync([FromBody] MizanUpPageAktarmaOnGetSalerDateQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpPageAktarmaOnGetSalerDateQuery { Request = request };
+        var command = new MizanUpPageAktarmaOnGetSalerDateQuery { Request = request.Request, InitialModel =  request.InitialModel , UserId =  request.UserId };
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }
@@ -84,7 +83,7 @@ public class FinanceMizanUpPageAktarmaController(IMediator mediator) : Controlle
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> GetSalerCompAsync([FromBody] MizanUpPageAktarmaOnGetSalerCompRequest request, CancellationToken cancellationToken)
     {
-        var command = new MizanUpPageAktarmaOnGetSalerCompQuery { Request = request };
+        var command = new MizanUpPageAktarmaOnGetSalerCompQuery { Request = request };  
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }

@@ -10,7 +10,6 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpPageAktarm
     public class MizanUpPageAktarmaOnGetSalerDateMainQuery : IUserIdAssignable , IRequest<GenericResult<MizanUpPageAktarmaOnGetSalerDateMainResponse>>
     {
         [JsonIgnore] public  string UserId { get; set; }
-        public MizanUpPageAktarmaOnGetSalerDateMainRequest Request { get; set; }
-        public MizanUpPageAktarmaRequestInitialModel InitialModel { get; set; }
+        public MizanUpPageAktarmaOnGetSalerDateMainRequest Request { get; set; } 
     }
 }
