@@ -11,7 +11,7 @@ namespace FinanceCheckUp.Api.Controllers.v1.Finance;
 
 
 [ApiVersion("1.0")]
-[Route("api/finance/mizan/aktarma/[controller]")]
+[Route("api/finance/mizan/aktarma/AktarmaDashBilanco")]
 [Produces(MediaTypeNames.Application.Json)]
 [ApiController]
 public class 
@@ -39,10 +39,9 @@ public class
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetMarkupMarjinAsync([FromBody] MizanAktarmaDashBilancoOnGetMarkupMarjinRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMarkupMarjinAsync([FromBody] MizanAktarmaDashBilancoOnGetMarkupMarjinQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanAktarmaDashBilancoOnGetMarkupMarjinQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+       var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 }

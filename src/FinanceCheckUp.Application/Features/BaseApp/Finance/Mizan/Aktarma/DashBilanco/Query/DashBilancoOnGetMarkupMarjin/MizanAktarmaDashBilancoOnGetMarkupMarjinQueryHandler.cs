@@ -14,7 +14,7 @@ public class MizanAktarmaDashBilancoOnGetMarkupMarjinQueryHandler(IDashGelirTabl
     {
         if (request.Request.compid < 1)
         {
-                        return Task.FromResult(GenericResult<MizanAktarmaDashBilancoOnGetMarkupMarjinResponse>.Success(
+            return Task.FromResult(GenericResult<MizanAktarmaDashBilancoOnGetMarkupMarjinResponse>.Success(
                 new MizanAktarmaDashBilancoOnGetMarkupMarjinResponse
                 {
                     Response = DataSourceLoader.Load(new List<DashBilancoViewMulti>(), request.Request.options),
