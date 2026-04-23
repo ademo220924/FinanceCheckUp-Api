@@ -12,7 +12,8 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpCrmConsole
         {
             var userId = Convert.ToInt64(request.UserId);
             var mreqListCompany = companyManager.Getby_User(userId); 
-                        return Task.FromResult(GenericResult<MizanUpCrmConsoleOnGetSalerCompResponse>.Success(new MizanUpCrmConsoleOnGetSalerCompResponse
+            
+            return Task.FromResult(GenericResult<MizanUpCrmConsoleOnGetSalerCompResponse>.Success(new MizanUpCrmConsoleOnGetSalerCompResponse
             {
                 Response = DataSourceLoader.Load(mreqListCompany, request.Request.options)
             }));

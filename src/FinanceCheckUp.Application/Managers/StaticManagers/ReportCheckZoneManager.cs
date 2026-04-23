@@ -3,6 +3,7 @@ using DevExpress.XtraCharts;
 using DevExpress.XtraReports.UI;
 using FinanceCheckUp.Application.Common.Utilities;
 using FinanceCheckUp.Application.Contexts.Concretes.Databases;
+using FinanceCheckUp.Application.Features.BaseApp.Finance.Reports.ReportCheckZoneMain.Services;
 using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models.ViewModel;
 using FinanceCheckUp.Framework.Data;
@@ -22,7 +23,8 @@ public interface IReportCheckZoneManager : IGenericDapperRepository
     FinansRaporua getReporta(long companyID, List<int> nyear, string nacceco, int usride_, List<int> nyearChkList, CompanyReportView grview);
     FinansRaporub getReportb(long companyID, List<int> nyear, string nacceco, int usride_, List<int> nyearChkList, CompanyReportView grview);
     FinansRaporuc getReportc(long companyID, List<int> nyear, string nacceco, int usride_, List<int> nyearChkList, CompanyReportView grview);
- 
+    DynamicReport getReportMizan(long companyID, string nacceco, long usride_, List<int> nyearChkList, string ncccode);
+    DynamicReportfour getReportMizanFour(long companyID, string nacceco, long usride_, List<int> nyearChkList, string ncccode);
 }
 
 
@@ -33,7 +35,8 @@ public class ReportCheckZoneManager(
     IDashBilancoViewMainQnbGelirManager dashBilancoViewMainQnbGelirManager,
     ICompanyManager companiesManager,
     INaceCodeManager naceCodeManager,
-    IMainDashManager mainDashManager) : GenericDapperRepositoryBase(_dbContext), IReportCheckZoneManager
+    IMainDashManager mainDashManager,
+    IReportCheckZoneMizanReportService reportCheckZoneMizanReportService) : GenericDapperRepositoryBase(_dbContext), IReportCheckZoneManager
 {
 
     public int setReportZone(long companyID, List<int> nyear)
@@ -4250,5 +4253,11 @@ public class ReportCheckZoneManager(
         return report;
 
     }
+
+    public DynamicReport getReportMizan(long companyID, string nacceco, long usride_, List<int> nyearChkList, string ncccode) =>
+        reportCheckZoneMizanReportService.GetReportMizan(companyID, nacceco, usride_, nyearChkList, ncccode);
+
+    public DynamicReportfour getReportMizanFour(long companyID, string nacceco, long usride_, List<int> nyearChkList, string ncccode) =>
+        reportCheckZoneMizanReportService.GetReportMizanFour(companyID, nacceco, usride_, nyearChkList, ncccode);
 
 }

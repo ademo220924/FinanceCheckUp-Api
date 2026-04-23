@@ -36,7 +36,7 @@ public class MizanDashBilancoKonOnGetMarkupMarjinQueryHandler(IDashGelirTablosuM
 
         responseModel.nRequestList = gelirTablosuManager.Get_MAINBilancoMznAktMultiKon(request.Request.compid);
 
-                return Task.FromResult(GenericResult<MizanDashBilancoKonOnGetMarkupMarjinResponse>.Success(
+        return Task.FromResult(GenericResult<MizanDashBilancoKonOnGetMarkupMarjinResponse>.Success(
             new MizanDashBilancoKonOnGetMarkupMarjinResponse
             {
                 InitialModel = responseModel,

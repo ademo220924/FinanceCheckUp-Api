@@ -1,6 +1,6 @@
 namespace FinanceCheckUp.Application.Models.ViewModel;
 
-public class RiskDataColor
+public partial class RiskDataColor
 {
     public int ncheck1Point { get; set; }
     public float ncheck1 { get; set; }

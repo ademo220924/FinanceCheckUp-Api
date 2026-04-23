@@ -51,6 +51,7 @@
     <Folder Include="UploadFiles\Document\" />
     <Folder Include="UploadFiles\Image\" />
     <Folder Include="UploadFiles\Video\" />
+    <Folder Include="wwwroot\FileContent\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Controllers\v1\Finance\Mizan\Aktarma\DashBilancoJrnlController.cs" />
@@ -70,5 +71,6 @@
   <ItemGroup>
     <Content Remove="Controllers\v1\Finance\Mizan\Aktarma\**" />
     <Content Remove="Controllers\v1\Finance\Mizan\Jrnl\**" />
+    <Content Include="wwwroot\.DS_Store" />
   </ItemGroup>
 </Project>

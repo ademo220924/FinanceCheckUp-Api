@@ -1,4 +1,3 @@
-using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Managers.StaticManagers;
 using FinanceCheckUp.Application.Mapper;
 using FinanceCheckUp.Application.Models.Responses.Finance.Reports;
@@ -8,8 +7,7 @@ using MediatR;
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Reports.ReportCheckZoneMain.Query.GetReportMizan;
 
 public class FinanceReportCheckZoneMainGetReportMizanQueryHandler(
-    IReportCheckZoneManager reportCheckZoneManager,
-    ICompanyManager companyManager)
+    IReportCheckZoneManager reportCheckZoneManager)
     : IRequestHandler<FinanceReportCheckZoneMainGetReportMizanQuery, GenericResult<FinancialReportZonePayloadResponse>>
 {
     public Task<GenericResult<FinancialReportZonePayloadResponse>> Handle(
@@ -19,12 +17,11 @@ public class FinanceReportCheckZoneMainGetReportMizanQueryHandler(
         try
         {
             var years = request.Request.NyearChkList ?? new List<int>();
-            var payload = ReportCheckZoneFinancialPayloadOrchestrator.BuildFromGetReportA(
+            var payload = ReportCheckZoneFinancialPayloadOrchestrator.BuildFromGetReportMizan(
                 reportCheckZoneManager,
-                companyManager,
-                years,
                 years,
                 request.Request.Nacceco,
+                request.Request.Ncccode ?? string.Empty,
                 request.Request.CompanyId,
                 request.Request.UserId);
             return Task.FromResult(GenericResult<FinancialReportZonePayloadResponse>.Success(payload));

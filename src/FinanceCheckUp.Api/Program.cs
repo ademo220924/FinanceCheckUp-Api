@@ -10,8 +10,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using System.Text;
+
+// macOS/Linux: XtraReports / RichText requires Skia drawing backend (see DevExpress.Drawing.Skia package).
+if (!OperatingSystem.IsWindows())
+{
+    DevExpress.Drawing.Internal.DXDrawingEngine.ForceSkia();
+}
+
+// DynamicReport / DynamicReportfour şablonlarında Events script'leri var; PDF üretimi için gerekli (yalnızca güvenilir şablonlar).
+DevExpress.XtraReports.Security.ScriptPermissionManager.GlobalInstance =
+    new DevExpress.XtraReports.Security.ScriptPermissionManager(DevExpress.XtraReports.Security.ExecutionMode.Unrestricted);
 
 var builder = WebApplication.CreateBuilder(args);
 CustomConfigurationProvider.Configuration = builder.Configuration;
@@ -108,6 +119,14 @@ builder.Services
 
 
 var app = builder.Build();
+
+// wwwroot yoksa WebRootPath boş kalabilir; FileContent klasörünü kesin oluştur ve statik dosyayı doğrudan fiziksel kökten sun.
+var wwwrootPhysicalPath = Path.Combine(app.Environment.ContentRootPath, "wwwroot");
+Directory.CreateDirectory(Path.Combine(wwwrootPhysicalPath, "FileContent"));
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(wwwrootPhysicalPath),
+});
 app.UseCustomSwagger(builder.Configuration)
     .AddReDocumet(builder.Configuration)
     .UseRouting()

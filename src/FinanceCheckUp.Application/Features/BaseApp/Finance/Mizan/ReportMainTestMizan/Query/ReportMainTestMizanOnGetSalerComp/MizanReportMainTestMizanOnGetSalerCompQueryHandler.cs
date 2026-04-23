@@ -9,7 +9,7 @@ public class MizanReportMainTestMizanOnGetSalerCompQueryHandler(ICompanyManager 
 {
     public Task<GenericResult<MizanReportMainTestMizanOnGetSalerCompResponse>> Handle(MizanReportMainTestMizanOnGetSalerCompQuery request, CancellationToken cancellationToken)
     {
-                return Task.FromResult(GenericResult<MizanReportMainTestMizanOnGetSalerCompResponse>.Success(new MizanReportMainTestMizanOnGetSalerCompResponse
+        return Task.FromResult(GenericResult<MizanReportMainTestMizanOnGetSalerCompResponse>.Success(new MizanReportMainTestMizanOnGetSalerCompResponse
         {
             Response = DataSourceLoader.Load(companyManager.Getby_User(Convert.ToInt64(request.UserId)), request.Request.options)
         }));

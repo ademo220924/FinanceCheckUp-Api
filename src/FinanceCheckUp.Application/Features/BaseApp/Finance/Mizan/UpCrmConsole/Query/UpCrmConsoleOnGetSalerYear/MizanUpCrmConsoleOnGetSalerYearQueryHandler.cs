@@ -11,7 +11,7 @@ namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.UpCrmConsole
         {
             var yearSetMonth = YearResult.getValue().OrderByDescending(x => x.MYear);
            
-                        return Task.FromResult(GenericResult<MizanUpCrmConsoleOnGetSalerYearResponse>.Success(new MizanUpCrmConsoleOnGetSalerYearResponse
+            return Task.FromResult(GenericResult<MizanUpCrmConsoleOnGetSalerYearResponse>.Success(new MizanUpCrmConsoleOnGetSalerYearResponse
             {
                 Response = DataSourceLoader.Load(yearSetMonth, request.Request.options)
             }));

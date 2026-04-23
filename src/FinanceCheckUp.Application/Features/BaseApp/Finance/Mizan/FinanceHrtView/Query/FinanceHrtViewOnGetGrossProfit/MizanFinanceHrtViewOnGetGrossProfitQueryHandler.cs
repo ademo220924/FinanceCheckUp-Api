@@ -22,7 +22,7 @@ public class MizanFinanceHrtViewOnGetGrossProfitQueryHandler(IReportDashManager 
                 })); 
         }
         
-                return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetGrossProfitResponse>.Success(
+        return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetGrossProfitResponse>.Success(
             new MizanFinanceHrtViewOnGetGrossProfitResponse
             {
                 Response = DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)

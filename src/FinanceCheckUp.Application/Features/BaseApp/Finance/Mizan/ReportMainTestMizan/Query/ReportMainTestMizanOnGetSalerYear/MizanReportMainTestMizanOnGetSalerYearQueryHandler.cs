@@ -9,7 +9,8 @@ public class MizanReportMainTestMizanOnGetSalerYearQueryHandler : IRequestHandle
     public Task<GenericResult<MizanReportMainTestMizanOnGetSalerYearResponse>> Handle(MizanReportMainTestMizanOnGetSalerYearQuery request, CancellationToken cancellationToken)
     {
         var year = YearResult.getValue().OrderByDescending(x => x.MYear);
-                return Task.FromResult(GenericResult<MizanReportMainTestMizanOnGetSalerYearResponse>.Success(new MizanReportMainTestMizanOnGetSalerYearResponse
+        
+        return Task.FromResult(GenericResult<MizanReportMainTestMizanOnGetSalerYearResponse>.Success(new MizanReportMainTestMizanOnGetSalerYearResponse
         {
             Response = DataSourceLoader.Load(year, request.Request.options)
         }));

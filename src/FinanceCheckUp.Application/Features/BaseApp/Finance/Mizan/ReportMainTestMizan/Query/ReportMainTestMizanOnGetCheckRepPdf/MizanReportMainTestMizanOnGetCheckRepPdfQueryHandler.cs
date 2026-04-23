@@ -1,18 +1,22 @@
 ﻿using FinanceCheckUp.Application.Common.Constants;
-using FinanceCheckUp.Application.ExtensionHelpers;
 using FinanceCheckUp.Application.Managers.SqlQueryManager;
+using FinanceCheckUp.Application.Managers.StaticManagers;
 using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.ReportMainTestMizan;
 using FinanceCheckUp.Framework.Core.Models;
+using fincheckup.Report;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.ReportMainTestMizan.Query.ReportMainTestMizanOnGetCheckRepPdf;
 
 public class MizanReportMainTestMizanOnGetCheckRepPdfQueryHandler(
     INaceCodeManager naceCodeManager,
     ICompanyReportManager companyReportManager,
-    ICompanyManager companyManager)
+    ICompanyManager companyManager,
+    IReportCheckZoneManager reportCheckZoneManager,
+    IHostEnvironment hostEnvironment)
     : IRequestHandler<MizanReportMainTestMizanOnGetCheckRepPdfQuery,
         GenericResult<MizanReportMainTestMizanOnGetCheckRepPdfResponse>>
 {
@@ -44,44 +48,50 @@ public class MizanReportMainTestMizanOnGetCheckRepPdfQueryHandler(
                     : request.InitialModel.curCompany.NaceCode.Replace(".", "")[..4];
             }
 
+            var wwwrootDir = System.IO.Path.Combine(hostEnvironment.ContentRootPath, "wwwroot");
+            var fileContentDir = System.IO.Path.Combine(wwwrootDir, "FileContent");
+            System.IO.Directory.CreateDirectory(fileContentDir);
+
             if (nlist.Count > 0)
             {
-                FileDocz = "FileContent/" + nlist[0].ReportName;
-
-                return Task.FromResult(GenericResult<MizanReportMainTestMizanOnGetCheckRepPdfResponse>.Success(
-                    new MizanReportMainTestMizanOnGetCheckRepPdfResponse
-                    {
-                        InitialModel = request.InitialModel,
-                        Response = new JsonResult(FileDocz)
-                    }));
-
+                var existingName = nlist[0].ReportName;
+                var existingFullPath = System.IO.Path.Combine(fileContentDir, existingName);
+                if (System.IO.File.Exists(existingFullPath))
+                {
+                    FileDocz = "FileContent/" + existingName;
+                    return Task.FromResult(GenericResult<MizanReportMainTestMizanOnGetCheckRepPdfResponse>.Success(
+                        new MizanReportMainTestMizanOnGetCheckRepPdfResponse
+                        {
+                            InitialModel = request.InitialModel,
+                            Response = new JsonResult(FileDocz)
+                        }));
+                }
             }
 
             string NewRepName = "FinansalRiskRapor-" + request.InitialModel.curCompany.TaxId.ToString() + ".pdf";
             FileDocz = "FileContent/" + NewRepName;
-            var FileDic = "wwwroot\\FileContent\\" + NewRepName;
+            var FilePath = System.IO.Path.GetFullPath(System.IO.Path.Combine(fileContentDir, NewRepName));
 
+            if (curCompanyYearList.Count >= 4)
+            {
+                DynamicReportfour report = reportCheckZoneManager.getReportMizanFour(request.InitialModel.curCompany.Id, compnacecode, request.InitialModel.UserID, curCompanyYearList, codde.Id.ToString());
+                report.CreateDocument();
+                report.ExportToPdf(FilePath);
+            }
+            else
+            {
+                DynamicReport report = reportCheckZoneManager.getReportMizan(request.InitialModel.curCompany.Id, compnacecode, request.InitialModel.UserID, curCompanyYearList, codde.Id.ToString());
+                report.CreateDocument();
+                report.ExportToPdf(FilePath);
+            }
 
-            string filePathZ = WebHelper.path;
-            string FilePath = System.IO.Path.Combine(filePathZ, FileDic);
+            if (!System.IO.File.Exists(FilePath))
+            {
+                return Task.FromResult(GenericResult<MizanReportMainTestMizanOnGetCheckRepPdfResponse>.Fail(
+                    "PDF oluşturuldu ancak diske yazılamadı veya dosya bulunamıyor: " + FilePath));
+            }
 
-
-
-            // if (curCompanyYearList.Count >= 4)
-            // {
-            //     DynamicReportfour report = reportCheckZoneManager.getReportMizanFour(request.InitialModel.curCompany.Id, compnacecode, request.InitialModel.UserID, curCompanyYearList, codde.Id.ToString());
-            //     report.CreateDocument();
-            //     report.ExportToPdf(FilePath);
-            //     companyReportManager.Set_Report(request.Request.companyID, request.InitialModel.UserID, NewRepName, ReportConstant.FileTypePDF, ReportConstant.ReportTypeMainNew, 12, nyear, 0);
-            // }
-            // else
-            // {
-            //     DynamicReport report = reportCheckZoneManager.getReportMizan(request.InitialModel.curCompany.Id, compnacecode, request.InitialModel.UserID, curCompanyYearList, codde.Id.ToString());
-            //     report.CreateDocument();
-            //     report.ExportToPdf(FilePath);
-            //     companyReportManager.Set_Report(request.Request.companyID, request.InitialModel.UserID, NewRepName, ReportConstant.FileTypePDF, ReportConstant.ReportTypeMainNew, 12, nyear, 0);
-            // }
-
+            companyReportManager.Set_Report(request.Request.companyID, request.InitialModel.UserID, NewRepName, ReportConstant.FileTypePDF, ReportConstant.ReportTypeMainNew, 12, nyear, 0);
 
             return Task.FromResult(GenericResult<MizanReportMainTestMizanOnGetCheckRepPdfResponse>.Success(
                 new MizanReportMainTestMizanOnGetCheckRepPdfResponse

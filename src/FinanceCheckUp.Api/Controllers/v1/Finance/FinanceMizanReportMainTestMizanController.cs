@@ -81,10 +81,9 @@ public class FinanceMizanReportMainTestMizanController(IMediator mediator) : Con
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetCheckRepPdfAsync([FromBody] MizanReportMainTestMizanOnGetCheckRepPdfRequest request, CancellationToken cancellationToken)
-    {
-        var command = new MizanReportMainTestMizanOnGetCheckRepPdfQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+    public async Task<IActionResult> GetCheckRepPdfAsync([FromBody] MizanReportMainTestMizanOnGetCheckRepPdfQuery request, CancellationToken cancellationToken)
+    { 
+        var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 

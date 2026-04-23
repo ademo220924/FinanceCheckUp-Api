@@ -1,6 +1,6 @@
 namespace FinanceCheckUp.Application.Models.ViewModel;
 
-public class RiskData
+public partial class RiskData
 {
     public int CariRatePoint { get; set; }
     public float CariRate { get; set; }

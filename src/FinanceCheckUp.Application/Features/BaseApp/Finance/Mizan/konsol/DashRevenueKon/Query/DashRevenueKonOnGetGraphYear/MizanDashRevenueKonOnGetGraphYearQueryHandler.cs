@@ -18,8 +18,9 @@ public class MizanDashRevenueKonOnGetGraphYearQueryHandler(IHhvnUsersManager hhv
         {
             UserID = userId
         }; 
-            hhvnUsersManager.SetYear(request.Request.nyear, responseModel.UserID);
-            return Task.FromResult(GenericResult<MizanDashRevenueKonOnGetGraphYearResponse>.Success(
+        hhvnUsersManager.SetYear(request.Request.nyear, responseModel.UserID);
+        
+        return Task.FromResult(GenericResult<MizanDashRevenueKonOnGetGraphYearResponse>.Success(
                 new MizanDashRevenueKonOnGetGraphYearResponse
                 {
                     InitialModel = responseModel,

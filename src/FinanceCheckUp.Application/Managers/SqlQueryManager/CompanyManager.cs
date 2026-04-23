@@ -41,6 +41,11 @@ public interface ICompanyManager : IGenericDapperRepository
     List<DashMizanResult> GetCompanyAktarmaResult(long ide, int yeare_);
     List<DashMizanResult> GetCompanyAktarmaDonuk(long ide, int yeare_);
     List<int> Get_CompanyReportYearMain(long responseModelCurcomId);
+    List<int> Get_CompanyReportYearMainMizanReport(long ide);
+    IEnumerable<CsvDynamic> GetCompanyReportCsv(long ide, int type_);
+    IEnumerable<CsvDynamicII> GetCompanyReportCsvII(long ide, int type_);
+    IEnumerable<CsvDynamicIII> GetCompanyReportCsvIII(long ide, int type_);
+    IEnumerable<CsvDynamicIIII> GetCompanyReportCsvIIII(long ide, int type_);
 }
 
 
@@ -317,4 +322,24 @@ public class CompanyManager(FinanceCheckUpDbContext _dbContext, IHhvnUsersManage
     {
         return StaticQuery<int>("SELECT DISTINCT([Year]) from  [TBLXml] where CompanyID=@ID  and MONTH([DocumentDate])>2 ", new { ID = ide }).ToList();
     }
+
+    public List<int> Get_CompanyReportYearMainMizanReport(long ide)
+    {
+        return StaticQuery<int>(
+                "SELECT DISTINCT([Year]) from  [TBLMizan] where CompanyID=@ID and MainMonth=12",
+                new { ID = ide })
+            .ToList();
+    }
+
+    public IEnumerable<CsvDynamic> GetCompanyReportCsv(long ide, int type_) =>
+        StaticQuery<CsvDynamic>("EXEC SA_GetCompanyReportCsv @companyID,@type", new { companyID = ide, type = type_ });
+
+    public IEnumerable<CsvDynamicII> GetCompanyReportCsvII(long ide, int type_) =>
+        StaticQuery<CsvDynamicII>("EXEC SA_GetCompanyReportCsv @companyID,@type", new { companyID = ide, type = type_ });
+
+    public IEnumerable<CsvDynamicIII> GetCompanyReportCsvIII(long ide, int type_) =>
+        StaticQuery<CsvDynamicIII>("EXEC SA_GetCompanyReportCsv @companyID,@type", new { companyID = ide, type = type_ });
+
+    public IEnumerable<CsvDynamicIIII> GetCompanyReportCsvIIII(long ide, int type_) =>
+        StaticQuery<CsvDynamicIIII>("EXEC SA_GetCompanyReportCsv @companyID,@type", new { companyID = ide, type = type_ });
 }

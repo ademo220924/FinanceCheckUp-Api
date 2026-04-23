@@ -2,6 +2,7 @@
 using FinanceCheckUp.Application.Configurations.Settings;
 using FinanceCheckUp.Application.Contexts.Concretes.Databases;
 using FinanceCheckUp.Application.Features.BaseApp.Authentication.Query.AuthenticationLogin;
+using FinanceCheckUp.Application.Features.BaseApp.Finance.Reports.ReportCheckZoneMain.Services;
 using FinanceCheckUp.Application.Managers;
 using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Managers.StaticManagers;
@@ -106,6 +107,8 @@ public static class ServiceRegistration
             .AddScoped<INaceCodeManager, NaceCodeManager>()
             .AddScoped<IRasyoAnalizMainManager, RasyoAnalizMainManager>()
             .AddScoped<IRasyoAnalizMainMizanManager, RasyoAnalizMainMizanManager>()
+            .AddScoped<IMizanFinancialNarrativeService, PlaceholderMizanFinancialNarrativeService>()
+            .AddScoped<IReportCheckZoneMizanReportService, ReportCheckZoneMizanReportService>()
             .AddScoped<IReportCheckZoneManager, ReportCheckZoneManager>()
             .AddScoped<IReportDashManager, ReportDashManager>()
             .AddScoped<IReportDashMizanManager, ReportDashMizanManager>()
@@ -152,7 +155,8 @@ public static class ServiceRegistration
                 .Configure<SmtpSettings>(configuration.GetSection(nameof(SmtpSettings)))
                 .Configure<SoapHelperSettings>(configuration.GetSection(nameof(SoapHelperSettings)))
                 .Configure<AuthenticationSettings>(configuration.GetSection(nameof(AuthenticationSettings)))
-                .Configure<QNBpay>(configuration.GetSection(nameof(QNBpay)));
+                .Configure<QNBpay>(configuration.GetSection(nameof(QNBpay)))
+                .Configure<PublicFileHostingSettings>(configuration.GetSection(nameof(PublicFileHostingSettings)));
 
 
     }

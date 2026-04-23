@@ -2,6 +2,7 @@ using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Managers.StaticManagers;
 using FinanceCheckUp.Application.Models.Requests.Finance.Reports;
 using FinanceCheckUp.Application.Models.Responses.Finance.Reports;
+using fincheckup.Report;
 
 namespace FinanceCheckUp.Application.Mapper;
 
@@ -96,6 +97,44 @@ internal static class ReportCheckZoneFinancialPayloadOrchestrator
         var grview = companies.Get_CompanyReportView(companyId);
 
         using var report = zone.getReportc(companyId, nyear, nacceco, (int)userId, nyearChkList, grview);
+        return FinansRaporZonePayloadExtractor.FromXtraReport(report);
+    }
+
+    /// <summary>
+    /// Web <c>ReportCheckZoneMain.getReportMizan</c> — QNB <see cref="FinansRaporua"/> değil, <see cref="DynamicReport"/>.
+    /// </summary>
+    public static FinancialReportZonePayloadResponse BuildFromGetReportMizan(
+        IReportCheckZoneManager zone,
+        List<int> nyearChkList,
+        string nacceco,
+        string ncccode,
+        long companyId,
+        long userId)
+    {
+        var years = nyearChkList ?? new List<int>();
+        if (years.Count == 0)
+            throw new ArgumentException("NyearChkList boş olamaz.");
+
+        using DynamicReport report = zone.getReportMizan(companyId, nacceco, userId, years, ncccode);
+        return FinansRaporZonePayloadExtractor.FromXtraReport(report);
+    }
+
+    /// <summary>
+    /// Web <c>ReportCheckZoneMain.getReportMizanFour</c> — QNB <see cref="FinansRaporub"/> değil, <see cref="DynamicReportfour"/>.
+    /// </summary>
+    public static FinancialReportZonePayloadResponse BuildFromGetReportMizanFour(
+        IReportCheckZoneManager zone,
+        List<int> nyearChkList,
+        string nacceco,
+        string ncccode,
+        long companyId,
+        long userId)
+    {
+        var years = nyearChkList ?? new List<int>();
+        if (years.Count == 0)
+            throw new ArgumentException("NyearChkList boş olamaz.");
+
+        using DynamicReportfour report = zone.getReportMizanFour(companyId, nacceco, userId, years, ncccode);
         return FinansRaporZonePayloadExtractor.FromXtraReport(report);
     }
 }

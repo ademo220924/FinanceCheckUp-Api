@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.ReportMainTestMizan
+﻿namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.ReportMainTestMizan
 {
     public class MizanReportMainTestMizanOnGetCheckUrlResponse
     {
-        public JsonResult Response { get; set; }
+        /// <summary>
+        /// PublicFileHostingSettings:BaseUrl doluysa mutlak URL; değilse göreli FileContent/... yolu.
+        /// </summary>
+        public string FileUrl { get; set; } = "";
     }
 }
