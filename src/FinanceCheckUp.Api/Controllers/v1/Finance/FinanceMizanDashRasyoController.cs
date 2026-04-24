@@ -122,10 +122,9 @@ public class FinanceMizanDashRasyoController(IMediator mediator) : ControllerBas
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetDashRasyoAsync([FromBody] MizanDashRasyoOnGetDashRasyoRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDashRasyoAsync([FromBody] MizanDashRasyoOnGetDashRasyoQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanDashRasyoOnGetDashRasyoQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 

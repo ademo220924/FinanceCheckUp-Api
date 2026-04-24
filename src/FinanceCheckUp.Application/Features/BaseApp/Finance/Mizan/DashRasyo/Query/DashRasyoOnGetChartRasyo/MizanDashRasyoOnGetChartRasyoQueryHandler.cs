@@ -22,7 +22,7 @@ public class MizanDashRasyoOnGetChartRasyoQueryHandler(IRasyoAnalizMainMizanMana
         responseModel.RasyoAnalizView = new DashYearlyResultMizan();
         responseModel.RasyoAnaliz = rasyoAnalizMainMizanManager.RasyoAnalizTOTALFinal(responseModel.CurrentUser.SelectedYear, responseModel.CompID);
 
-                return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartRasyoResponse>.Success(
+        return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartRasyoResponse>.Success(
             new MizanDashRasyoOnGetChartRasyoResponse
             {
                 Response = DataSourceLoader.Load(responseModel.RasyoAnaliz.Where(x => x.TypeID == 1), request.Request.options)

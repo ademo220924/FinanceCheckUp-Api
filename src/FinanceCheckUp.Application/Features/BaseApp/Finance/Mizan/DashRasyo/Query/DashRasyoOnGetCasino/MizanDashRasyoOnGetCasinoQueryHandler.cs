@@ -9,7 +9,8 @@ public class MizanDashRasyoOnGetCasinoQueryHandler(IDashBoardManager dashBoardMa
     public Task<GenericResult<MizanDashRasyoOnGetCasinoResponse>> Handle(MizanDashRasyoOnGetCasinoQuery request, CancellationToken cancellationToken)
     {
         var dash = dashBoardManager.Get_ErroorList();
-                return Task.FromResult(GenericResult<MizanDashRasyoOnGetCasinoResponse>.Success(
+        
+        return Task.FromResult(GenericResult<MizanDashRasyoOnGetCasinoResponse>.Success(
             new MizanDashRasyoOnGetCasinoResponse
             {
                 Response =  DataSourceLoader.Load(dash, request.Request.options)

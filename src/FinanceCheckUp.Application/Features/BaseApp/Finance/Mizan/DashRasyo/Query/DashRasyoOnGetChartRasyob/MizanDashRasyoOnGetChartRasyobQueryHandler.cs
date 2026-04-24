@@ -21,7 +21,8 @@ public class MizanDashRasyoOnGetChartRasyobQueryHandler(IRasyoAnalizMainMizanMan
         responseModel.CompID = companiesManager.Getby_User(responseModel.UserID).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
         responseModel.RasyoAnalizView = new DashYearlyResultMizan();
         responseModel.RasyoAnaliz = rasyoAnalizMainMizanManager.RasyoAnalizTOTALFinal(responseModel.CurrentUser.SelectedYear, responseModel.CompID);
-                return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartRasyobResponse>.Success(
+                
+        return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartRasyobResponse>.Success(
             new MizanDashRasyoOnGetChartRasyobResponse
             {
                 Response = DataSourceLoader.Load(responseModel.RasyoAnaliz.Where(x => x.TypeID == 3), request.Request.options)

@@ -21,7 +21,7 @@ public class MizanDashRasyoOnGetChartMaliQueryHandler(IDashOzetMaliMizanManager 
         responseModel.OzetMaliView = new DashYearlyResultMizan();
         responseModel.OzetMali = dashOzetMaliMizanManager.OzetMaliFinal(responseModel.CompID);
 
-                return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartMaliResponse>.Success(
+        return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartMaliResponse>.Success(
             new MizanDashRasyoOnGetChartMaliResponse
             {
                 Response = DataSourceLoader.Load(responseModel.OzetMali, request.Request.options)

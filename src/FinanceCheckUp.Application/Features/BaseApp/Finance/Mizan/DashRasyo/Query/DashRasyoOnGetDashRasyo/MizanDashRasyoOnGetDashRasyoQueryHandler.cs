@@ -13,7 +13,8 @@ public class MizanDashRasyoOnGetDashRasyoQueryHandler(IDashBoardRasyoManager das
     {
         request.InitialModel.dashrasyo = dashBoardRasyoManager.Get_List();
 
-                return Task.FromResult(GenericResult<MizanDashRasyoOnGetDashRasyoResponse>.Success(
+                
+        return Task.FromResult(GenericResult<MizanDashRasyoOnGetDashRasyoResponse>.Success(
             new MizanDashRasyoOnGetDashRasyoResponse
             {
                 Response = DataSourceLoader.Load(request.InitialModel.dashrasyo, request.Request.options),

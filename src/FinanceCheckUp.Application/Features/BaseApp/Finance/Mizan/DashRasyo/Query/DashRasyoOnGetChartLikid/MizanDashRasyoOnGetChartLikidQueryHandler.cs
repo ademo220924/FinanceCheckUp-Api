@@ -22,7 +22,7 @@ public class MizanDashRasyoOnGetChartLikidQueryHandler(IDashLikiditeRiskTrendMiz
         responseModel.LikiditeRiskTrendView = new DashYearlyResultMizan();
         responseModel.LikiditeRiskTrend = dashLikiditeRiskTrendMizanManager.LikiditeRiskTrend21Final(responseModel.CompID);
 
-                return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartLikidResponse>.Success(
+        return Task.FromResult(GenericResult<MizanDashRasyoOnGetChartLikidResponse>.Success(
             new MizanDashRasyoOnGetChartLikidResponse
             {
                 Response = DataSourceLoader.Load(responseModel.LikiditeRiskTrend, request.Request.options)
