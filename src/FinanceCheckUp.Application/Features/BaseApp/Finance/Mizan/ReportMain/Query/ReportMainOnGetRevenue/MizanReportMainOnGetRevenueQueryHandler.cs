@@ -14,7 +14,7 @@ public class MizanReportMainOnGetRevenueQueryHandler(IReportDashMizanManager rep
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         { 
-                        return Task.FromResult(GenericResult<MizanReportMainOnGetRevenueResponse>.Success(new MizanReportMainOnGetRevenueResponse
+            return Task.FromResult(GenericResult<MizanReportMainOnGetRevenueResponse>.Success(new MizanReportMainOnGetRevenueResponse
             {
                 Response = DataSourceLoader.Load(new List<YearlyReportDashMizan>(), request.Request.options)
             }));
@@ -22,7 +22,7 @@ public class MizanReportMainOnGetRevenueQueryHandler(IReportDashMizanManager rep
 
         var retval = reportDashMizanManager.Get_Data_Revenue(request.Request.compid).OrderBy(x => x.Year);
          
-                return Task.FromResult(GenericResult<MizanReportMainOnGetRevenueResponse>.Success(new MizanReportMainOnGetRevenueResponse
+        return Task.FromResult(GenericResult<MizanReportMainOnGetRevenueResponse>.Success(new MizanReportMainOnGetRevenueResponse
         {
             Response = DataSourceLoader.Load(retval, request.Request.options)
         }));

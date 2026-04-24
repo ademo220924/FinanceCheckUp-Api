@@ -17,14 +17,14 @@ public class MizanReportMainOnGetDonemselKarZararQueryHandler(
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         {
-                        return Task.FromResult(GenericResult<MizanReportMainOnGetDonemselKarZararResponse>.Success(new MizanReportMainOnGetDonemselKarZararResponse
+            return Task.FromResult(GenericResult<MizanReportMainOnGetDonemselKarZararResponse>.Success(new MizanReportMainOnGetDonemselKarZararResponse
             {
                 Response =DataSourceLoader.Load(new List<YearlyReportDashMizan>(),request.Request.options)
             }));
         }
 
         var retval = reportDashMizanManager.Get_Data_DonemselKarzarar(request.Request.compid).OrderBy(x => x.Year);
-                return Task.FromResult(GenericResult<MizanReportMainOnGetDonemselKarZararResponse>.Success(new MizanReportMainOnGetDonemselKarZararResponse
+        return Task.FromResult(GenericResult<MizanReportMainOnGetDonemselKarZararResponse>.Success(new MizanReportMainOnGetDonemselKarZararResponse
         {
             Response =DataSourceLoader.Load(retval, request.Request.options)
         }));

@@ -18,13 +18,13 @@ public class MizanReportMainOnGetGrossProfitQueryHandler(
         {
             var retval = reportDashMizanManager.Get_Data_GrossProfit(request.Request.compid).OrderBy(x => x.Year);
            
-                        return Task.FromResult(GenericResult<MizanReportMainOnGetGrossProfitResponse>.Success(new MizanReportMainOnGetGrossProfitResponse
+            return Task.FromResult(GenericResult<MizanReportMainOnGetGrossProfitResponse>.Success(new MizanReportMainOnGetGrossProfitResponse
             {
                 Response = DataSourceLoader.Load(retval, request.Request.options)
             }));
         } 
         
-                return Task.FromResult(GenericResult<MizanReportMainOnGetGrossProfitResponse>.Success(new MizanReportMainOnGetGrossProfitResponse
+        return Task.FromResult(GenericResult<MizanReportMainOnGetGrossProfitResponse>.Success(new MizanReportMainOnGetGrossProfitResponse
         {
             Response = DataSourceLoader.Load(new List<YearlyReportDashMizan>(), request.Request.options)
         }));

@@ -15,14 +15,15 @@ public class MizanReportMainOnGetWorkingCapitalQueryHandler(IReportDashMizanMana
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         { 
             
-                        return Task.FromResult(GenericResult<MizanReportMainOnGetWorkingCapitalResponse>.Success(new MizanReportMainOnGetWorkingCapitalResponse
+            return Task.FromResult(GenericResult<MizanReportMainOnGetWorkingCapitalResponse>.Success(new MizanReportMainOnGetWorkingCapitalResponse
             {
                 Response = DataSourceLoader.Load(new List<YearlyReportDashMizan>(), request.Request.options)
             }));
         }
 
         IEnumerable<YearlyReportDashMizan> chk = reportDashMizanManager.Get_Data_WorkingCapital(request.Request.compid).OrderBy(x => x.Year);
-                return Task.FromResult(GenericResult<MizanReportMainOnGetWorkingCapitalResponse>.Success(new MizanReportMainOnGetWorkingCapitalResponse
+        
+        return Task.FromResult(GenericResult<MizanReportMainOnGetWorkingCapitalResponse>.Success(new MizanReportMainOnGetWorkingCapitalResponse
         {
             Response = DataSourceLoader.Load(chk, request.Request.options)
         }));

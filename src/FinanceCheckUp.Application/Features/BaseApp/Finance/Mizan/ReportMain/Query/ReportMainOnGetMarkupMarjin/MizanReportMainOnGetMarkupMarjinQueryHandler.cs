@@ -18,7 +18,7 @@ public class MizanReportMainOnGetMarkupMarjinQueryHandler(IReportDashMizanManage
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         {
-                          return Task.FromResult(GenericResult<MizanReportMainOnGetMarkupMarjinResponse>.Success(new MizanReportMainOnGetMarkupMarjinResponse
+            return Task.FromResult(GenericResult<MizanReportMainOnGetMarkupMarjinResponse>.Success(new MizanReportMainOnGetMarkupMarjinResponse
             {
                 Response = DataSourceLoader.Load(new List<YearlyReportDashMizan>(), request.Request.options)
             }));
@@ -27,7 +27,7 @@ public class MizanReportMainOnGetMarkupMarjinQueryHandler(IReportDashMizanManage
 
         IEnumerable<YearlyReportDashMizanGrap> mrequestResult1 = reportDashMizanManager.Get_Data_GrossProfitGraphic(request.Request.compid).OrderBy(x => x.Year);
 
-                return Task.FromResult(GenericResult<MizanReportMainOnGetMarkupMarjinResponse>.Success(new MizanReportMainOnGetMarkupMarjinResponse
+        return Task.FromResult(GenericResult<MizanReportMainOnGetMarkupMarjinResponse>.Success(new MizanReportMainOnGetMarkupMarjinResponse
         {
             Response = DataSourceLoader.Load(mrequestResult1, request.Request.options)
         }));

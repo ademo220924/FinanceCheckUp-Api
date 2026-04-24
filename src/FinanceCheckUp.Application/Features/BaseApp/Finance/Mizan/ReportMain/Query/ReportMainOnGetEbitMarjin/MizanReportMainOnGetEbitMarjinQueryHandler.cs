@@ -17,7 +17,7 @@ public class MizanReportMainOnGetEbitMarjinQueryHandler(
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
         { 
-                        return Task.FromResult(GenericResult<MizanReportMainOnGetEbitMarjinResponse>.Success(new MizanReportMainOnGetEbitMarjinResponse
+            return Task.FromResult(GenericResult<MizanReportMainOnGetEbitMarjinResponse>.Success(new MizanReportMainOnGetEbitMarjinResponse
             {
                 Response = DataSourceLoader.Load(new List<YearlyReportDashMizan>(), request.Request.options)
             }));
@@ -25,7 +25,7 @@ public class MizanReportMainOnGetEbitMarjinQueryHandler(
 
         var retval = reportDashMizanManager.Get_Data_EbitMarjin(request.Request.compid).OrderBy(x => x.Year);
          
-                return Task.FromResult(GenericResult<MizanReportMainOnGetEbitMarjinResponse>.Success(new MizanReportMainOnGetEbitMarjinResponse
+        return Task.FromResult(GenericResult<MizanReportMainOnGetEbitMarjinResponse>.Success(new MizanReportMainOnGetEbitMarjinResponse
         {
             Response = DataSourceLoader.Load(retval, request.Request.options)
         }));
