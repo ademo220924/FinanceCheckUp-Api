@@ -10,7 +10,7 @@ public class MizanUserEditOnGetSalerCityQueryHandler(ICitiesManager citiesManage
 {
     public Task<GenericResult<MizanUserEditOnGetSalerCityResponse>> Handle(MizanUserEditOnGetSalerCityQuery request, CancellationToken cancellationToken)
     {
-                return Task.FromResult(GenericResult<MizanUserEditOnGetSalerCityResponse>.Success(new MizanUserEditOnGetSalerCityResponse
+        return Task.FromResult(GenericResult<MizanUserEditOnGetSalerCityResponse>.Success(new MizanUserEditOnGetSalerCityResponse
         {
             Response = DataSourceLoader.Load(citiesManager.Get_Cities(), request.Request.options)
         }));
