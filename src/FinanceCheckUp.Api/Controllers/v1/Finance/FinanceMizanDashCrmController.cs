@@ -41,10 +41,9 @@ public class FinanceMizanDashCrmController(IMediator mediator) : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetOnGetChartRasyoAsync([FromBody] MizanDashCrmOnGetChartRasyoRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetOnGetChartRasyoAsync([FromBody] MizanDashCrmOnGetChartRasyoQuery query, CancellationToken cancellationToken)
     {
-        var command = new MizanDashCrmOnGetChartRasyoQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 
@@ -54,10 +53,9 @@ public class FinanceMizanDashCrmController(IMediator mediator) : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetChartRasyoaAsync([FromBody] MizanDashCrmOnGetChartRasyoaRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetChartRasyoaAsync([FromBody] MizanDashCrmOnGetChartRasyoaQuery query, CancellationToken cancellationToken)
     {
-        var command = new MizanDashCrmOnGetChartRasyoaQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 
@@ -67,10 +65,9 @@ public class FinanceMizanDashCrmController(IMediator mediator) : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetChartRasyobAsync([FromBody] MizanDashCrmOnGetChartRasyobRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetChartRasyobAsync([FromBody] MizanDashCrmOnGetChartRasyobQuery query, CancellationToken cancellationToken)
     {
-        var command = new MizanDashCrmOnGetChartRasyobQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 
@@ -80,10 +77,9 @@ public class FinanceMizanDashCrmController(IMediator mediator) : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetChartRasyocAsync([FromBody] MizanDashCrmOnGetChartRasyocRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetChartRasyocAsync([FromBody] MizanDashCrmOnGetChartRasyocQuery query, CancellationToken cancellationToken)
     {
-        var command = new MizanDashCrmOnGetChartRasyocQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 }

@@ -20,7 +20,7 @@ public class MizanDashCrmOnGetChartRasyoQueryHandler(IRasyoAnalizMainManager ras
 
  
         
-                return Task.FromResult(GenericResult<MizanDashCrmOnGetChartRasyoResponse>.Success(
+        return Task.FromResult(GenericResult<MizanDashCrmOnGetChartRasyoResponse>.Success(
             new MizanDashCrmOnGetChartRasyoResponse
             {
                 Response = DataSourceLoader.Load(request.InitialModel.RasyoAnalizViewCrm.nresult.OrderByDescending(z => z.Value), request.Request.options),
