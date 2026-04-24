@@ -11,7 +11,8 @@ public class MizanDashLiquidityOnGetMarkupMarjinQueryHandler(IDashLikiditeMizanM
         var nRequestList = dashLikiditeMizanManager.Get_MAINRESULTMultiMain(request.Request.compid);
         request.InitialModel.nRequestList = nRequestList;
         
-                return Task.FromResult(GenericResult<MizanDashLiquidityOnGetMarkupMarjinResponse>.Success(
+                
+        return Task.FromResult(GenericResult<MizanDashLiquidityOnGetMarkupMarjinResponse>.Success(
             new MizanDashLiquidityOnGetMarkupMarjinResponse
             {
                 Response = DataSourceLoader.Load(nRequestList, request.Request.options),

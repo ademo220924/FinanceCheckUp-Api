@@ -37,10 +37,9 @@ public class FinanceMizanDashLiquidityController(IMediator mediator) : Controlle
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetMarkupMarjinAsync([FromBody] MizanDashLiquidityOnGetMarkupMarjinRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMarkupMarjinAsync([FromBody] MizanDashLiquidityOnGetMarkupMarjinQuery request, CancellationToken cancellationToken)
     {
-        var command = new MizanDashLiquidityOnGetMarkupMarjinQuery { Request = request };
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(request, cancellationToken);
         return Ok(result);
     }
 }
