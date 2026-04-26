@@ -3,6 +3,7 @@ using System.Net.Mime;
 using FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Menu.UserEdit.Query.UserEditOnGet;
 using FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Menu.UserEdit.Query.UserEditOnGetSalerCity;
 using FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Menu.UserEdit.Query.UserEditOnGetSalerCompany;
+using FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Menu.UserEdit.Query.UserEditOnGetSalerMain;
 using FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.Menu.UserEdit.Query.UserEditOnGetUser;
 using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.Menu.UserEdit;
 using MediatR;
@@ -31,6 +32,19 @@ public class FinanceMizanMenuUserEditController(IMediator mediator) : Controller
     {
 
         var command = new MizanUserEditOnGetQuery { Request = request };
+        var result = await _mediator.Send(command, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [Route("OnGetSalerMain")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> GetSalerMainAsync([FromBody] MizanUserEditOnGetSalerMainRequest request, CancellationToken cancellationToken)
+    {
+        var command = new MizanUserEditOnGetSalerMainQuery { Request = request };
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }

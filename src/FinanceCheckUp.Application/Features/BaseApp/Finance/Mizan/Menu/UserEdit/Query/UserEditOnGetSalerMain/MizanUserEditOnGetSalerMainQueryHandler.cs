@@ -1,5 +1,6 @@
 ﻿using DevExtreme.AspNet.Data;
 using FinanceCheckUp.Application.Managers.SqlQueryManager;
+using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.Menu.UserEdit;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.Menu.UserEdit;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
@@ -8,6 +9,9 @@ public class MizanUserEditOnGetSalerMainQueryHandler(IHhvnUsersManager hhvnUsers
 {
     public Task<GenericResult<MizanUserEditOnGetSalerMainResponse>> Handle(MizanUserEditOnGetSalerMainQuery request, CancellationToken cancellationToken)
     {
+        request.InitialModel ??= new MizanUserEditRequestInitialModel();
+        request.Request ??= new MizanUserEditOnGetSalerMainRequest();
+
         var userId = Convert.ToInt64(request.UserId);
         request.InitialModel.UserID = userId;
 
@@ -27,7 +31,7 @@ public class MizanUserEditOnGetSalerMainQueryHandler(IHhvnUsersManager hhvnUsers
                 return Task.FromResult(GenericResult<MizanUserEditOnGetSalerMainResponse>.Success(new MizanUserEditOnGetSalerMainResponse
         {
             InitialModel = request.InitialModel,
-            Response= DataSourceLoader.Load(request.InitialModel.mreqListUserType, request.Request.options)
+            Response = DataSourceLoader.Load(request.InitialModel.mreqListUserType, request.Request.options)
         }));
     }
 }
