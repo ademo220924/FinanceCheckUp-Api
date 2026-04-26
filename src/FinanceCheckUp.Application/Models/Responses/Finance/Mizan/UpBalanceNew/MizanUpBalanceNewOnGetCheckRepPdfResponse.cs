@@ -1,11 +1,11 @@
 ﻿using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.UpBalanceNew;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceCheckUp.Application.Models.Responses.Finance.Mizan.UpBalanceNew
 {
     public class MizanUpBalanceNewOnGetCheckRepPdfResponse
     {
-        public JsonResult Response { get; set; }
+        /// <summary>Göreli dosya yolu (örn. FileContent/MizanRapor-....pdf).</summary>
+        public string? Response { get; set; }
         public MizanUpBalanceNewRequestInitialModel InitialModel { get; set; }
     }
 }

@@ -21,15 +21,27 @@ public interface IDashOzetMaliMizanManager : IGenericDapperRepository
 
 public class DashOzetMaliMizanManager(FinanceCheckUpDbContext _dbContext) : GenericDapperRepositoryBase(_dbContext), IDashOzetMaliMizanManager
 {
+    /// <summary>Row DTO for scalar SUM — Dapper maps nullable properties from DBNull; primitive long queries do not.</summary>
+    private sealed class SumAmountRow
+    {
+        public long? TotalAmount { get; set; }
+    }
+
     public long getPasifMizan(int _year, long _compID)
     {
-        string sql = @"SELECT SUM(Amount)  FROM [EDEFTERDB].[dbo].[TBLMSampleBlncoMzn] where  CompanyID=@companyID and Year=@nyear and TypeID in (444,333,3333)";
-        return Query<long>(sql, new { nyear = _year, companyID = _compID }).FirstOrDefault();
+        const string sql =
+            "SELECT CAST(COALESCE(SUM(Amount), 0) AS BIGINT) AS TotalAmount " +
+            "FROM [EDEFTERDB].[dbo].[TBLMSampleBlncoMzn] " +
+            "WHERE CompanyID=@companyID AND Year=@nyear AND TypeID IN (444,333,3333)";
+        return Query<SumAmountRow>(sql, new { nyear = _year, companyID = _compID }).FirstOrDefault()?.TotalAmount ?? 0L;
     }
     public long getOzkaynak(int _year, long _compID)
     {
-        string sql = @"SELECT SUM(Amount)  FROM [EDEFTERDB].[dbo].[TBLMSampleBlncoMzn] where  CompanyID=@companyID and Year=@nyear and TypeID in (3333)";
-        return Query<long>(sql, new { nyear = _year, companyID = _compID }).FirstOrDefault();
+        const string sql =
+            "SELECT CAST(COALESCE(SUM(Amount), 0) AS BIGINT) AS TotalAmount " +
+            "FROM [EDEFTERDB].[dbo].[TBLMSampleBlncoMzn] " +
+            "WHERE CompanyID=@companyID AND Year=@nyear AND TypeID IN (3333)";
+        return Query<SumAmountRow>(sql, new { nyear = _year, companyID = _compID }).FirstOrDefault()?.TotalAmount ?? 0L;
     }
     public List<DashYearlyResultMizan> OzetMali8(int _year, long _compID)
     {
@@ -93,8 +105,11 @@ public class DashOzetMaliMizanManager(FinanceCheckUpDbContext _dbContext) : Gene
 
     public long getKArzarar(int _year, long _compID)
     {
-        string sql = @"SELECT SUM(Amount)  FROM [EDEFTERDB].[dbo].[TBLMRevenueMzn] where  CompanyID=@companyID and Year=@nyear and TypeID in (9995)";
-        return Query<long>(sql, new { nyear = _year, companyID = _compID }).FirstOrDefault();
+        const string sql =
+            "SELECT CAST(COALESCE(SUM(Amount), 0) AS BIGINT) AS TotalAmount " +
+            "FROM [EDEFTERDB].[dbo].[TBLMRevenueMzn] " +
+            "WHERE CompanyID=@companyID AND Year=@nyear AND TypeID IN (9995)";
+        return Query<SumAmountRow>(sql, new { nyear = _year, companyID = _compID }).FirstOrDefault()?.TotalAmount ?? 0L;
     }
 
     private long Get_P590(int _year, long _compID)

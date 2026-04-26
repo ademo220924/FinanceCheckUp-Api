@@ -83,7 +83,7 @@ public class GenericDapperRepositoryBase : IGenericDapperRepository
         }
     }
 
-    public int Execute(string sql, dynamic? param = null, IDbTransaction? transaction = null,
+    public int Execute(string sql, object? param = null, IDbTransaction? transaction = null,
         int? commandTimeout = 0, CommandType? commandType = null)
     {
         transaction ??= _transaction;
@@ -99,7 +99,7 @@ public class GenericDapperRepositoryBase : IGenericDapperRepository
         }
     }
 
-    public IEnumerable<T> Query<T>(string sql, dynamic? param = null, IDbTransaction? transaction = null,
+    public IEnumerable<T> Query<T>(string sql, object? param = null, IDbTransaction? transaction = null,
         bool buffered = true, int? commandTimeout = 0, CommandType? commandType = null)
     {
         transaction ??= _transaction;
@@ -116,7 +116,7 @@ public class GenericDapperRepositoryBase : IGenericDapperRepository
         }
     }
 
-    public IEnumerable<T> StaticQuery<T>(string sql, dynamic? param = null, IDbTransaction? transaction = null,
+    public IEnumerable<T> StaticQuery<T>(string sql, object? param = null, IDbTransaction? transaction = null,
         bool buffered = true, int? commandTimeout = 0, CommandType? commandType = null)
     {
         var con = Connection;
@@ -166,7 +166,7 @@ public class GenericDapperRepositoryBase : IGenericDapperRepository
         }
     }
 
-    public IEnumerable<dynamic> StaticQuery(string sql, dynamic? param = null, IDbTransaction? transaction = null,
+    public IEnumerable<dynamic> StaticQuery(string sql, object? param = null, IDbTransaction? transaction = null,
         bool buffered = true, int? commandTimeout = 0, CommandType? commandType = null)
     {
         using var con = Connection;
@@ -190,7 +190,7 @@ public class GenericDapperRepositoryBase : IGenericDapperRepository
         }
     }
 
-    public int StaticExecute(string sql, dynamic? param = null, IDbTransaction? transaction = null,
+    public int StaticExecute(string sql, object? param = null, IDbTransaction? transaction = null,
         int? commandTimeout = 0, CommandType? commandType = null)
     {
         using var con = Connection;
