@@ -19,11 +19,12 @@ namespace FinanceCheckUp.Application.Managers.SqlQueryManager
     {
         public IEnumerable<City> Get_Cities()
         {
-            return StaticQuery<City>("Select * From [Cities]");
+            // Dapper maps by result column name; [Column("City")] on CityName is EF-only — alias so CityName is filled.
+            return StaticQuery<City>("SELECT [ID] AS Id, [City] AS CityName FROM [Cities]");
         }
         public City GetRow_Cities(int _ID)
         {
-            return StaticQuery<City>("Select * From [Cities] where ID=@ID ", new { ID = _ID }).FirstOrDefault();
+            return StaticQuery<City>("SELECT [ID] AS Id, [City] AS CityName FROM [Cities] WHERE [ID]=@ID", new { ID = _ID }).FirstOrDefault();
         }
 
         public long Save_Cities(City city)
