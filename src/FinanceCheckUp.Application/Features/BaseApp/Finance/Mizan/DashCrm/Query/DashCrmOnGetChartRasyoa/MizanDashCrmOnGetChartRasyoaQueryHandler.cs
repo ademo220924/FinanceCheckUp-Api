@@ -1,4 +1,5 @@
 ﻿using DevExtreme.AspNet.Data;
+using FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.DashCrm;
 using FinanceCheckUp.Application.Managers.SqlQueryManager;
 using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.DashCrm;
@@ -19,9 +20,12 @@ public class MizanDashCrmOnGetChartRasyoaQueryHandler(IRasyoAnalizMainManager ra
         request.InitialModel.CurrentUser = hhvnUsersManager.GetRow_User(request.InitialModel.UserID);
 
         request.InitialModel.CompID = companyManager.Getby_User(request.InitialModel.UserID).Where(x => x.IsDefault == 1).FirstOrDefault().Id;
+        var yearForCrm = MizanDashCrmCrmDataYearResolver.Resolve(
+            request.InitialModel.CurrentUser.SelectedYear,
+            tBLXmlManager.GetMaxYearTblXmlSourceOneT(request.InitialModel.CompID));
         request.InitialModel.RasyoAnalizViewCrm = new DashYearlyResultChartCRM();
-        request.InitialModel.RasyoAnalizCRM = rasyoAnalizMainManager.CRMAnalizTOTAL103Mizan(request.InitialModel.CurrentUser.SelectedYear, request.InitialModel.CompID);
-        request.InitialModel.RasyoAnalizViewCrm.SetResult(request.InitialModel.RasyoAnalizCRM, request.InitialModel.CurrentUser.SelectedYear);
+        request.InitialModel.RasyoAnalizCRM = rasyoAnalizMainManager.CRMAnalizTOTAL103Mizan(yearForCrm, request.InitialModel.CompID);
+        request.InitialModel.RasyoAnalizViewCrm.SetResult(request.InitialModel.RasyoAnalizCRM, yearForCrm);
  
                 return Task.FromResult(GenericResult<MizanDashCrmOnGetChartRasyoaResponse>.Success(
             new MizanDashCrmOnGetChartRasyoaResponse

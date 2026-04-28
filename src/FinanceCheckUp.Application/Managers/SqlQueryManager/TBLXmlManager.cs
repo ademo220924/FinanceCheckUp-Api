@@ -20,6 +20,9 @@ public interface ITBLXmlManager : IGenericDapperRepository
     public int GetYearByComapnyIDMizan(long ide);
     public List<int> GetYearList(long ide);
 
+    /// <summary>Mizan CRM pivot sorgularının kullandığı TBLXMLSourceOneT tablosunda şirket için kayıtlı en büyük yıl (yoksa null).</summary>
+    public int? GetMaxYearTblXmlSourceOneT(long companyId);
+
     public int setCashFlow(long compide, int yearid);
     public int RESET_TBLXml(long ide);
     public int GetCountALL_byCompanyIDMulti(int _year, long _compID, int _monthID, long tblxmlID);
@@ -77,6 +80,13 @@ public class TBLXmlManager(FinanceCheckUpDbContext _dbContext) : GenericDapperRe
     public List<int> GetYearList(long ide)
     {
         return Query<int>("Select  DISTINCT([Year])  From [TBLXMLSourceOne] where CompanyID=@ID  and [Year]  not in (SELECT [Year] FROM [EDEFTERDB].[dbo].[TBLMNKTAKIS] where CompanyID=@ID ) order by [Year] ", new { ID = ide }).ToList();
+    }
+
+    public int? GetMaxYearTblXmlSourceOneT(long companyId)
+    {
+        return Query<int?>(
+            "SELECT MAX([Year]) FROM [EDEFTERDB].[dbo].[TBLXMLSourceOneT] WHERE CompanyID = @companyId",
+            new { companyId }).FirstOrDefault();
     }
 
     public int setCashFlow(long compide, int yearid)

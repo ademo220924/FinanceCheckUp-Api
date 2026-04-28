@@ -1,4 +1,5 @@
-﻿using FinanceCheckUp.Domain.Entities;
+﻿using FinanceCheckUp.Application.Models;
+using FinanceCheckUp.Domain.Entities;
 
 namespace FinanceCheckUp.Application.Models.Requests.Finance.Mizan.DashCrm
 {
@@ -26,5 +27,17 @@ namespace FinanceCheckUp.Application.Models.Requests.Finance.Mizan.DashCrm
         public int AQuestions { get; set; }
         public int BQuestions { get; set; }
         public int CQuestions { get; set; }
+
+        /// <summary>Pivot verisi — CRMAnalizTOTAL102Mizan (Banka ilk 10).</summary>
+        public List<DashYearlyResultCRM> CrmPivot102Rows { get; set; }
+
+        /// <summary>Pivot verisi — CRMAnalizTOTAL103Mizan (Verilen çek).</summary>
+        public List<DashYearlyResultCRM> CrmPivot103Rows { get; set; }
+
+        /// <summary>Pivot verisi — CRMAnalizTOTAL101Mizan (Alınan çek).</summary>
+        public List<DashYearlyResultCRM> CrmPivot101Rows { get; set; }
+
+        /// <summary>Pivot verisi — CRMAnalizTOTAL120Mizan (Alıcılar).</summary>
+        public List<DashYearlyResultCRM> CrmPivot120Rows { get; set; }
     }
 }
