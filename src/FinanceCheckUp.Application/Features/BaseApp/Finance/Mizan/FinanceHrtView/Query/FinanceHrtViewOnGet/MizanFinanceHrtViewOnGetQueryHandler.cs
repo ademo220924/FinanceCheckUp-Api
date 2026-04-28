@@ -24,6 +24,7 @@ public class MizanFinanceHrtViewOnGetQueryHandler(IReportDashManager reportDashM
         responseModel.CompID = responseModel.mreqListCompany.Where(x => x.IsDefault == 1).FirstOrDefault().Id;
         responseModel.CompName = responseModel.mreqListCompany.Where(x => x.IsDefault == 1).FirstOrDefault().CompanyName;
         responseModel.dashRevenue = reportDashManager.Get_Data_GrossProfitMIZAN(responseModel.CompID).OrderByDescending(X => X.MainYear).Take(3);
+        responseModel.dashNetSatisByYear = reportDashManager.Get_Data_RevenueMizan(responseModel.CompID).Where(x => x.Amount > 5).OrderBy(x => x.Year).ToList();
         responseModel.dashGrossProfit = reportDashManager.Get_Data_BrutKarZararMIZAN(responseModel.CompID).OrderByDescending(X => X.MainYear).Take(3);
         responseModel.dashFinancialDebit = reportDashManager.Get_Data_BrutKarZararMIZAN(responseModel.CompID).OrderByDescending(X => X.MainYear).Take(3);
         responseModel.dashFinancialDebitMulti = reportDashManager.Get_Data_FinancialDebitMultiMIZAN(responseModel.CompID).OrderByDescending(X => X.MainYear);

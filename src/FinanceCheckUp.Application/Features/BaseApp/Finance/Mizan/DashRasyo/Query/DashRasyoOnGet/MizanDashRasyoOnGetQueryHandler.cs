@@ -5,7 +5,13 @@ using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.DashRasyo.Query.DashRasyoOnGet;
-public class MizanDashRasyoOnGetQueryHandler(IHhvnUsersManager hhvnUsersManager,  ICompanyManager companyManager, ITBLXmlManager tBLXmlManager) : IRequestHandler<MizanDashRasyoOnGetQuery, GenericResult<MizanDashRasyoOnGetResponse>>
+public class MizanDashRasyoOnGetQueryHandler(
+    IHhvnUsersManager hhvnUsersManager,
+    ICompanyManager companyManager,
+    ITBLXmlManager tBLXmlManager,
+    IRasyoAnalizMainMizanManager rasyoAnalizMainMizanManager,
+    IDashOzetMaliMizanManager dashOzetMaliMizanManager,
+    IDashLikiditeRiskTrendMizanManager dashLikiditeRiskTrendMizanManager) : IRequestHandler<MizanDashRasyoOnGetQuery, GenericResult<MizanDashRasyoOnGetResponse>>
 {
 
     public Task<GenericResult<MizanDashRasyoOnGetResponse>> Handle(MizanDashRasyoOnGetQuery request, CancellationToken cancellationToken)
@@ -23,8 +29,11 @@ public class MizanDashRasyoOnGetQueryHandler(IHhvnUsersManager hhvnUsersManager,
         hhvnUsersManager.SetYearMain(responseModel.CompID, responseModel.UserID);
         responseModel.CurrentUser = hhvnUsersManager.GetRow_User(responseModel.UserID);
         responseModel.YearCount = tBLXmlManager.GetYearByComapnyID(responseModel.CompID);
-        responseModel.CompCount = responseModel.mreqListCompany.Count(); 
-        
+        responseModel.CompCount = responseModel.mreqListCompany.Count();
+        responseModel.RasyoAnaliz = rasyoAnalizMainMizanManager.RasyoAnalizTOTALFinal(responseModel.CurrentUser.SelectedYear, responseModel.CompID);
+        responseModel.OzetMali = dashOzetMaliMizanManager.OzetMaliFinal(responseModel.CompID);
+        responseModel.LikiditeRiskTrend = dashLikiditeRiskTrendMizanManager.LikiditeRiskTrend21Final(responseModel.CompID);
+
         return Task.FromResult(GenericResult<MizanDashRasyoOnGetResponse>.Success(
             new MizanDashRasyoOnGetResponse
             {

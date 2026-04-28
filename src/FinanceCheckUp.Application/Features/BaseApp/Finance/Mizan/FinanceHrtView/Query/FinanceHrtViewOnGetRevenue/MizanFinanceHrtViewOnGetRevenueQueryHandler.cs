@@ -16,20 +16,20 @@ public class MizanFinanceHrtViewOnGetRevenueQueryHandler(IReportDashManager repo
 
 
         if (!hhvnUsersManager.CheckUser(request.Request.compid, (int)userId))
-        { 
-                        return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetRevenueResponse>.Success(
+        {
+            return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetRevenueResponse>.Success(
                 new MizanFinanceHrtViewOnGetRevenueResponse
                 {
-                    Response = DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)
-                })); 
+                    Response = DataSourceLoader.Load(new List<YearlyReportDash>(), request.Request.options)
+                }));
         }
 
         var retval = reportDashManger.Get_Data_RevenueMizan(request.Request.compid).Where(x => x.Amount > 5).OrderBy(x => x.Year);
-         
-                return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetRevenueResponse>.Success(
+
+        return Task.FromResult(GenericResult<MizanFinanceHrtViewOnGetRevenueResponse>.Success(
             new MizanFinanceHrtViewOnGetRevenueResponse
             {
-                Response = DataSourceLoader.Load(new List<YearlyReportMarkupMarjin>(), request.Request.options)
-            })); 
+                Response = DataSourceLoader.Load(retval, request.Request.options)
+            }));
     }
 }

@@ -1,9 +1,11 @@
 ﻿using FinanceCheckUp.Application.Managers.SqlQueryManager;
+using FinanceCheckUp.Application.Models;
 using FinanceCheckUp.Application.Models.Requests.Finance.Mizan.DashLiquidity;
 using FinanceCheckUp.Application.Models.Responses.Finance.Mizan.DashLiquidity;
 using FinanceCheckUp.Framework.Core.Models;
 using MediatR;
 using System.Globalization;
+using System.Collections.Generic;
 using FinanceCheckUp.Application.Managers.StaticManagers;
 
 namespace FinanceCheckUp.Application.Features.BaseApp.Finance.Mizan.DashLiquidity.Query.DashLiquidityOnGet;
@@ -27,7 +29,7 @@ public class MizanDashLiquidityOnGetQueryHandler(IDashLikiditeViewMainMizanManag
         responseModel.CompName = responseModel.mreqListCompany.Where(x => x.IsDefault == 1).FirstOrDefault().CompanyName;
         hhvnUsersManager.SetYearMain(responseModel.CompID, responseModel.UserID);
         responseModel.CurrentUser = hhvnUsersManager.GetRow_User(responseModel.UserID);
-        var nRequestListChk = dashLikiditeMizanManager.Get_MAINRESULTMultiMain(responseModel.CompID);
+        responseModel.nRequestListChk = dashLikiditeMizanManager.Get_MAINRESULTMultiMain(responseModel.CompID);
 
 
 
@@ -46,14 +48,14 @@ public class MizanDashLiquidityOnGetQueryHandler(IDashLikiditeViewMainMizanManag
 
         try
         {
-            if (nRequestListChk.Count > 0)
+            if (responseModel.nRequestListChk is { Count: > 0 })
             {
-                var val5 = nRequestListChk.Where(x => x.TypeID == 333).FirstOrDefault().Amount;
+                var val5 = responseModel.nRequestListChk.Where(x => x.TypeID == 333).FirstOrDefault().Amount;
                 if (val5 == 0)
                 {
                     val5 = 1;
                 }
-                decimal chkt = Convert.ToDecimal(nRequestListChk.Where(x => (x.TypeID == 111)).FirstOrDefault().Amount - nRequestListChk.Where(x => (x.TypeID == 15)).FirstOrDefault().Amount);
+                decimal chkt = Convert.ToDecimal(responseModel.nRequestListChk.Where(x => (x.TypeID == 111)).FirstOrDefault().Amount - responseModel.nRequestListChk.Where(x => (x.TypeID == 15)).FirstOrDefault().Amount);
                 responseModel.NetIsletmeT = chkt / Convert.ToDecimal(val5);
                 if (responseModel.NetIsletmeT < 0)
                 {
@@ -71,7 +73,8 @@ public class MizanDashLiquidityOnGetQueryHandler(IDashLikiditeViewMainMizanManag
             responseModel.NetIsletme = (0).ToString("F", new CultureInfo("en-US", false));
         }
  
-        responseModel.nRequestChart = dashLikiditeMizanManager.Get_LikiditeORANT(responseModel.CompID);
+        responseModel.nRequestChart = dashLikiditeMizanManager.Get_LikiditeORANT(responseModel.CompID)
+            ?? new List<DashYearlyResultMizan>();
         
         return Task.FromResult(GenericResult<MizanDashLiquidityOnGetResponse>.Success(
             new MizanDashLiquidityOnGetResponse

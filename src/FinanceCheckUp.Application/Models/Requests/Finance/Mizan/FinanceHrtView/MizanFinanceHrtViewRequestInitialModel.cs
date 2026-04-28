@@ -22,6 +22,7 @@ namespace FinanceCheckUp.Application.Models.Requests.Finance.Mizan.FinanceHrtVie
         public IEnumerable<DashBilancoViewMarj> dashFinancialOzkaynakAktif;
         public IEnumerable<YearlyReportDash> dashFinancialCariOran;
         public IEnumerable<YearlyReportDash> dashRevenue;
+        public IEnumerable<YearlyReportDash> dashNetSatisByYear;
         public IEnumerable<YearlyReportDash> dashDonemselKarzarar;
         public IEnumerable<DashYearlyResultMain> dashWorkingCapital;
         public IEnumerable<YearlyReportDashGraphic> dDashFrossViewMarjBrut;
